@@ -15,19 +15,24 @@ class Commande
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\ManyToOne(inversedBy: 'commandes')]
-    #[ORM\JoinColumn(nullable: false)]
-    private ?User $Utilisateur = null;
 
     /**
      * @var Collection<int, Produit>
      */
-    #[ORM\ManyToMany(targetEntity: Produit::class, inversedBy: 'commandes')]
-    private Collection $Produits;
+
+    /**
+     * @var Collection<int, cartItem>
+     */
+    #[ORM\ManyToMany(targetEntity: cartItem::class)]
+    private Collection $cartItems;
+
+    #[ORM\ManyToOne]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?utilisateur $utilisateur = null;
 
     public function __construct()
     {
-        $this->Produits = new ArrayCollection();
+        $this->cartItems = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -35,38 +40,49 @@ class Commande
         return $this->id;
     }
 
-    public function getUtilisateur(): ?User
-    {
-        return $this->Utilisateur;
-    }
 
-    public function setUtilisateur(?User $Utilisateur): static
-    {
-        $this->Utilisateur = $Utilisateur;
 
-        return $this;
-    }
+
 
     /**
      * @return Collection<int, Produit>
      */
-    public function getProduits(): Collection
+
+
+
+
+    /**
+     * @return Collection<int, cartItem>
+     */
+    public function getCartItems(): Collection
     {
-        return $this->Produits;
+        return $this->cartItems;
     }
 
-    public function addProduit(Produit $produit): static
+    public function addCartItem(cartItem $cartItem): static
     {
-        if (!$this->Produits->contains($produit)) {
-            $this->Produits->add($produit);
+        if (!$this->cartItems->contains($cartItem)) {
+            $this->cartItems->add($cartItem);
         }
 
         return $this;
     }
 
-    public function removeProduit(Produit $produit): static
+    public function removeCartItem(cartItem $cartItem): static
     {
-        $this->Produits->removeElement($produit);
+        $this->cartItems->removeElement($cartItem);
+
+        return $this;
+    }
+
+    public function getUtilisateur(): ?utilisateur
+    {
+        return $this->utilisateur;
+    }
+
+    public function setUtilisateur(?utilisateur $utilisateur): static
+    {
+        $this->utilisateur = $utilisateur;
 
         return $this;
     }
