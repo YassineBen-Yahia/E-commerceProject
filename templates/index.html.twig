@@ -1,433 +1,309 @@
 {% extends 'base.html.twig' %}
+{% block store %}
+<div id="store" class="col-md-9">
+    <!-- store top filter -->
+    <div class="store-filter clearfix">
+        <div class="store-sort">
+            <label>
+                Sort By:
+                <select class="input-select">
+                    <option value="0">Popular</option>
+                    <option value="1">Position</option>
+                </select>
+            </label>
 
-{% block title %}ShoeStore - Accueil{% endblock %}
+            <label>
+                Show:
+                <select class="input-select">
+                    <option value="0">20</option>
+                    <option value="1">50</option>
+                </select>
+            </label>
+        </div>
+        <ul class="store-grid">
+            <li class="active"><i class="fa fa-th"></i></li>
+            <li><a href="#"><i class="fa fa-th-list"></i></a></li>
+        </ul>
+    </div>
+    <!-- /store top filter -->
 
-{% block stylesheets %}
-    {{ parent() }}
-    <style>
-        body {
-            background: linear-gradient(135deg, rgba(19, 53, 139, 0.05) 0%, rgba(33, 85, 101, 0.05) 100%);
-        }
-
-        .hero-section {
-            padding: 0; /* Remove padding to avoid space around the image */
-            width: 100%;
-            height: 100vh; /* Full viewport height */
-            background: linear-gradient(rgba(19, 125, 139, 0.8), rgba(33, 87, 101, 0.8)),
-            url('{{ asset('styles/img/hero.jpg') }}');
-            background-size: cover;       /* Ensures image covers entire section */
-            background-position: center;  /* Centers the image */
-            background-repeat: no-repeat; /* Prevents tiling */
-            position: relative;
-            overflow: hidden;
-            color: var(--light-color);
-            margin: 0; /* Optional: Remove margin if not needed */
-        }
-
-
-        .hero-section {
-            display: flex;
-            align-items: center;     /* Centre verticalement */
-            justify-content: center; /* Centre horizontalement */
-            text-align: center;      /* Centre le texte */
-            padding: 0;
-            width: 100%;
-            height: 100vh;
-            background: linear-gradient(rgba(19, 125, 139, 0.8), rgba(33, 87, 101, 0.8)),
-            url('{{ asset('styles/img/hero.jpg') }}');
-            background-size: cover;
-            background-position: center;
-            background-repeat: no-repeat;
-            position: relative;
-            overflow: hidden;
-            color: var(--light-color);
-        }
-
-
-        .hero-content {
-            background-position: center;
-            position: relative;
-            z-index: 1;
-            max-width: 800px;
-            margin: 0 auto;
-            text-align: center;
-        }
-
-        .hero-title {
-            font-size: 3rem;
-            font-weight: 800;
-            margin-bottom: 1rem;
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
-            letter-spacing: 2px;
-            text-transform: uppercase;
-        }
-
-        .hero-subtitle {
-            font-size: 1.25rem;
-            opacity: 0.9;
-            margin-bottom: 2rem;
-            letter-spacing: 1px;
-            text-shadow: 1px 1px 2px rgba(0,0,0,0.3);
-        }
-
-        .btn-hero {
-            padding: 0.75rem 1.5rem;
-            font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-            transition: all 0.3s ease;
-            position: relative;
-            overflow: hidden;
-            border: 2px solid var(--light-color);
-            background: transparent;
-            font-size: 0.9rem;
-        }
-
-        .btn-hero:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
-            background: var(--light-color);
-            color: var(--primary-color);
-        }
-
-        .category-card {
-            border: none;
-            border-radius: 20px;
-            overflow: hidden;
-            transition: all 0.3s ease;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
-            background: var(--light-color);
-            position: relative;
-        }
-
-        .category-card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: linear-gradient(135deg, rgba(19, 75, 139, 0.1) 0%, rgba(33, 55, 101, 0.1) 100%);
-            z-index: 1;
-        }
-
-        .category-card:hover {
-            transform: translateY(-10px);
-            box-shadow: 0 15px 35px rgba(0,0,0,0.2);
-        }
-
-        .category-icon {
-            height: 200px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            background: linear-gradient(135deg, rgba(139,69,19,0.05) 0%, rgba(101,67,33,0.05) 100%);
-        }
-
-        .category-icon i {
-            font-size: 5rem;
-            color: var(--primary-color);
-            transition: all 0.3s ease;
-        }
-
-        .category-card:hover .category-icon i {
-            transform: scale(1.1);
-        }
-
-        /*.text-brown {*/
-        /*    color: var(--primary-color);*/
-        /*}*/
-
-        .product-card {
-            border: none;
-            border-radius: 20px;
-            overflow: hidden;
-            transition: all 0.3s ease;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
-            background: var(--light-color);
-        }
-
-        .product-card:hover {
-            transform: translateY(-10px);
-            box-shadow: 0 15px 35px rgba(0,0,0,0.2);
-        }
-
-        .product-image {
-            height: 300px;
-            object-fit: cover;
-            transition: all 0.5s ease;
-        }
-
-        .product-card:hover .product-image {
-            transform: scale(1.05);
-        }
-
-        .section-title {
-            font-size: 3rem;
-            font-weight: 700;
-            margin-bottom: 3rem;
-            text-align: center;
-            position: relative;
-            padding-bottom: 1rem;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-        }
-
-        .section-title::after {
-            content: '';
-            position: absolute;
-            bottom: 0;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 100px;
-            height: 3px;
-            background: linear-gradient(90deg, transparent, var(--primary-color), transparent);
-        }
-
-        .testimonial-card {
-            border: none;
-            border-radius: 20px;
-            padding: 2.5rem;
-            background: var(--light-color);
-            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
-            position: relative;
-            overflow: hidden;
-        }
-
-        .testimonial-card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            height: 5px;
-            background: linear-gradient(90deg, var(--primary-color), var(--primary-dark));
-        }
-
-        .newsletter-section {
-            background: linear-gradient(135deg, var(--primary-dark) 0%, var(--primary-color) 100%);
-            padding: 6rem 0;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .newsletter-section::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: url('{{ asset('styles/img/avatar.jpg') }}') repeat;
-            opacity: 0.1;
-        }
-
-        .newsletter-input {
-            border-radius: 30px;
-            padding: 1rem 1.5rem;
-            border: 2px solid rgba(255,255,255,0.1);
-            background: rgba(255,255,255,0.1);
-            color: var(--light-color);
-            backdrop-filter: blur(5px);
-            transition: all 0.3s ease;
-        }
-
-        .newsletter-input:focus {
-            background: rgba(255,255,255,0.2);
-            box-shadow: 0 0 15px rgba(91, 220, 152, 0.3);
-            border-color: var(--accent-color);
-        }
-
-        .newsletter-input::placeholder {
-            color: rgba(255,255,255,0.6);
-        }
-
-        .newsletter-button {
-            border-radius: 30px;
-            padding: 1rem 2rem;
-            font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-            background: var(--light-color);
-            color: var(--primary-color);
-            border: none;
-            transition: all 0.3s ease;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .newsletter-button:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 10px 20px rgba(0,0,0,0.2);
-            background: var(--accent-color);
-            color: var(--primary-dark);
-        }
-
-        .newsletter-button::after {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-dark) 100%);
-            opacity: 0;
-            transition: all 0.3s ease;
-        }
-
-        .newsletter-button:hover::after {
-            opacity: 0.1;
-        }
-    </style>
-{% endblock %}
-
-{% block body %}
-    <!-- Hero Section -->
-    <div class="hero-section">
-        <div class="container">
-            <div class="row justify-content-center">
-                <div class="col-lg-8 hero-content">
-                    <h1 class="hero-title">Découvrez l'Excellence du Style</h1>
-                    <p class="hero-subtitle">Une collection exclusive de chaussures qui allie élégance, confort et qualité pour tous vos moments.</p>
-                    <div class="d-flex gap-3 justify-content-center">
-                        <a href="#" class="btn btn-hero">Explorer la Collection</a>
-                        <a href="#" class="btn btn-hero">Nos Catégories</a>
+    <!-- store products -->
+    <div class="row">
+        <!-- product -->
+        <div class="col-md-4 col-xs-6">
+            <div class="product">
+                <div class="product-img">
+                    <img src="{{ asset('styles/img/product01.png') }}" alt="">
+                    <div class="product-label">
+                        <span class="sale">-30%</span>
+                        <span class="new">NEW</span>
                     </div>
                 </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Featured Categories -->
-    <div class="container py-5">
-        <h2 class="section-title">Catégories en Vedette</h2>
-        <div class="row g-4">
-{#            {% for category in categories %}#}
-{#                <div class="col-md-4">#}
-{#                    <div class="card category-card h-100">#}
-{#                        <div class="category-icon">#}
-{#                            {% if category.nom|lower == 'sport' %}#}
-{#                                <i class="fas fa-running"></i>#}
-{#                            {% elseif category.nom|lower == 'ville' %}#}
-{#                                <i class="fas fa-city"></i>#}
-{#                            {% elseif category.nom|lower == 'chaussures' %}#}
-{#                                <i class="fas fa-shoe-prints"></i>#}
-{#                            {% elseif category.nom|lower == 'bottes' %}#}
-{#                                <i class="fas fa-boot"></i>#}
-{#                            {% elseif category.nom|lower == 'sandales' %}#}
-{#                                <i class="fas fa-socks"></i>#}
-{#                            {% else %}#}
-{#                                <i class="fas fa-shoe-prints"></i>#}
-{#                            {% endif %}#}
-{#                        </div>#}
-{#                        <div class="card-body text-center position-relative z-index-2">#}
-{#                            <h3 class="h4 mb-3">{{ category.nom }}</h3>#}
-{#                            <p class="card-text text-muted">{{ category.description }}</p>#}
-{#                            <a href="#" class="btn btn-outline-primary">Découvrir</a>#}
-{#                        </div>#}
-{#                    </div>#}
-{#                </div>#}
-{#            {% endfor %}#}
-        </div>
-    </div>
-
-    <!-- Featured Products -->
-    <div class="bg-light py-5">
-        <div class="container">
-            <h2 class="section-title">Nos Coups de Cœur</h2>
-            <div class="row g-4">
-{#                {% for product in featuredProducts %}#}
-{#                    {% if product.image %}#}
-{#                        <div class="col-md-3">#}
-{#                            <div class="card product-card h-100">#}
-{#                                <img src="{{ asset('images/chaussures/' ~ product.image) }}" class="product-image" alt="{{ product.nom }}">#}
-{#                                <div class="card-body text-center">#}
-{#                                    <h4 class="h5 mb-3">{{ product.nom }}</h4>#}
-{#                                    <p class="card-text text-muted">{{ product.description|slice(0, 50) }}...</p>#}
-{#                                    <div class="d-flex justify-content-between align-items-center mt-3">#}
-{#                                        <span class="h5 mb-0 text-primary">{{ product.prix }} €</span>#}
-{#                                        <a href="#" class="btn btn-primary">Voir</a>#}
-{#                                    </div>#}
-{#                                </div>#}
-{#                            </div>#}
-{#                        </div>#}
-{#                    {% endif %}#}
-{#                {% endfor %}#}
-            </div>
-        </div>
-    </div>
-
-    <!-- Testimonials -->
-    <div class="container py-5">
-        <h2 class="section-title">Avis de nos Clients</h2>
-        <div class="row g-4">
-            <div class="col-md-4">
-                <div class="testimonial-card h-100">
-                    <div class="text-center mb-4">
-                        <div class="mb-3">
-                            <i class="fas fa-star text-warning"></i>
-                            <i class="fas fa-star text-warning"></i>
-                            <i class="fas fa-star text-warning"></i>
-                            <i class="fas fa-star text-warning"></i>
-                            <i class="fas fa-star text-warning"></i>
-                        </div>
-                        <p class="lead">"Une qualité exceptionnelle et un service client irréprochable."</p>
-                        <p class="text-muted mb-0">- Marie D.</p>
+                <div class="product-body">
+                    <p class="product-category">Category</p>
+                    <h3 class="product-name"><a href="#">product name goes here</a></h3>
+                    <h4 class="product-price">$980.00 <del class="product-old-price">$990.00</del></h4>
+                    <div class="product-rating">
+                        <i class="fa fa-star"></i>
+                        <i class="fa fa-star"></i>
+                        <i class="fa fa-star"></i>
+                        <i class="fa fa-star"></i>
+                        <i class="fa fa-star"></i>
+                    </div>
+                    <div class="product-btns">
+                        <button class="add-to-wishlist"><i class="fa fa-heart-o"></i><span class="tooltipp">add to wishlist</span></button>
+                        <button class="add-to-compare"><i class="fa fa-exchange"></i><span class="tooltipp">add to compare</span></button>
+                        <button class="quick-view"><i class="fa fa-eye"></i><span class="tooltipp">quick view</span></button>
                     </div>
                 </div>
-            </div>
-            <div class="col-md-4">
-                <div class="testimonial-card h-100">
-                    <div class="text-center mb-4">
-                        <div class="mb-3">
-                            <i class="fas fa-star text-warning"></i>
-                            <i class="fas fa-star text-warning"></i>
-                            <i class="fas fa-star text-warning"></i>
-                            <i class="fas fa-star text-warning"></i>
-                            <i class="fas fa-star text-warning"></i>
-                        </div>
-                        <p class="lead">"Des chaussures magnifiques et un confort incomparable."</p>
-                        <p class="text-muted mb-0">- Jean P.</p>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-4">
-                <div class="testimonial-card h-100">
-                    <div class="text-center mb-4">
-                        <div class="mb-3">
-                            <i class="fas fa-star text-warning"></i>
-                            <i class="fas fa-star text-warning"></i>
-                            <i class="fas fa-star text-warning"></i>
-                            <i class="fas fa-star text-warning"></i>
-                            <i class="fas fa-star-half-alt text-warning"></i>
-                        </div>
-                        <p class="lead">"Un choix incroyable et des prix très compétitifs."</p>
-                        <p class="text-muted mb-0">- Sophie L.</p>
-                    </div>
+                <div class="add-to-cart">
+                    <button class="add-to-cart-btn"><i class="fa fa-shopping-cart"></i> add to cart</button>
                 </div>
             </div>
         </div>
-    </div>
+        <!-- /product -->
 
-    <!-- Newsletter -->
-    <div class="newsletter-section">
-        <div class="container">
-            <div class="row justify-content-center">
-                <div class="col-md-8 text-center text-white">
-                    <h2 class="h1 mb-4">Restez Informé</h2>
-                    <p class="lead mb-5">Inscrivez-vous pour recevoir nos offres exclusives et découvrir nos nouvelles collections en avant-première.</p>
-                    <form class="row g-3 justify-content-center">
-                        <div class="col-md-8">
-                            <label>
-                                <input type="email" class="form-control form-control-lg newsletter-input" placeholder="Votre adresse email">
-                            </label>
-                        </div>
-                        <div class="col-md-4">
-                            <button type="submit" class="btn newsletter-button w-100">S'inscrire</button>
-                        </div>
-                    </form>
+        <!-- product -->
+        <div class="col-md-4 col-xs-6">
+            <div class="product">
+                <div class="product-img">
+                    <img src="{{ asset('styles/img/product01.png') }}" alt="">
+                    <div class="product-label">
+                        <span class="new">NEW</span>
+                    </div>
+                </div>
+                <div class="product-body">
+                    <p class="product-category">Category</p>
+                    <h3 class="product-name"><a href="#">product name goes here</a></h3>
+                    <h4 class="product-price">$980.00 <del class="product-old-price">$990.00</del></h4>
+                    <div class="product-rating">
+                        <i class="fa fa-star"></i>
+                        <i class="fa fa-star"></i>
+                        <i class="fa fa-star"></i>
+                        <i class="fa fa-star"></i>
+                        <i class="fa fa-star-o"></i>
+                    </div>
+                    <div class="product-btns">
+                        <button class="add-to-wishlist"><i class="fa fa-heart-o"></i><span class="tooltipp">add to wishlist</span></button>
+                        <button class="add-to-compare"><i class="fa fa-exchange"></i><span class="tooltipp">add to compare</span></button>
+                        <button class="quick-view"><i class="fa fa-eye"></i><span class="tooltipp">quick view</span></button>
+                    </div>
+                </div>
+                <div class="add-to-cart">
+                    <button class="add-to-cart-btn"><i class="fa fa-shopping-cart"></i> add to cart</button>
                 </div>
             </div>
         </div>
+        <!-- /product -->
+
+        <div class="clearfix visible-sm visible-xs"></div>
+
+        <!-- product -->
+        <div class="col-md-4 col-xs-6">
+            <div class="product">
+                <div class="product-img">
+                    <img src="{{ asset('styles/img/product03.png') }}" alt="">
+                </div>
+                <div class="product-body">
+                    <p class="product-category">Category</p>
+                    <h3 class="product-name"><a href="#">product name goes here</a></h3>
+                    <h4 class="product-price">$980.00 <del class="product-old-price">$990.00</del></h4>
+                    <div class="product-rating">
+                    </div>
+                    <div class="product-btns">
+                        <button class="add-to-wishlist"><i class="fa fa-heart-o"></i><span class="tooltipp">add to wishlist</span></button>
+                        <button class="add-to-compare"><i class="fa fa-exchange"></i><span class="tooltipp">add to compare</span></button>
+                        <button class="quick-view"><i class="fa fa-eye"></i><span class="tooltipp">quick view</span></button>
+                    </div>
+                </div>
+                <div class="add-to-cart">
+                    <button class="add-to-cart-btn"><i class="fa fa-shopping-cart"></i> add to cart</button>
+                </div>
+            </div>
+        </div>
+        <!-- /product -->
+
+        <div class="clearfix visible-lg visible-md"></div>
+
+        <!-- product -->
+        <div class="col-md-4 col-xs-6">
+            <div class="product">
+                <div class="product-img">
+                    <img src="{{ asset('styles/img/product04.png') }}" alt="">
+                </div>
+                <div class="product-body">
+                    <p class="product-category">Category</p>
+                    <h3 class="product-name"><a href="#">product name goes here</a></h3>
+                    <h4 class="product-price">$980.00 <del class="product-old-price">$990.00</del></h4>
+                    <div class="product-rating">
+                    </div>
+                    <div class="product-btns">
+                        <button class="add-to-wishlist"><i class="fa fa-heart-o"></i><span class="tooltipp">add to wishlist</span></button>
+                        <button class="add-to-compare"><i class="fa fa-exchange"></i><span class="tooltipp">add to compare</span></button>
+                        <button class="quick-view"><i class="fa fa-eye"></i><span class="tooltipp">quick view</span></button>
+                    </div>
+                </div>
+                <div class="add-to-cart">
+                    <button class="add-to-cart-btn"><i class="fa fa-shopping-cart"></i> add to cart</button>
+                </div>
+            </div>
+        </div>
+        <!-- /product -->
+
+        <div class="clearfix visible-sm visible-xs"></div>
+
+        <!-- product -->
+        <div class="col-md-4 col-xs-6">
+            <div class="product">
+                <div class="product-img">
+                    <img src="{{ asset('styles/img/product05.png') }}" alt="">
+                </div>
+                <div class="product-body">
+                    <p class="product-category">Category</p>
+                    <h3 class="product-name"><a href="#">product name goes here</a></h3>
+                    <h4 class="product-price">$980.00 <del class="product-old-price">$990.00</del></h4>
+                    <div class="product-rating">
+                    </div>
+                    <div class="product-btns">
+                        <button class="add-to-wishlist"><i class="fa fa-heart-o"></i><span class="tooltipp">add to wishlist</span></button>
+                        <button class="add-to-compare"><i class="fa fa-exchange"></i><span class="tooltipp">add to compare</span></button>
+                        <button class="quick-view"><i class="fa fa-eye"></i><span class="tooltipp">quick view</span></button>
+                    </div>
+                </div>
+                <div class="add-to-cart">
+                    <button class="add-to-cart-btn"><i class="fa fa-shopping-cart"></i> add to cart</button>
+                </div>
+            </div>
+        </div>
+        <!-- /product -->
+
+        <!-- product -->
+        <div class="col-md-4 col-xs-6">
+            <div class="product">
+                <div class="product-img">
+                    <img src="{{ asset('styles/img/product06.png') }}" alt="">
+                </div>
+                <div class="product-body">
+                    <p class="product-category">Category</p>
+                    <h3 class="product-name"><a href="#">product name goes here</a></h3>
+                    <h4 class="product-price">$980.00 <del class="product-old-price">$990.00</del></h4>
+                    <div class="product-rating">
+                        <i class="fa fa-star"></i>
+                        <i class="fa fa-star"></i>
+                        <i class="fa fa-star"></i>
+                        <i class="fa fa-star"></i>
+                        <i class="fa fa-star-o"></i>
+                    </div>
+                    <div class="product-btns">
+                        <button class="add-to-wishlist"><i class="fa fa-heart-o"></i><span class="tooltipp">add to wishlist</span></button>
+                        <button class="add-to-compare"><i class="fa fa-exchange"></i><span class="tooltipp">add to compare</span></button>
+                        <button class="quick-view"><i class="fa fa-eye"></i><span class="tooltipp">quick view</span></button>
+                    </div>
+                </div>
+                <div class="add-to-cart">
+                    <button class="add-to-cart-btn"><i class="fa fa-shopping-cart"></i> add to cart</button>
+                </div>
+            </div>
+        </div>
+        <!-- /product -->
+
+        <div class="clearfix visible-lg visible-md visible-sm visible-xs"></div>
+
+        <!-- product -->
+        <div class="col-md-4 col-xs-6">
+            <div class="product">
+                <div class="product-img">
+                    <img src="{{ asset('styles/img/product07.png') }}" alt="">
+                </div>
+                <div class="product-body">
+                    <p class="product-category">Category</p>
+                    <h3 class="product-name"><a href="#">product name goes here</a></h3>
+                    <h4 class="product-price">$980.00 <del class="product-old-price">$990.00</del></h4>
+                    <div class="product-rating">
+                        <i class="fa fa-star"></i>
+                        <i class="fa fa-star"></i>
+                        <i class="fa fa-star"></i>
+                        <i class="fa fa-star"></i>
+                        <i class="fa fa-star"></i>
+                    </div>
+                    <div class="product-btns">
+                        <button class="add-to-wishlist"><i class="fa fa-heart-o"></i><span class="tooltipp">add to wishlist</span></button>
+                        <button class="add-to-compare"><i class="fa fa-exchange"></i><span class="tooltipp">add to compare</span></button>
+                        <button class="quick-view"><i class="fa fa-eye"></i><span class="tooltipp">quick view</span></button>
+                    </div>
+                </div>
+                <div class="add-to-cart">
+                    <button class="add-to-cart-btn"><i class="fa fa-shopping-cart"></i> add to cart</button>
+                </div>
+            </div>
+        </div>
+        <!-- /product -->
+
+        <!-- product -->
+        <div class="col-md-4 col-xs-6">
+            <div class="product">
+                <div class="product-img">
+                    <img src="{{ asset('styles/img/product08.png') }}" alt="">
+                </div>
+                <div class="product-body">
+                    <p class="product-category">Category</p>
+                    <h3 class="product-name"><a href="#">product name goes here</a></h3>
+                    <h4 class="product-price">$980.00 <del class="product-old-price">$990.00</del></h4>
+                    <div class="product-rating">
+                    </div>
+                    <div class="product-btns">
+                        <button class="add-to-wishlist"><i class="fa fa-heart-o"></i><span class="tooltipp">add to wishlist</span></button>
+                        <button class="add-to-compare"><i class="fa fa-exchange"></i><span class="tooltipp">add to compare</span></button>
+                        <button class="quick-view"><i class="fa fa-eye"></i><span class="tooltipp">quick view</span></button>
+                    </div>
+                </div>
+                <div class="add-to-cart">
+                    <button class="add-to-cart-btn"><i class="fa fa-shopping-cart"></i> add to cart</button>
+                </div>
+            </div>
+        </div>
+        <!-- /product -->
+
+        <div class="clearfix visible-sm visible-xs"></div>
+
+        <!-- product -->
+        <div class="col-md-4 col-xs-6">
+            <div class="product">
+                <div class="product-img">
+                    <img src="{{ asset('styles/img/product09.png') }}" alt="">
+                </div>
+                <div class="product-body">
+                    <p class="product-category">Category</p>
+                    <h3 class="product-name"><a href="#">product name goes here</a></h3>
+                    <h4 class="product-price">$980.00 <del class="product-old-price">$990.00</del></h4>
+                    <div class="product-rating">
+                    </div>
+                    <div class="product-btns">
+                        <button class="add-to-wishlist"><i class="fa fa-heart-o"></i><span class="tooltipp">add to wishlist</span></button>
+                        <button class="add-to-compare"><i class="fa fa-exchange"></i><span class="tooltipp">add to compare</span></button>
+                        <button class="quick-view"><i class="fa fa-eye"></i><span class="tooltipp">quick view</span></button>
+                    </div>
+                </div>
+                <div class="add-to-cart">
+                    <button class="add-to-cart-btn"><i class="fa fa-shopping-cart"></i> add to cart</button>
+                </div>
+            </div>
+        </div>
+        <!-- /product -->
     </div>
+    <!-- /store products -->
+
+    <!-- store bottom filter -->
+    <div class="store-filter clearfix">
+        <span class="store-qty">Showing 20-100 products</span>
+        <ul class="store-pagination">
+            <li class="active">1</li>
+            <li><a href="#">2</a></li>
+            <li><a href="#">3</a></li>
+            <li><a href="#">4</a></li>
+            <li><a href="#"><i class="fa fa-angle-right"></i></a></li>
+        </ul>
+    </div>
+    <!-- /store bottom filter -->
+</div>
 {% endblock %}
