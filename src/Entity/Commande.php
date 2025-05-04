@@ -21,14 +21,14 @@ class Commande
      */
 
     /**
-     * @var Collection<int, cartItem>
+     * @var Collection<int, CartItem>
      */
-    #[ORM\ManyToMany(targetEntity: cartItem::class)]
+    #[ORM\ManyToMany(targetEntity: CartItem::class)]
     private Collection $cartItems;
 
     #[ORM\ManyToOne]
     #[ORM\JoinColumn(nullable: false)]
-    private ?utilisateur $utilisateur = null;
+    private ?Utilisateur $utilisateur = null;
 
     public function __construct()
     {
@@ -52,14 +52,14 @@ class Commande
 
 
     /**
-     * @return Collection<int, cartItem>
+     * @return Collection<int, CartItem>
      */
     public function getCartItems(): Collection
     {
         return $this->cartItems;
     }
 
-    public function addCartItem(cartItem $cartItem): static
+    public function addCartItem(CartItem $cartItem): static
     {
         if (!$this->cartItems->contains($cartItem)) {
             $this->cartItems->add($cartItem);
@@ -68,19 +68,19 @@ class Commande
         return $this;
     }
 
-    public function removeCartItem(cartItem $cartItem): static
+    public function removeCartItem(CartItem $cartItem): static
     {
         $this->cartItems->removeElement($cartItem);
 
         return $this;
     }
 
-    public function getUtilisateur(): ?utilisateur
+    public function getUtilisateur(): ?Utilisateur
     {
         return $this->utilisateur;
     }
 
-    public function setUtilisateur(?utilisateur $utilisateur): static
+    public function setUtilisateur(?Utilisateur $utilisateur): static
     {
         $this->utilisateur = $utilisateur;
 
