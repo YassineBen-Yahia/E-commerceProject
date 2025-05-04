@@ -1,0 +1,30 @@
+{
+  "name": "finalproject",
+  "version": "1.0.0",
+  "main": "index.js",
+  "directories": {
+    "test": "tests"
+  },
+  "scripts": {
+    "dev": "encore dev",
+    "build": "encore production"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/YassineBen-Yahia/E-commerceProject.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/YassineBen-Yahia/E-commerceProject/issues"
+  },
+  "homepage": "https://github.com/YassineBen-Yahia/E-commerceProject#readme",
+  "description": "",
+  "devDependencies": {
+    "@symfony/webpack-encore": "^5.1.0",
+    "postcss-loader": "^8.1.1",
+    "sass": "^1.87.0",
+    "sass-loader": "^16.0.5"
+  }
+}
