@@ -2,7 +2,9 @@
 
 namespace App\Controller;
 
+use App\Entity\Cart;
 use App\Entity\Utilisateur;
+use App\Entity\WishList;
 use App\Form\RegistrationForm;
 use App\Security\LoginAuthAuthenticator;
 use Doctrine\ORM\EntityManagerInterface;
@@ -28,7 +30,14 @@ class RegistrationController extends AbstractController
 
             // encode the plain password
             $user->setPassword($userPasswordHasher->hashPassword($user, $plainPassword));
-
+            $cart= new Cart();
+            $cart->setUtilisateur($user);
+            $wishList = new WishList();
+            $wishList->setUtilisateur($user);
+            $user->setCart($cart);
+            $user->setWishList($wishList);
+            $entityManager->persist($cart);
+            $entityManager->persist($wishList);
             $entityManager->persist($user);
             $entityManager->flush();
 
