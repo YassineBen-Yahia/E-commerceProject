@@ -1,0 +1,65 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Your Shopping Cart{% endblock %}
+{% block emplacement %}Shopping Cart{% endblock %}
+
+{% block body %}
+    <div class="section">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12">
+                    <h2 class="section-title">Your Wish List</h2>
+
+                    {% if wishList is empty or wishList.produits.count == 0 %}
+                        <div class="alert alert-info">
+                            <p>Your WishList is empty. <a href="{{ path('app_index') }}" class="primary-btn">Continue Shopping</a></p>
+                        </div>
+                    {% else %}
+                        <div class="table-responsive">
+                            <table class="table cart-table">
+                                <thead>
+                                <tr>
+                                    <th>Product</th>
+                                    <th>Price</th>
+                                    <th>Actions</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                {% for item in wishList.produits %}
+                                    <tr>
+                                        <td class="cart-product">
+                                            <div class="product-item">
+                                                <div class="product-thumb">
+                                                    <img src="{{ asset('styles/' ~ item.image) }}"
+                                                         alt="{{ item.name }}"
+                                                         onerror="this.src='{{ asset('styles/img/product01.png') }}'"
+                                                         style="max-width: 80px; max-height: 80px; object-fit: contain;">
+                                                </div>
+                                                <div class="product-info">
+                                                    <h4>{{ item.name }}</h4>
+                                                    <p>{{ item.categorie.name }}</p>
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td class="cart-price">€{{ item.price }}</td>
+                                        <td class="cart-actions">
+                                            <a href="{{ path('app_wish_list_remove_item', {'id': item.id}) }}"
+                                               class="btn btn-sm btn-danger"><i class="fa fa-trash"></i> Remove</a>
+                                        </td>
+                                    </tr>
+                                {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6">
+                                <a href="{{ path('app_index') }}" class="primary-btn">Continue Shopping</a>
+                            </div>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
