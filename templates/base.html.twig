@@ -99,9 +99,10 @@
                         <!-- Cart -->
                         <div class="dropdown">
                             <a class="dropdown-toggle" data-toggle="dropdown" aria-expanded="true">
-                                <i class="fa fa-shopping-cart"></i>
-                                <span>Your Cart</span>
-                                <div class="qty">3</div>
+                                <a href="/cart">
+                                    <i class="fa fa-shopping-cart"></i>
+                                    <span>Your Cart</span>
+                                </a>
                             </a>
                             <div class="cart-dropdown">
                                 <div class="cart-list">
@@ -160,6 +161,7 @@
 <!-- /HEADER -->
 {% endblock %}
 
+{% block body %}
 <!-- NAVIGATION -->
 <nav id="navigation">
     <!-- container -->
@@ -354,7 +356,7 @@
     <!-- /container -->
 </div>
 <!-- /SECTION -->
-
+{% endblock %}
 <!-- NEWSLETTER -->
 <div id="newsletter" class="section">
     <!-- container -->

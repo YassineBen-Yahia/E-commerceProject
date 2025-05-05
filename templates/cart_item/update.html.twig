@@ -1,0 +1,46 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Update Cart Item{% endblock %}
+
+{% block store %}
+<div class="section">
+    <div class="container">
+        <div class="row">
+            {% set produit = cartItem.produits.first %}
+
+            <div class="col-md-4">
+                <div class="product-image-container">
+                    <img src="{{ asset('styles/' ~ produit.image) }}"
+                         alt="{{ produit.name }}"
+                         class="img-fluid"
+                         style="max-width: 200px; max-height: 200px; object-fit: contain;"
+                         onerror="this.src='{{ asset('styles/img/product01.png') }}'">
+                </div>
+            </div>
+
+            <div class="col-md-8">
+                <div class="product-details">
+                    <h2 class="product-name">{{ produit.name }}</h2>
+                    <div class="product-price mb-3">€{{ produit.price }}</div>
+
+                    <form method="post" action="{{ path('app_cart_update_item', {'id': cartItem.id}) }}">
+                        <div class="form-group mb-3">
+                            <label for="quantity" class="form-label">Quantity</label>
+                            <input type="number" id="quantity" name="quantity"
+                                   class="form-control"
+                                   min="1" max="{{ produit.stock + cartItem.quantité }}"
+                                   value="{{ cartItem.quantité }}" required>
+                            <small class="text-muted">Available stock: {{ produit.stock + cartItem.quantité }}</small>
+                        </div>
+
+                        <div class="mt-3">
+                            <button type="submit" class="primary-btn">Update Quantity</button>
+                            <a href="{{ path('app_cart') }}" class="btn btn-secondary">Cancel</a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

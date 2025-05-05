@@ -53,16 +53,11 @@ class Cart
         return $this;
     }
 
-    public function removeCartItem(CartItem $cartItem): static
+    public function removeCartItem(CartItem $cartItem): void
     {
-        if ($this->cartItems->removeElement($cartItem)) {
-            // set the owning side to null (unless already changed)
-            if ($cartItem->getCart() === $this) {
-                $cartItem->setCart(null);
-            }
-        }
 
-        return $this;
+       $this->cartItems->removeElement($cartItem) ;
+
     }
 
     public function getUtilisateur(): ?Utilisateur
