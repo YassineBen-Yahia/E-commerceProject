@@ -24,6 +24,6 @@
 /assets/vendor/
 ###< symfony/asset-mapper ###
 
-###> PhpStorm ###
-/.idea/
-###< PhpStorm ###
+###> phpStorm ###
+.idea/
+###< phpStorm ###
