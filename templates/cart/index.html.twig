@@ -77,7 +77,7 @@
                                     <span>Total:</span>
                                     <span>€{{ total }}</span>
                                 </div>
-                                <a href="#" class="primary-btn">Proceed to Checkout</a>
+                                <a href="{{ path('app_checkout', {'cartId': cart.id}) }}" class="primary-btn">Proceed to Checkout</a>
                             </div>
                         </div>
                     </div>

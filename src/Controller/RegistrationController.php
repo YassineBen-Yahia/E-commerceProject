@@ -48,9 +48,14 @@ class RegistrationController extends AbstractController
 
             return $security->login($user, LoginAuthAuthenticator::class, 'main');
         }
+        else{
+            $errors = $form->getErrors();
+
+        }
 
         return $this->render('registration/register.html.twig', [
             'registrationForm' => $form,
+            'errors' => $errors,
         ]);
     }
 }
