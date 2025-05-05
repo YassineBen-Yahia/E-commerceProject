@@ -17,7 +17,7 @@ class WishList
 
     #[ORM\OneToOne(inversedBy: 'wishList', cascade: ['persist', 'remove'])]
     #[ORM\JoinColumn(nullable: false)]
-    private ?Utilisateur $utilisateur = null;
+    private ?ClientProfile $ClientProfile = null;
 
     /**
      * @var Collection<int, Produit>
@@ -35,14 +35,14 @@ class WishList
         return $this->id;
     }
 
-    public function getUtilisateur(): ?Utilisateur
+    public function getUtilisateur(): ?ClientProfile
     {
-        return $this->utilisateur;
+        return $this->ClientProfile;
     }
 
-    public function setUtilisateur(Utilisateur $utilisateur): static
+    public function setUtilisateur(ClientProfile $utilisateur): static
     {
-        $this->utilisateur = $utilisateur;
+        $this->ClientProfile = $utilisateur;
 
         return $this;
     }

@@ -16,6 +16,17 @@ class ClientProfileRepository extends ServiceEntityRepository
         parent::__construct($registry, ClientProfile::class);
     }
 
+
+        public function findOneByUser($value): ?ClientProfile
+        {
+            return $this->createQueryBuilder('c')
+                ->andWhere('c.utilisateur = :val')
+                ->setParameter('val', $value)
+                ->getQuery()
+                ->getOneOrNullResult()
+            ;
+        }
+
     //    /**
     //     * @return ClientProfile[] Returns an array of ClientProfile objects
     //     */
@@ -31,13 +42,4 @@ class ClientProfileRepository extends ServiceEntityRepository
     //        ;
     //    }
 
-    //    public function findOneBySomeField($value): ?ClientProfile
-    //    {
-    //        return $this->createQueryBuilder('c')
-    //            ->andWhere('c.exampleField = :val')
-    //            ->setParameter('val', $value)
-    //            ->getQuery()
-    //            ->getOneOrNullResult()
-    //        ;
-    //    }
 }
