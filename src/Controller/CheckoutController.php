@@ -46,21 +46,22 @@ final class CheckoutController extends AbstractController
             $this->addFlash('error', 'No cart found for the current user.');
             return $this->redirectToRoute('app_index');
         }
-        else{
+
             $cartItems = $cart->getCartItems();
             $commande = new Commande();
             $commande->setUtilisateur($cart->getUtilisateur()->getUtilisateur());
             foreach ($cartItems as $cartItem) {
                 $commande->addCartItem($cartItem);
                 $cartItem->setCommande($commande);
-                $cart->removeCartItem($cartItem);
+                $cartItems->removeElement($cartItem);
                 $em->remove($cartItem);
-            }
-            $em->persist($commande);
-            $em->flush();
-        }
-        return $this->render('checkout/success.html.twig', [
 
-        ]);
+            }
+
+            $em->persist($commande);
+
+            $em->flush();
+        $this->addFlash('success', 'Your order has been placed successfully!');
+        return $this->redirectToRoute('app_cart');
     }
 }

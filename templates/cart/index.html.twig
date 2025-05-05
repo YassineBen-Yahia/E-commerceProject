@@ -10,10 +10,19 @@
             <div class="col-md-12">
                 <h2 class="section-title">Your Shopping Cart</h2>
 
+
                 {% if cart is empty or cart.cartItems.count == 0 %}
+                    {% for type, messages in app.flashes %}
+                        {% for message in messages %}
+                            <div class="alert alert-{{ type}} ">
+                                {{message }}
+                            </div>
+                        {% endfor %}
+                    {% endfor %}
                     <div class="alert alert-info">
                         <p>Your cart is empty. <a href="{{ path('app_index') }}" class="primary-btn">Continue Shopping</a></p>
                     </div>
+
                 {% else %}
                     <div class="table-responsive">
                         <table class="table cart-table">
