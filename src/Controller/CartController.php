@@ -14,7 +14,7 @@ final class CartController extends AbstractController
 {
     private ClientProfileRepository $clientProfileRepository;
     private CartItemRepository $cartItemRepository;
-    public function __construct(ClientProfileRepository $clientProfileRepository, EntityManagerInterface $entityManager, CartItemRepository $cartItemRepository)
+    public function __construct(ClientProfileRepository $clientProfileRepository, CartItemRepository $cartItemRepository)
     {
         $this->clientProfileRepository = $clientProfileRepository;
         $this->cartItemRepository = $cartItemRepository;
