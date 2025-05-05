@@ -48,7 +48,7 @@ final class CartItemController extends AbstractController
             $cart->addCartItem($cartItem);
 
             $entityManager->persist($produit);
-            $entityManager->persist($cartItem);
+            $entityManager->persist($cartItem->getId());
             $entityManager->flush();
         } else {
             throw $this->createNotFoundException('Produit not found');

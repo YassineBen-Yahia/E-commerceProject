@@ -33,7 +33,6 @@
             <!-- row -->
             <div class="row">
 
-
                 <!-- Order Details -->
                 <div class="order-details">
                     <div class="section-title text-center">
@@ -45,14 +44,12 @@
                             <div><strong>TOTAL</strong></div>
                         </div>
                         <div class="order-products">
+                            {% for cartItem in cartItems  %}
                             <div class="order-col">
-                                <div>1x Product Name Goes Here</div>
-                                <div>$980.00</div>
+                                <div>x{{ cartItem.getQuantité() }} {{ cartItem.getProduit().getName() }}</div>
+                                <div> {{ cartItem.getProduit().getPrice() }} </div>
                             </div>
-                            <div class="order-col">
-                                <div>2x Product Name Goes Here</div>
-                                <div>$980.00</div>
-                            </div>
+                            {% endfor %}
                         </div>
                         <div class="order-col">
                             <div>Shiping</div>
@@ -60,7 +57,7 @@
                         </div>
                         <div class="order-col">
                             <div><strong>TOTAL</strong></div>
-                            <div><strong class="order-total">$2940.00</strong></div>
+                            <div><strong class="order-total">{{ total }}</strong></div>
                         </div>
                     </div>
                     <div class="payment-method">
@@ -102,9 +99,10 @@
                             I've read and accept the <a href="#">terms & conditions</a>
                         </label>
                     </div>
-                    <a href="#" class="primary-btn order-submit">Place order</a>
+                    <a href="{{ path('app_place_order',{'id':cart.id})}} " class="primary-btn order-submit">Place order</a>
                 </div>
-                {{ dump(cartItems) }}
+
+
                 <!-- /Order Details -->
             </div>
             <!-- /row -->
