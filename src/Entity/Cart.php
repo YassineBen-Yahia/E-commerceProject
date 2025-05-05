@@ -21,9 +21,9 @@ class Cart
     #[ORM\OneToMany(targetEntity: CartItem::class, mappedBy: 'cart')]
     private Collection $cartItems;
 
-    #[ORM\OneToOne(inversedBy: 'cart', cascade: ['persist', 'remove'])]
-    #[ORM\JoinColumn(nullable: false)]
-    private ?Utilisateur $Utilisateur = null;
+    #[ORM\OneToOne(inversedBy: 'cart')]
+    #[ORM\JoinColumn(nullable: true)]
+    private ?ClientProfile $ClientProfile = null;
 
     public function __construct()
     {
@@ -53,26 +53,21 @@ class Cart
         return $this;
     }
 
-    public function removeCartItem(CartItem $cartItem): static
+    public function removeCartItem(CartItem $cartItem): void
     {
-        if ($this->cartItems->removeElement($cartItem)) {
-            // set the owning side to null (unless already changed)
-            if ($cartItem->getCart() === $this) {
-                $cartItem->setCart(null);
-            }
-        }
 
-        return $this;
+       $this->cartItems->removeElement($cartItem) ;
+
     }
 
-    public function getUtilisateur(): ?Utilisateur
+    public function getUtilisateur(): ?ClientProfile
     {
-        return $this->Utilisateur;
+        return $this->ClientProfile;
     }
 
-    public function setUtilisateur(Utilisateur $Utilisateur): static
+    public function setUtilisateur(ClientProfile $Utilisateur): static
     {
-        $this->Utilisateur = $Utilisateur;
+        $this->ClientProfile = $Utilisateur;
 
         return $this;
     }

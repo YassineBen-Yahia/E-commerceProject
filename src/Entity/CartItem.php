@@ -3,7 +3,6 @@
 namespace App\Entity;
 
 use App\Repository\CartItemRepository;
-use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -18,8 +17,8 @@ class CartItem
     /**
      * @var Collection<int, Produit>
      */
-    #[ORM\ManyToMany(targetEntity: Produit::class)]
-    private Collection $Produits;
+    #[ORM\ManyToOne(targetEntity: Produit::class)]
+    private ?Produit $Produit= null;
 
     #[ORM\Column]
     private ?int $quantité = null;
@@ -29,12 +28,16 @@ class CartItem
     private ?Utilisateur $utilisateur = null;
 
     #[ORM\ManyToOne(inversedBy: 'cartItems')]
-    #[ORM\JoinColumn(nullable: false)]
+    #[ORM\JoinColumn(nullable: true)]
     private ?Cart $cart = null;
+
+    #[ORM\ManyToOne (inversedBy: 'cartItems')]
+    #[ORM\JoinColumn(nullable: true)]
+    private ?Commande $commande = null;
 
     public function __construct()
     {
-        $this->Produits = new ArrayCollection();
+
     }
 
     public function getId(): ?int
@@ -43,28 +46,30 @@ class CartItem
     }
 
     /**
-     * @return Collection<int, Produit>
+     * @return Produit
      */
-    public function getProduits(): Collection
+    public function getProduit(): Produit
     {
-        return $this->Produits;
+        return $this->Produit;
     }
 
-    public function addProduit(Produit $produit): static
+    public function setProduit(Produit $produit): void
     {
-        if (!$this->Produits->contains($produit)) {
-            $this->Produits->add($produit);
-        }
-
-        return $this;
+        $this->Produit= $produit;
     }
 
-    public function removeProduit(Produit $produit): static
+    public function getCommande(): ?Commande
     {
-        $this->Produits->removeElement($produit);
-
-        return $this;
+        return $this->commande;
     }
+    public function setCommande(?Commande $commande): void
+    {
+        $this->commande = $commande;
+
+
+    }
+
+
 
     public function getQuantité(): ?int
     {
