@@ -32,20 +32,20 @@
                                     <td class="cart-product">
                                         <div class="product-item">
                                             <div class="product-thumb">
-                                                <img src="{{ asset('styles/' ~ item.produits.first().image) }}"
-                                                     alt="{{ item.produits.first().name }}"
+                                                <img src="{{ asset('styles/' ~ item.produit.image) }}"
+                                                     alt="{{ item.produit.name }}"
                                                      onerror="this.src='{{ asset('styles/img/product01.png') }}'"
                                                      style="max-width: 80px; max-height: 80px; object-fit: contain;">
                                             </div>
                                             <div class="product-info">
-                                                <h4>{{ item.produits.first().name }}</h4>
-                                                <p>{{ item.produits.first().categorie.name }}</p>
+                                                <h4>{{ item.produit.name }}</h4>
+                                                <p>{{ item.produit.categorie.name }}</p>
                                             </div>
                                         </div>
                                     </td>
-                                    <td class="cart-price">€{{ item.produits.first().price }}</td>
+                                    <td class="cart-price">€{{ item.produit.price }}</td>
                                     <td class="cart-quantity">{{ item.quantité }}</td>
-                                    <td class="cart-subtotal">€{{ item.produits.first().price * item.quantité}}</td>
+                                    <td class="cart-subtotal">€{{ item.produit.price * item.quantité}}</td>
                                     <td class="cart-actions">
                                         <a href="{{ path('app_update_item', {'id': item.id}) }}"
                                            class="btn btn-sm btn-primary"><i class="fa fa-edit"></i> Edit</a>
