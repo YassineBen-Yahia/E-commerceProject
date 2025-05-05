@@ -29,7 +29,7 @@ final class CartItemController extends AbstractController
         ]);
     }
     #[Route('/Add_CartItem/{id}', name: 'app_cart_add_item')]
-    public function addToCart( Produit $produit=null, Request $request,EntityManagerInterface $entityManager): Response
+    public function addToCart( Produit $produit, Request $request,EntityManagerInterface $entityManager): Response
     {
         $quantity = $request->request->get('quantity');
         $cartItem = new CartItem();
@@ -37,7 +37,7 @@ final class CartItemController extends AbstractController
 
         if ($produit) {
             $produit->setStock($produit->getStock()-$quantity);
-            $cartItem->addProduit($produit);
+            $cartItem->setProduit($produit);
             $cartItem->setQuantité($quantity);
 
             //recuperer le cart du profil client
@@ -70,7 +70,7 @@ final class CartItemController extends AbstractController
         }
 
         // Get the product associated with this cart item
-        $produit = $cartItem->getProduits()->first();
+        $produit = $cartItem->getProduit();
 
         if (!$produit) {
             throw $this->createNotFoundException('Product not found in cart item');

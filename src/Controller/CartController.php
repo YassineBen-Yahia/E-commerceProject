@@ -14,7 +14,7 @@ final class CartController extends AbstractController
 {
     private ClientProfileRepository $clientProfileRepository;
     private CartItemRepository $cartItemRepository;
-    public function __construct(ClientProfileRepository $clientProfileRepository, EntityManagerInterface $entityManager, CartItemRepository $cartItemRepository)
+    public function __construct(ClientProfileRepository $clientProfileRepository, CartItemRepository $cartItemRepository)
     {
         $this->clientProfileRepository = $clientProfileRepository;
         $this->cartItemRepository = $cartItemRepository;
@@ -28,7 +28,8 @@ final class CartController extends AbstractController
         $cart = $clientProfile->getCart();
         $cartItems = $cart->getCartItems();
         foreach ($cartItems as $cartItem) {
-            $total += $cartItem->getProduits()->first()->getPrice() * $cartItem->getQuantité();
+
+            $total += $cartItem->getProduit()->getPrice() * $cartItem->getQuantité();
         }
         return $this->render('cart/index.html.twig', [
             'controller_name' => 'CartController',
