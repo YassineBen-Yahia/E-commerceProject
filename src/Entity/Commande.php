@@ -23,8 +23,8 @@ class Commande
     /**
      * @var Collection<int, CartItem>
      */
-    #[ORM\ManyToMany(targetEntity: CartItem::class)]
-    private Collection $cartItems;
+   #[ORM\OneToMany(targetEntity: CartItem::class, mappedBy: 'commande', cascade: ['persist', 'remove'])]
+   private Collection $cartItems;
 
     #[ORM\ManyToOne]
     #[ORM\JoinColumn(nullable: false)]
@@ -34,6 +34,7 @@ class Commande
     {
         $this->cartItems = new ArrayCollection();
     }
+
 
     public function getId(): ?int
     {
