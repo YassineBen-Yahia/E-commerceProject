@@ -3,6 +3,8 @@
 namespace App\Controller;
 
 use App\Entity\CartItem;
+use App\Repository\CartItemRepository;
+use App\Repository\ClientProfileRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
@@ -10,16 +12,24 @@ use Symfony\Component\Routing\Attribute\Route;
 
 final class CartController extends AbstractController
 {
+    private ClientProfileRepository $clientProfileRepository;
+    private CartItemRepository $cartItemRepository;
+    public function __construct(ClientProfileRepository $clientProfileRepository, EntityManagerInterface $entityManager, CartItemRepository $cartItemRepository)
+    {
+        $this->clientProfileRepository = $clientProfileRepository;
+        $this->cartItemRepository = $cartItemRepository;
+    }
     #[Route('/cart', name: 'app_cart')]
     public function index(): Response
     {
         // Assuming every registered user has a cart
         $total= 0;
-        $cartItems = $this->getUser()->getCart()->getCartItems();
+        $clientProfile = $this->clientProfileRepository->findOneByUser($this->getUser());
+        $cart = $clientProfile->getCart();
+        $cartItems = $cart->getCartItems();
         foreach ($cartItems as $cartItem) {
             $total += $cartItem->getProduits()->first()->getPrice() * $cartItem->getQuantité();
         }
-        $cart = $this->getUser()->getCart();
         return $this->render('cart/index.html.twig', [
             'controller_name' => 'CartController',
             'cart' => $cart,
@@ -29,17 +39,18 @@ final class CartController extends AbstractController
     #[Route('/RemoveFromCart/{id}', name: 'app_cart_remove_item')]
     public function removeItem(CartItem $cartItem, EntityManagerInterface $entityManager): Response
     {
-        $cart = $this->getUser()->getCart();
 
+        $clientProfile = $this->clientProfileRepository->findOneByUser($this->getUser());
+        $cart = $clientProfile->getCart();
         if (!$cart) {
             $this->addFlash('error', 'No cart found for the current user.');
             return $this->redirectToRoute('app_index');
         }
 
 
-            $cart->removeCartItem($cartItem);
-            $entityManager->flush();
-            $this->addFlash('success', 'Item removed from cart successfully.');
+        $cart->getCartItems()->removeElement($cartItem);
+        $entityManager->remove($cartItem);
+        $entityManager->flush();
 
 
         return $this->redirectToRoute('app_cart');

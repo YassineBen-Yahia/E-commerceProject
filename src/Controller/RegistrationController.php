@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Cart;
+use App\Entity\ClientProfile;
 use App\Entity\Utilisateur;
 use App\Entity\WishList;
 use App\Form\RegistrationForm;
@@ -30,12 +31,14 @@ class RegistrationController extends AbstractController
 
             // encode the plain password
             $user->setPassword($userPasswordHasher->hashPassword($user, $plainPassword));
+            $userPofile= new ClientProfile();
+            $userPofile->setUtilisateur($user);
             $cart= new Cart();
-            $cart->setUtilisateur($user);
+            $cart->setUtilisateur($userPofile);
             $wishList = new WishList();
-            $wishList->setUtilisateur($user);
-            $user->setCart($cart);
-            $user->setWishList($wishList);
+            $wishList->setUtilisateur($userPofile);
+            $userPofile->setCart($cart);
+            $userPofile->setWishList($wishList);
             $entityManager->persist($cart);
             $entityManager->persist($wishList);
             $entityManager->persist($user);

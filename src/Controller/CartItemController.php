@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\CartItem;
 use App\Entity\Produit;
+use App\Repository\ClientProfileRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -12,11 +13,11 @@ use Symfony\Component\Routing\Attribute\Route;
 
 final class CartItemController extends AbstractController
 {
-//    private ProduitRepository $produitRepository;
-//    public function __construct(ProduitRepository $produitRepository)
-//    {
-//        $this->produitRepository = $produitRepository;
-//    }
+    private ClientProfileRepository $clientProfileRepository;
+    public function __construct(ClientProfileRepository $clientProfileRepository)
+    {
+        $this->clientProfileRepository = $clientProfileRepository;
+    }
 
     #[Route('/CartItem/{id}', name: 'app_cart_item')]
     public function index( Produit $produit=null): Response
@@ -38,8 +39,13 @@ final class CartItemController extends AbstractController
             $produit->setStock($produit->getStock()-$quantity);
             $cartItem->addProduit($produit);
             $cartItem->setQuantité($quantity);
-            $cartItem->setCart($this->getUser()->getCart());
-            $this->getUser()->getCart()->addCartItem($cartItem);
+
+            //recuperer le cart du profil client
+            $clientProfile = $this->clientProfileRepository->findOneByUser($this->getUser());
+            $cart = $clientProfile->getCart();
+
+            $cartItem->setCart($cart);
+            $cart->addCartItem($cartItem);
 
             $entityManager->persist($produit);
             $entityManager->persist($cartItem);

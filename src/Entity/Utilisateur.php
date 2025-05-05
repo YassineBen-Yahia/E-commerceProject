@@ -39,11 +39,7 @@ class Utilisateur implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(length: 255)]
     private ?string $adress = null;
 
-    #[ORM\OneToOne(mappedBy: 'utilisateur', cascade: ['persist', 'remove'])]
-    private ?WishList $wishList = null;
 
-    #[ORM\OneToOne(mappedBy: 'Utilisateur', cascade: ['persist', 'remove'])]
-    private ?Cart $cart = null;
 
     #[ORM\Column]
     private bool $isVerified = false;
@@ -145,39 +141,11 @@ class Utilisateur implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
-    public function getWishList(): ?WishList
-    {
-        return $this->wishList;
-    }
 
-    public function setWishList(WishList $wishList): static
-    {
-        // set the owning side of the relation if necessary
-        if ($wishList->getUtilisateur() !== $this) {
-            $wishList->setUtilisateur($this);
-        }
 
-        $this->wishList = $wishList;
 
-        return $this;
-    }
 
-    public function getCart(): ?Cart
-    {
-        return $this->cart;
-    }
 
-    public function setCart(Cart $cart): static
-    {
-        // set the owning side of the relation if necessary
-        if ($cart->getUtilisateur() !== $this) {
-            $cart->setUtilisateur($this);
-        }
-
-        $this->cart = $cart;
-
-        return $this;
-    }
 
     public function isVerified(): bool
     {
