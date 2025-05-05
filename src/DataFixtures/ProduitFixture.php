@@ -19,41 +19,57 @@ class ProduitFixture extends Fixture implements DependentFixtureInterface,Fixtur
         $this->repository = $repository;
     }
     public function load(ObjectManager $manager): void
-
     {
         $faker = Factory::create('fr_FR');
 
-        // Supposons qu'il y a déjà des catégories dans la base, ou que vous ajoutez des références dans une autre fixture
-        for ($i = 1; $i <= 9; $i++) {
-            $produit = new Produit();
-            $produit->setName($faker->word());
-            $produit->setDescription($faker->sentence());
-            $produit->setPrice($faker->numberBetween(1000, 10000));
-            $produit->setStock($faker->numberBetween(10, 100));
-            $produit->setImage("img/product0".$i.".jpg");
 
-            // Récupération d'une catégorie existante (à adapter selon vos données ou références)
-            // Exemple avec une référence fictive
+        $categories = $this->repository->findAll();
 
-            $categorie = $this->repository->find(rand(26,30));
-            if ($categorie) {
-                $produit->setCategorie($categorie);
-                $manager->persist($produit);
+
+        if (count($categories) > 0) {
+
+            $categoryIds = array_map(function ($category) {
+                return $category->getId();
+            }, $categories);
+
+
+            for ($i = 1; $i <= 9; $i++) {
+                $produit = new Produit();
+                $produit->setName($faker->word());
+                $produit->setDescription($faker->sentence());
+                $produit->setPrice($faker->numberBetween(1000, 10000));
+                $produit->setStock($faker->numberBetween(10, 100));
+                $produit->setImage("img/product0".$i.".jpg");
+
+
+                $randomCategoryId = $categoryIds[array_rand($categoryIds)];
+
+
+                $categorie = $this->repository->find($randomCategoryId);
+
+                if ($categorie) {
+                    $produit->setCategorie($categorie);
+                    $manager->persist($produit);
+                }
             }
-        }
 
-        $manager->flush();
+            $manager->flush();
+        } else {
+
+            throw new \Exception('No categories found, please load categories first.');
+        }
     }
+
 
     public function getDependencies(): array
     {
         return [
-            CategorieFixture::class, // si vous avez une fixture pour les catégories
+            CategorieFixture::class,
         ];
     }
     public static function getGroups(): array{
         return [
-            'produit' // <-- correct way
+            'produit'
         ];
     }
 }
