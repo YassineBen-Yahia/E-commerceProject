@@ -18,7 +18,7 @@ class CartItem
      * @var Collection<int, Produit>
      */
     #[ORM\ManyToOne(targetEntity: Produit::class)]
-    private Produit $Produit;
+    private ?Produit $Produit= null;
 
     #[ORM\Column]
     private ?int $quantité = null;

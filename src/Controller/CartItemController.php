@@ -70,7 +70,7 @@ final class CartItemController extends AbstractController
         }
 
         // Get the product associated with this cart item
-        $produit = $cartItem->getProduits()->first();
+        $produit = $cartItem->getProduit();
 
         if (!$produit) {
             throw $this->createNotFoundException('Product not found in cart item');
