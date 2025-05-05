@@ -29,7 +29,7 @@ class CartItem
     private ?Utilisateur $utilisateur = null;
 
     #[ORM\ManyToOne(inversedBy: 'cartItems')]
-    #[ORM\JoinColumn(nullable: false)]
+    #[ORM\JoinColumn(nullable: true)]
     private ?Cart $cart = null;
 
     public function __construct()
