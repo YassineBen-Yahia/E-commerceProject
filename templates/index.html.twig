@@ -1,4 +1,5 @@
 {% extends 'base.html.twig' %}
+{% block emplacement %} {% if category is not null %}{{ category }} {% endif %}{% endblock %}
 {% block store %}
 <div id="store" class="col-md-9">
     <!-- store top filter -->
@@ -67,8 +68,11 @@
                                 </a>
                             </button>
 
-                        <button class="add-to-compare"><i class="fa fa-exchange"></i><span class="tooltipp">add to compare</span></button>
-                        <button class="quick-view"><i class="fa fa-eye"></i><span class="tooltipp">quick view</span></button>
+                        <button class="quick-view">
+                            <a href="{{ path('produit_details', {'id': produit.id}) }}">
+                                <i class="fa fa-eye"></i><span class="tooltipp">quick view</span>
+                            </a>
+                        </button>
                     </div>
                 </div>
                 <div class="add-to-cart">

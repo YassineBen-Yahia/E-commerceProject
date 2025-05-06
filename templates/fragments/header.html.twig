@@ -4,13 +4,17 @@
     <div id="top-header">
         <div class="container">
             <ul class="header-links pull-left">
-                <li><a href="#"><i class="fa fa-phone"></i> +021-95-51-84</a></li>
-                <li><a href="#"><i class="fa fa-envelope-o"></i> email@email.com</a></li>
-                <li><a href="#"><i class="fa fa-map-marker"></i> 1734 Stonecoal Road</a></li>
+                <li style="color: white;"><i class="fa fa-phone"></i> 85 555</li>
+                <li style="color: white;"><i class="fa fa-envelope-o"></i> echriPC@gmail.com</li>
+                <li style="color: white;"><i class="fa fa-map-marker"></i> INSAT - Centre Urbain </li>
             </ul>
             <ul class="header-links pull-right">
-                <li><a href="#"><i class="fa fa-dollar"></i> USD</a></li>
-                <li><a href="#"><i class="fa fa-user-o"></i> My Account</a></li>
+                {% if app.user is not null %}
+                    <li><a href="#"><i class="fa fa-user-o"></i> My Account</a></li>
+                    <li><a href="#"><i class="fa fa-sign-out"></i> Logout </a></li>
+                {% else %}
+                    <li><a href="/register"><i class="fa fa-user-o"></i> Register </a></li>
+                {% endif %}
             </ul>
         </div>
     </div>
@@ -110,14 +114,6 @@
                         </div>
                         <!-- /Cart -->
 
-                        <!-- Menu Toogle -->
-                        <div class="menu-toggle">
-                            <a href="#">
-                                <i class="fa fa-bars"></i>
-                                <span>Menu</span>
-                            </a>
-                        </div>
-                        <!-- /Menu Toogle -->
                     </div>
                 </div>
                 <!-- /ACCOUNT -->

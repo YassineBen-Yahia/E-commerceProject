@@ -96,4 +96,17 @@ final class ProduitController extends AbstractController
         }
         return $this->redirectToRoute('app_index');
     }
+
+    #[Route('/details/{id}', name: 'produit_details')]
+    public function detailsProduit(Produit $produit , ManagerRegistry $doctrine): Response
+    {
+        if ($produit) {
+            return $this->render('produit/details.html.twig', [
+                'produit' => $produit,
+            ]);
+        } else {
+            $this->addFlash('danger', "Produit inexistant . ");
+            return $this->redirectToRoute('app_index');
+        }
+    }
 }
