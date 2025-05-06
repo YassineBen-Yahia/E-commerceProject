@@ -91,4 +91,8 @@ class Commande
     {
         $this->createdAt = new \DateTime();
     }
+    public function getCreatedAt(): ?\DateTime
+    {
+        return $this->createdAt;
+    }
 }
