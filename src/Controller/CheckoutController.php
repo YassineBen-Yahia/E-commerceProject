@@ -54,8 +54,6 @@ final class CheckoutController extends AbstractController
                 $commande->addCartItem($cartItem);
                 $cartItem->setCommande($commande);
                 $cartItems->removeElement($cartItem);
-                $em->remove($cartItem);
-
             }
 
             $em->persist($commande);
