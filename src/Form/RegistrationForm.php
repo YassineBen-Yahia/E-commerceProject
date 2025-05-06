@@ -66,6 +66,11 @@ class RegistrationForm extends AbstractType
                         'message' => 'The passwords must match.',
                     ]),
                 ],
+            ])
+            ->add('rememberMe', CheckboxType::class, [
+                'mapped' => false,
+                'required' => false,
+                'label' => 'Remember Me',
             ]);
     }
 

@@ -58,7 +58,7 @@ class RegistrationController extends AbstractController
                     ->htmlTemplate('registration/confirmation_email.html.twig')
             );
             $request->getSession()->invalidate();
-            $security->login($user, LoginAuthAuthenticator::class, 'main');
+            $security->login($user);
             return $this->redirectToRoute('app_verify_email_notice');
         }
         else{
