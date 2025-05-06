@@ -8,12 +8,15 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: CommandeRepository::class)]
+#[ORM\HasLifecycleCallbacks]
 class Commande
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
     private ?int $id = null;
+    #[ORM\Column(type: 'datetime')]
+    private \DateTime $createdAt;
 
 
     /**
@@ -45,11 +48,7 @@ class Commande
 
 
 
-    /**
-     * @return Collection<int, Produit>
-     */
-
-
+   
 
 
     /**
@@ -86,5 +85,10 @@ class Commande
         $this->utilisateur = $utilisateur;
 
         return $this;
+    }
+    #[ORM\PrePersist]
+    public function setCreatedAtValue(): void
+    {
+        $this->createdAt = new \DateTime();
     }
 }
