@@ -53,13 +53,12 @@ final class CheckoutController extends AbstractController
             foreach ($cartItems as $cartItem) {
                 $commande->addCartItem($cartItem);
                 $cartItem->setCommande($commande);
-                $cartItems->removeElement($cartItem);
-                $em->remove($cartItem);
+                $cartItem->setCart(null); // Remove the cart association
 
             }
 
-            $em->persist($commande);
 
+            $em->persist($commande);
             $em->flush();
         $this->addFlash('success', 'Your order has been placed successfully!');
         return $this->redirectToRoute('app_cart');
