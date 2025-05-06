@@ -2,30 +2,38 @@
 
 namespace App\Controller;
 
+use App\Security\EmailVerifier;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\Mime\Email;
 use Symfony\Component\Routing\Annotation\Route;
+use SymfonyCasts\Bundle\VerifyEmail\Exception\VerifyEmailExceptionInterface;
 
 class MailerController extends AbstractController
 {
-    #[Route('/test-email', name: 'test_email')]
-    public function test(MailerInterface $mailer): Response
+    #[Route('/verify/email', name: 'verify_email')]
+    public function verifyUserEmail(Request $request, EmailVerifier $emailVerifier, EntityManagerInterface $entityManager): Response
     {
+        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+
         try {
-            $email = (new Email())
-                ->from('yby396@gmail.com')  // MUST match email in MAILER_DSN
-                ->to('tonadresse@gmail.com')
-                ->subject('Test Email')
-                ->text('This is a test email from Symfony Mailer')
-                ->html('<p>This is a test email from <strong>Symfony Mailer</strong></p>');
+            $emailVerifier->handleEmailConfirmation($request, $this->getUser());
 
-            $mailer->send($email);
+            $user = $this->getUser();
+            $user->setIsVerified(true);
+            $entityManager->persist($user);
+            $entityManager->flush();
+        } catch (VerifyEmailExceptionInterface $exception) {
+            $this->addFlash('verify_email_error', $exception->getReason());
 
-            return new Response('Email sent successfully!');
-        } catch (\Exception $e) {
-            return new Response('Failed to send email: ' . $e->getMessage(), 500);
+            return $this->redirectToRoute('app_register');
         }
+
+        $this->addFlash('success', 'Your email address has been verified.');
+
+        return $this->redirectToRoute('app_index');
     }
 }
