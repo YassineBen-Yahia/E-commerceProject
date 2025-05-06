@@ -45,11 +45,7 @@ class Commande
 
 
 
-    /**
-     * @return Collection<int, Produit>
-     */
-
-
+   
 
 
     /**
