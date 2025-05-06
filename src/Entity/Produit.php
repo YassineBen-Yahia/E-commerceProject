@@ -34,16 +34,12 @@ class Produit
     #[ORM\JoinColumn(nullable: false)]
     private ?Categorie $categorie = null;
 
-    /**
-     * @var Collection<int, Commande>
-     */
-    #[ORM\ManyToMany(targetEntity: Commande::class, mappedBy: 'Produits')]
-    private Collection $commandes;
+
 
 
     public function __construct()
     {
-        $this->commandes = new ArrayCollection();
+
     }
 
     public function getId(): ?int
@@ -111,32 +107,7 @@ class Produit
         return $this;
     }
 
-    /**
-     * @return Collection<int, Commande>
-     */
-    public function getCommandes(): Collection
-    {
-        return $this->commandes;
-    }
 
-    public function addCommande(Commande $commande): static
-    {
-        if (!$this->commandes->contains($commande)) {
-            $this->commandes->add($commande);
-            $commande->addProduit($this);
-        }
-
-        return $this;
-    }
-
-    public function removeCommande(Commande $commande): static
-    {
-        if ($this->commandes->removeElement($commande)) {
-            $commande->removeProduit($this);
-        }
-
-        return $this;
-    }
 
     public function getStock(): ?int
     {

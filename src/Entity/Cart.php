@@ -18,7 +18,13 @@ class Cart
     /**
      * @var Collection<int, CartItem>
      */
-    #[ORM\OneToMany(targetEntity: CartItem::class, mappedBy: 'cart')]
+    #[ORM\OneToMany(
+        targetEntity: CartItem::class,
+        mappedBy: 'cart',
+        cascade: ['persist', 'remove'],
+        orphanRemoval: true
+    )]
+
     private Collection $cartItems;
 
     #[ORM\OneToOne(inversedBy: 'cart')]
@@ -56,8 +62,12 @@ class Cart
     public function removeCartItem(CartItem $cartItem): void
     {
 
-       $this->cartItems->removeElement($cartItem) ;
+        if ($this->cartItems->removeElement($cartItem)) {
 
+            if ($cartItem->getCart() === $this) {
+                $cartItem->setCart(null);
+            }
+        }
     }
 
     public function getUtilisateur(): ?ClientProfile

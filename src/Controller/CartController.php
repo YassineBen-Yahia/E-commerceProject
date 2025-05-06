@@ -27,6 +27,7 @@ final class CartController extends AbstractController
         $clientProfile = $this->clientProfileRepository->findOneByUser($this->getUser());
         $cart = $clientProfile->getCart();
         $cartItems = $cart->getCartItems();
+        dump($cart);
         foreach ($cartItems as $cartItem) {
 
             $total += $cartItem->getProduit()->getPrice() * $cartItem->getQuantité();
