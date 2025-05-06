@@ -1,0 +1,69 @@
+<?php
+
+namespace App\Controller;
+
+use App\Entity\Utilisateur;
+use Doctrine\Persistence\ManagerRegistry;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Routing\Attribute\Route;
+
+#[Route('/admin')]
+final class UtilisateurController extends AbstractController
+{
+    #[Route('/users/{role}', name: 'users.admin')]
+    public function usersList(ManagerRegistry $doctrine, $role): Response{
+        $repository = $doctrine->getRepository(Utilisateur::class);
+        $users = $repository->findByRole($role);
+
+        return $this->render('admin/users.html.twig', [
+            'users' => $users,
+            'role' => $role,
+        ]);
+
+    }
+
+/*    #[Route('/stats', name: 'stats.admin')]
+    public function stats(ManagerRegistry $doctrine): Response{
+        $repository = $doctrine->getRepository(Utilisateur::class);
+        $users = $repository->findAll();
+        $totalUsers = count($users);
+        $totalAdmins = count($repository->findByRole('ROLE_ADMIN'));
+        $totalClients = count($repository->findByRole('ROLE_CLIENT'));
+
+        return $this->render('admin/stats.html.twig', [
+            'totalUsers' => $totalUsers,
+            'totalAdmins' => $totalAdmins,
+            'totalClients' => $totalClients,
+        ]);
+    }*/
+
+/*    #[Route('/makeAdmin/{id<\d+>}', name: 'make_admin')]
+    public function makeAdmin(ManagerRegistry $doctrine, int $id): Response
+    {
+        $entityManager = $doctrine->getManager();
+        $repository = $doctrine->getRepository(Utilisateur::class);
+
+        $utilisateur = $repository->find($id);
+
+        if (!$utilisateur) {
+            $this->addFlash('danger', "Utilisateur introuvable.");
+            return $this->redirectToRoute('users.admin', ['role' => 'ROLE_USER']);
+        }
+
+        $roles = $utilisateur->getRoles();
+        if (!in_array('ROLE_ADMIN', $roles)) {
+            $roles[] = 'ROLE_ADMIN';
+            $utilisateur->setRoles($roles);
+            $entityManager->persist($utilisateur);
+            $entityManager->flush();
+
+            $this->addFlash('success', "L'utilisateur a été promu administrateur avec succès.");
+        } else {
+            $this->addFlash('info', "L'utilisateur est déjà un administrateur.");
+        }
+
+        return $this->redirectToRoute('users.admin', ['role' => 'ROLE_USER']);
+    }*/
+
+}
