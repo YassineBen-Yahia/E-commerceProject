@@ -35,13 +35,6 @@ class Produit
     private ?Categorie $categorie = null;
 
 
-
-
-    public function __construct()
-    {
-
-    }
-
     public function getId(): ?int
     {
         return $this->id;
@@ -106,8 +99,6 @@ class Produit
 
         return $this;
     }
-
-
 
     public function getStock(): ?int
     {

@@ -5,13 +5,15 @@ namespace App\Controller;
 use App\Entity\Produit;
 use App\Form\AjoutProduitForm;
 use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\File\Exception\FileException;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\String\Slugger\SluggerInterface;
-
+#[Route('/produit')]
 final class ProduitController extends AbstractController
 {
 //    #[Route('/CrerProduit', name: 'app_create')]
@@ -24,21 +26,31 @@ final class ProduitController extends AbstractController
 //        ]);
 //    }
 
-    #[Route('/produit/new', name: 'app_create_produit')]
-    public function createProduit(Request $request, SluggerInterface $slugger, EntityManagerInterface $entityManager): Response
+    #[Route('/new/{id?0}', name: 'app_create_produit')]
+    public function createProduit(Produit $produit = null, Request $request, SluggerInterface $slugger, EntityManagerInterface $entityManager,$id): Response
     {
+        $new = false;
+        if (!$produit) {
+            $produit = new Produit();
+            $new = true;
+        }
 
-        $form = $this->createForm(AjoutProduitForm::class);
-        $form->remove('commandes');
+
+        // Passez l'entité $produit au formulaire
+        $form = $this->createForm(AjoutProduitForm::class, $produit);
+        if(!$new){
+            $form->remove('categorie');
+        }
         $form->handleRequest($request);
-        $produit = new Produit();
+
         if ($form->isSubmitted() && $form->isValid()) {
             $brochureFile = $form->get('image')->getData();
+
 
             if ($brochureFile) {
                 $originalFilename = pathinfo($brochureFile->getClientOriginalName(), PATHINFO_FILENAME);
                 $safeFilename = $slugger->slug($originalFilename);
-                $newFilename = $safeFilename.'-'.uniqid().'.'.$brochureFile->guessExtension();
+                $newFilename = $safeFilename . '-' . uniqid() . '.' . $brochureFile->guessExtension();
 
                 try {
                     $brochureFile->move(
@@ -47,31 +59,41 @@ final class ProduitController extends AbstractController
                     );
                     $produit->setImage($newFilename);
                 } catch (FileException $e) {
-
-                    // Handle exception if something happens during file upload
+                    // Gérer l'exception si nécessaire
                 }
-
-
             }
-        $produit->setStock($form->get('stock')->getData());
-        $produit->setName($form->get('name')->getData());
-        $produit->setDescription($form->get('description')->getData());
-        $produit->setPrice($form->get('price')->getData());
-        $produit->setCategorie($form->get('categorie')->getData());
+            if ($new) {
+                // Ajout du produit dans la catégorie
+                $categorie = $produit->getCategorie();
+                if ($categorie) {
+                    $categorie->addProduit($produit);
+                }
+            }
 
-        $entityManager->persist($produit);
-        $entityManager->flush();
-
-            // Save the produit entity to the database
-            // ...
+            $entityManager->persist($produit);
+            $entityManager->flush();
 
             return $this->redirectToRoute('app_create_produit');
         }
 
-
         return $this->render('produit/index.html.twig', [
             'controller_name' => 'ProduitController',
             'form' => $form->createView(),
+            'id'=> $id
         ]);
+    }
+
+    #[Route('/delete/{id<\d+>}', name: 'produit.delete')]
+    public function deleteProduit(Produit $produit = null, ManagerRegistry $doctrine): RedirectResponse
+    {
+        if ($produit) {
+            $manager = $doctrine->getManager();
+            $manager->remove($produit);
+            $manager->flush();
+            $this->addFlash('success', "Produit a été supprimée avec succès");
+        }else{
+            $this->addFlash('danger', "Produit inexistant . ");
+        }
+        return $this->redirectToRoute('app_index');
     }
 }

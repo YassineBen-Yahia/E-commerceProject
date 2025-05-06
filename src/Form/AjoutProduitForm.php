@@ -23,12 +23,7 @@ class AjoutProduitForm extends AbstractType
             ->add('price')
             ->add('categorie', EntityType::class, [
                 'class' => Categorie::class,
-                'choice_label' => 'id',
-            ])
-            ->add('commandes', EntityType::class, [
-                'class' => Commande::class,
-                'choice_label' => 'id',
-                'multiple' => true,
+                'choice_label' => 'name',
             ])
             ->add('image', FileType::class, [
                 'label' => 'Image (Image file)',
