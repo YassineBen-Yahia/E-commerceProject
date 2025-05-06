@@ -8,7 +8,6 @@ use App\Entity\Utilisateur;
 use App\Entity\WishList;
 use App\Form\RegistrationForm;
 use App\Security\EmailVerifier;
-use App\Security\LoginAuthAuthenticator;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bridge\Twig\Mime\TemplatedEmail;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -19,6 +18,7 @@ use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\Mime\Email;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\Security\Http\Authenticator\FormLoginAuthenticator;
 
 class RegistrationController extends AbstractController
 {
@@ -58,7 +58,7 @@ class RegistrationController extends AbstractController
                     ->htmlTemplate('registration/confirmation_email.html.twig')
             );
             $request->getSession()->invalidate();
-            $security->login($user);
+            $security->login($user, 'security.authenticator.form_login.main');
             return $this->redirectToRoute('app_verify_email_notice');
         }
         else{
