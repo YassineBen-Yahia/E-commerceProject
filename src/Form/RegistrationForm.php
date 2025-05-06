@@ -5,12 +5,15 @@ namespace App\Form;
 use App\Entity\Utilisateur;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
+use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Validator\Constraints\EqualTo;
 use Symfony\Component\Validator\Constraints\IsTrue;
 use Symfony\Component\Validator\Constraints\Length;
 use Symfony\Component\Validator\Constraints\NotBlank;
+use Symfony\Component\Validator\Constraints\Regex;
 
 class RegistrationForm extends AbstractType
 {
@@ -19,8 +22,13 @@ class RegistrationForm extends AbstractType
         $builder
             ->add('name')
             ->add('adress')
-
-            ->add('email')
+            ->add('email', EmailType::class, [
+                'constraints' => [
+                    new NotBlank([
+                        'message' => 'Please enter an email address',
+                    ]),
+                ],
+            ])
             ->add('agreeTerms', CheckboxType::class, [
                 'mapped' => false,
                 'constraints' => [
@@ -30,8 +38,6 @@ class RegistrationForm extends AbstractType
                 ],
             ])
             ->add('plainPassword', PasswordType::class, [
-                // instead of being set onto the object directly,
-                // this is read and encoded in the controller
                 'mapped' => false,
                 'attr' => ['autocomplete' => 'new-password'],
                 'constraints' => [
@@ -39,14 +45,33 @@ class RegistrationForm extends AbstractType
                         'message' => 'Please enter a password',
                     ]),
                     new Length([
-                        'min' => 6,
+                        'min' => 8,
                         'minMessage' => 'Your password should be at least {{ limit }} characters',
-                        // max length allowed by Symfony for security reasons
                         'max' => 4096,
+                    ]),
+                    new Regex([
+                        'pattern' => '/^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/',
+                        'message' => 'Your password must contain at least one uppercase letter, one lowercase letter, one number, and one special character.',
                     ]),
                 ],
             ])
-        ;
+            ->add('confirmPassword', PasswordType::class, [
+                'mapped' => false,
+                'constraints' => [
+                    new NotBlank([
+                        'message' => 'Please confirm your password',
+                    ]),
+                    new EqualTo([
+                        'propertyPath' => 'parent.all[plainPassword].data',
+                        'message' => 'The passwords must match.',
+                    ]),
+                ],
+            ])
+            ->add('rememberMe', CheckboxType::class, [
+                'mapped' => false,
+                'required' => false,
+                'label' => 'Remember Me',
+            ]);
     }
 
     public function configureOptions(OptionsResolver $resolver): void

@@ -1,67 +1,137 @@
-{% extends 'base.html.twig' %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Register</title>
+    <link type="text/css" rel="stylesheet"
+          href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+</head>
+<body>
+<div class="container my-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8 col-lg-6">
+            <div class="card shadow-lg">
+                <div class="card-header text-white text-center" style="background-color: #2B2D42;">
+                    <h3 class="mb-0">Create Your Account</h3>
+                </div>
+                <div class="card-body p-4">
+                    {{ form_start(registrationForm, {'attr': {'class': 'needs-validation', 'novalidate': 'novalidate'}}) }}
 
-{% block title %}Register{% endblock %}
-{% block emplacement %} Inscription {% endblock %}
+                    <div class="mb-3">
+                        {{ form_label(registrationForm.name, 'Full Name', {'label_attr': {'class': 'form-label'}}) }}
+                        {{ form_widget(registrationForm.name, {
+                            'attr': {
+                                'class': 'form-control' ~ (registrationForm.name.vars.errors|length ? ' is-invalid' : ''),
+                                'placeholder': 'Enter your full name'
+                            }
+                        }) }}
+                        <div class="invalid-feedback">
+                            {{ form_errors(registrationForm.name) }}
+                        </div>
+                    </div>
 
-{% block body %}
+                    <div class="mb-3">
+                        {{ form_label(registrationForm.adress, 'Address', {'label_attr': {'class': 'form-label'}}) }}
+                        {{ form_widget(registrationForm.adress, {
+                            'attr': {
+                                'class': 'form-control' ~ (registrationForm.adress.vars.errors|length ? ' is-invalid' : ''),
+                                'placeholder': 'Enter your address'
+                            }
+                        }) }}
+                        <div class="invalid-feedback">
+                            {{ form_errors(registrationForm.adress) }}
+                        </div>
+                    </div>
 
-    {% if errors %}
-        <div class="alert alert-danger">
-            {{ errors|join('<br>') }}
+                    <div class="mb-3">
+                        {{ form_label(registrationForm.email, 'Email Address', {'label_attr': {'class': 'form-label'}}) }}
+                        {{ form_widget(registrationForm.email, {
+                            'attr': {
+                                'class': 'form-control' ~ (registrationForm.email.vars.errors|length ? ' is-invalid' : ''),
+                                'placeholder': 'example@example.com'
+                            }
+                        }) }}
+                        <div class="invalid-feedback">
+                            {{ form_errors(registrationForm.email) }}
+                        </div>
+                    </div>
+
+                    <div class="mb-3">
+                        {{ form_label(registrationForm.plainPassword, 'Password', {'label_attr': {'class': 'form-label'}}) }}
+                        {{ form_widget(registrationForm.plainPassword, {
+                            'attr': {
+                                'class': 'form-control' ~ (registrationForm.plainPassword.vars.errors|length ? ' is-invalid' : ''),
+                                'placeholder': 'Create a strong password'
+                            }
+                        }) }}
+                        <div class="invalid-feedback">
+                            {{ form_errors(registrationForm.plainPassword) }}
+                        </div>
+                    </div>
+
+                    <div class="mb-3">
+                        {{ form_label(registrationForm.confirmPassword, 'Confirm Password', {'label_attr': {'class': 'form-label'}}) }}
+                        {{ form_widget(registrationForm.confirmPassword, {
+                            'attr': {
+                                'class': 'form-control' ~ (registrationForm.confirmPassword.vars.errors|length ? ' is-invalid' : ''),
+                                'placeholder': 'Re-enter your password'
+                            }
+                        }) }}
+                        <div class="invalid-feedback">
+                            {{ form_errors(registrationForm.confirmPassword) }}
+                        </div>
+                    </div>
+
+                    <div class="form-check mb-3">
+                        {{ form_widget(registrationForm.rememberMe, {'attr': {'class': 'form-check-input'}}) }}
+                        {{ form_label(registrationForm.rememberMe, 'Remember Me', {'label_attr': {'class': 'form-check-label'}}) }}
+                    </div>
+
+                    <div class="form-check mb-4">
+                        {{ form_widget(registrationForm.agreeTerms, {
+                            'attr': {
+                                'class': 'form-check-input' ~ (registrationForm.agreeTerms.vars.errors|length ? ' is-invalid' : '')
+                            }
+                        }) }}
+                        {{ form_label(registrationForm.agreeTerms, 'I agree to the terms and conditions', {'label_attr': {'class': 'form-check-label'}}) }}
+                        <div class="invalid-feedback">
+                            {{ form_errors(registrationForm.agreeTerms) }}
+                        </div>
+                    </div>
+
+                    <div class="d-flex justify-content-center">
+                        <button type="submit" class="btn btn-lg"
+                                style="background-color: #D10024; color: white; width: 200px;">Register
+                        </button>
+                    </div>
+                    {{ form_end(registrationForm) }}
+
+                    <div class="mt-3 text-center">
+                        <p>Already have an account? <a href="{{ path('app_login') }}" class="text-primary">Sign in</a></p>
+                    </div>
+                </div>
+            </div>
         </div>
-    {% endif %}
+    </div>
+</div>
 
-
-   <div class="container my-4 pt-4">
-        <h1>Register</h1>
-       <div class="row justify-content-center">
-           <div class="col-md-8 mt-2 col-lg-6">
-               <div class="card shadow">
-                   <div class="card-header  text-white">
-                       <h3 class="mb-0">Create an Account</h3>
-                   </div>
-                   <div class="card-body p-4">
-                       {{ form_errors(registrationForm) }}
-
-                       {{ form_start(registrationForm) }}
-                           <div class="mb-3">
-                               {{ form_label(registrationForm.name, 'Full Name') }}
-                               {{ form_widget(registrationForm.name, {'attr': {'class': 'form-control', 'placeholder': 'Enter your full name'}}) }}
-                               {{ form_help(registrationForm.name) }}
-                           </div>
-
-                           <div class="mb-3">
-                               {{ form_label(registrationForm.adress, 'Address') }}
-                               {{ form_widget(registrationForm.adress, {'attr': {'class': 'form-control', 'placeholder': 'Enter your address'}}) }}
-                               {{ form_help(registrationForm.adress) }}
-                           </div>
-
-                           <div class="mb-3">
-                               {{ form_label(registrationForm.email, 'Email Address') }}
-                               {{ form_widget(registrationForm.email, {'attr': {'class': 'form-control', 'placeholder': 'example@example.com'}}) }}
-                               {{ form_help(registrationForm.email) }}
-                           </div>
-
-                           <div class="mb-3">
-                               {{ form_label(registrationForm.plainPassword, 'Password') }}
-                               {{ form_widget(registrationForm.plainPassword, {'attr': {'class': 'form-control', 'placeholder': 'Create a strong password'}}) }}
-                               {{ form_help(registrationForm.plainPassword) }}
-                           </div>
-
-                           <div class="mb-4 form-check">
-                               {{ form_widget(registrationForm.agreeTerms, {'attr': {'class': 'form-check-input'}}) }}
-                               {{ form_label(registrationForm.agreeTerms, 'I agree to the terms and conditions', {'label_attr': {'class': 'form-check-label'}}) }}
-                           </div>
-
-                           <button type="submit" class="btn btn-primary btn-lg w-100">Register Account</button>
-                       {{ form_end(registrationForm) }}
-
-                       <div class="mt-3 text-center">
-                           <p>Already have an account? <a href="#">Sign in</a></p>
-                       </div>
-                   </div>
-               </div>
-           </div>
-       </div>
-   </div>
-{% endblock %}
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+    (function () {
+        'use strict';
+        const forms = document.querySelectorAll('.needs-validation');
+        Array.from(forms).forEach(function (form) {
+            form.addEventListener('submit', function (event) {
+                if (!form.checkValidity()) {
+                    event.preventDefault();
+                    event.stopPropagation();
+                }
+                form.classList.add('was-validated');
+            }, false);
+        });
+    })();
+</script>
+</body>
+</html>
