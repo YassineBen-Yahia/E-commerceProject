@@ -5,7 +5,13 @@
 
 {% block body %}
 <div class="container mt-4">
+
+    {% if  id==0   %}
     <h1>Ajouter un produit</h1>
+    {% else %}
+    <h1>Modifier le produit</h1>
+    {% endif %}
+
 
     {{ form_start(form, {'attr': {'class': 'needs-validation', 'novalidate': 'novalidate'}}) }}
         <div class="row mb-3">
@@ -45,6 +51,7 @@
             </div>
         </div>
 
+    {% if form.categorie is defined %}
         <div class="row mb-3">
             <div class="col-md-6">
                 <div class="form-group">
@@ -54,6 +61,7 @@
                 </div>
             </div>
         </div>
+    {% endif %}
 
         <div class="row mb-3">
             <div class="col-md-6">
