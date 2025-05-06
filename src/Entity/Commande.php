@@ -9,14 +9,14 @@ use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: CommandeRepository::class)]
 #[ORM\HasLifecycleCallbacks]
+
 class Commande
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
     private ?int $id = null;
-    #[ORM\Column(type: 'datetime')]
-    private \DateTime $createdAt;
+
 
 
     /**
@@ -32,6 +32,9 @@ class Commande
     #[ORM\ManyToOne]
     #[ORM\JoinColumn(nullable: false)]
     private ?Utilisateur $utilisateur = null;
+
+    #[ORM\Column]
+    private ?\DateTimeImmutable $createdAt = null;
 
     public function __construct()
     {
@@ -86,13 +89,18 @@ class Commande
 
         return $this;
     }
-    #[ORM\PrePersist]
-    public function setCreatedAtValue(): void
-    {
-        $this->createdAt = new \DateTime();
-    }
-    public function getCreatedAt(): ?\DateTime
+
+    public function getCreatedAt(): ?\DateTimeImmutable
     {
         return $this->createdAt;
     }
+
+    #[ORM\PrePersist]
+    public function setCreatedAtValue(): void
+    {
+        if ($this->createdAt === null) {
+            $this->createdAt = new \DateTimeImmutable();
+        }
+    }
+
 }
