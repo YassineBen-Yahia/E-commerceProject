@@ -1,0 +1,142 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ produit.name }} - Details{% endblock %}
+
+{% block body %}
+<!-- SECTION -->
+<div class="section">
+    <!-- container -->
+    <div class="container">
+        <!-- row -->
+        <div class="row">
+            <!-- Product main img -->
+            <div class="col-md-5 col-md-push-2">
+                <div id="product-main-img">
+                    <div class="product-preview">
+                        <img src="{{ asset('styles/' ~ produit.getImage()) }}" alt="{{ produit.name }}" class="img-fluid">
+                    </div>
+                </div>
+            </div>
+            <!-- /Product main img -->
+
+            <!-- Product thumb imgs -->
+            <div class="col-md-2 col-md-pull-5">
+                <div id="product-imgs">
+                    <div class="product-preview">
+                        <img src="{{ asset('styles/' ~ produit.getImage()) }}" alt="{{ produit.name }}">
+                    </div>
+                </div>
+            </div>
+            <!-- /Product thumb imgs -->
+
+            <!-- Product details -->
+            <div class="col-md-5">
+                <div class="product-details">
+                    <h2 class="product-name">{{ produit.name }}</h2>
+                    <div>
+                        <div class="product-rating">
+                            <i class="fa fa-star"></i>
+                            <i class="fa fa-star"></i>
+                            <i class="fa fa-star"></i>
+                            <i class="fa fa-star"></i>
+                            <i class="fa fa-star"></i>
+                        </div>
+                    </div>
+                    <div>
+                        <h3 class="product-price">${{ produit.price }} <del class="product-old-price">${{ produit.price * 1.2|round(2) }}</del></h3>
+                        <span class="product-available">{% if produit.stock > 0 %}In Stock{% else %}Out of Stock{% endif %}</span>
+                    </div>
+                    <p>{{ produit.description }}</p>
+
+                    <div class="product-options">
+                        <label>
+                            Category: <strong>{{ produit.categorie.getName() }}</strong>
+                        </label>
+                        <label>
+                            Stock: <strong>{{ produit.stock }} units</strong>
+                        </label>
+                    </div>
+
+                    <div class="add-to-cart">
+                        <div class="qty-label">
+                            Qty
+                            <div class="input-number">
+                                <input type="number" value="1" min="1" max="{{ produit.stock }}">
+                                <span class="qty-up">+</span>
+                                <span class="qty-down">-</span>
+                            </div>
+                        </div>
+                        <button class="add-to-cart-btn" onclick="window.location.href='{{ app.user ? '/CartItem/' ~ produit.id : '/register' }}'">
+                            <i class="fa fa-shopping-cart"></i> add to cart
+                        </button>
+                    </div>
+
+                    <ul class="product-btns">
+                        <li>
+                            <a href="{{ path('app_Wishlist_add_item', {'id': produit.id}) }}">
+                                <i class="fa fa-heart-o"></i> add to wishlist
+                            </a>
+                        </li>
+                    </ul>
+
+                    <ul class="product-links">
+                        <li>Share:</li>
+                        <li><a href="#"><i class="fa fa-facebook"></i></a></li>
+                        <li><a href="#"><i class="fa fa-twitter"></i></a></li>
+                        <li><a href="#"><i class="fa fa-instagram"></i></a></li>
+                    </ul>
+                </div>
+            </div>
+            <!-- /Product details -->
+        </div>
+        <!-- /row -->
+    </div>
+    <!-- /container -->
+</div>
+<!-- /SECTION -->
+
+<!-- Section -->
+<div class="section">
+    <!-- container -->
+    <div class="container">
+        <!-- row -->
+        <div class="row">
+            <div class="col-md-12">
+                <div class="section-title text-center">
+                    <h3 class="title">Product Specifications</h3>
+                </div>
+            </div>
+            <div class="col-md-12">
+                <table class="table table-striped">
+                    <tbody>
+                        <tr>
+                            <th>Name</th>
+                            <td>{{ produit.name }}</td>
+                        </tr>
+                        <tr>
+                            <th>Description</th>
+                            <td>{{ produit.description }}</td>
+                        </tr>
+                        <tr>
+                            <th>Price</th>
+                            <td>${{ produit.price }}</td>
+                        </tr>
+                        <tr>
+                            <th>Category</th>
+                            <td>{{ produit.categorie.getName() }}</td>
+                        </tr>
+                        <tr>
+                            <th>Stock</th>
+                            <td>{{ produit.stock }}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <!-- /row -->
+    </div>
+    <!-- /container -->
+</div>
+<!-- /Section -->
+
+{% endblock %}

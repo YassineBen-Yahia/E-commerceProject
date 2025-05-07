@@ -3,8 +3,6 @@
 namespace App\Entity;
 
 use App\Repository\ProduitRepository;
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: ProduitRepository::class)]
@@ -33,6 +31,10 @@ class Produit
     #[ORM\ManyToOne(inversedBy: 'Produits')]
     #[ORM\JoinColumn(nullable: false)]
     private ?Categorie $categorie = null;
+
+
+
+
 
 
     public function getId(): ?int
@@ -99,6 +101,8 @@ class Produit
 
         return $this;
     }
+
+
 
     public function getStock(): ?int
     {

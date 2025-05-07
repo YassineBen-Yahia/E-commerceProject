@@ -1,4 +1,5 @@
 {% extends 'base.html.twig' %}
+{% block emplacement %} {% if category is not null %}{{ category }} {% endif %}{% endblock %}
 {% block store %}
 <div id="store" class="col-md-9">
     <!-- store top filter -->
@@ -14,15 +15,18 @@
 
             <label>
                 Show:
-                <select class="input-select">
-                    <option value="0">20</option>
-                    <option value="1">50</option>
+                <select class="input-select" id="products-per-page">
+                    <option value="2" {% if limit == 2 %}selected{% endif %}>2</option>
+                    <option value="10" {% if limit == 10 %}selected{% endif %}>10</option>
+                    <option value="20" {% if limit == 20 or limit is not defined %}selected{% endif %}>20</option>
+                    <option value="50" {% if limit == 50 %}selected{% endif %}>50</option>
+                    <option value="100" {% if limit == 100 %}selected{% endif %}>100</option>
                 </select>
             </label>
         </div>
         <ul class="store-grid">
-            <li class="active"><i class="fa fa-th"></i></li>
-            <li><a href="#"><i class="fa fa-th-list"></i></a></li>
+            <li class="active" id="grid-view"><i class="fa fa-th"></i></li>
+            <li id="list-view"><i class="fa fa-th-list"></i></li>
         </ul>
     </div>
     <!-- /store top filter -->
@@ -43,14 +47,18 @@
                 <div class="product-img">
                     <img src="{{ asset('styles/' ~ produit.getImage()) }}" alt="{{ produit.name }}" class="img-fluid">
                 <div class="product-label">
-                        <span class="sale">-{{ random(5,30) }}%</span>
                         <span class="new">NEW</span>
                     </div>
                 </div>
+                <div class="add-to-cart">
+                    <button class="add-to-cart-btn" onclick="window.location.href='{{ app.user ? '/CartItem/' ~ produit.id : '/register' }}'">
+                        <i class="fa fa-shopping-cart"></i> add to cart
+                    </button>
+                </div>
                 <div class="product-body">
                     <p class="product-category">{{ produit.categorie.getName() }}</p>
-                    <h3 class="product-name"><a href="#">{{ produit.name }}</a></h3>
-                    <h4 class="product-price">$ {{ produit.price}} <del class="product-old-price">$990.00</del></h4>
+                    <h3 class="product-name">{{ produit.name }}</h3>
+                    <h4 class="product-price">$ {{ produit.price}} <del class="product-old-price">${{ produit.price * 1.2|round(2)}}</del></h4>
                     <div class="product-rating">
                         <i class="fa fa-star"></i>
                         <i class="fa fa-star"></i>
@@ -60,22 +68,21 @@
                     </div>
                     <div class="product-btns">
 
-                            <button class="add-to-wishlist">
-                                <a href="{{ path('app_Wishlist_add_item', {'id': produit.id}) }}">
-                                    <i class="fa fa-heart-o"></i><span class="tooltipp">add to wishlist</span>
+                        <button class="add-to-wishlist">
+                            <a href="{{ path('app_Wishlist_add_item', {'id': produit.id}) }}">
+                                <i class="fa fa-heart-o"></i><span class="tooltipp">add to wishlist</span>
 
-                                </a>
-                            </button>
+                            </a>
+                        </button>
 
-                        <button class="add-to-compare"><i class="fa fa-exchange"></i><span class="tooltipp">add to compare</span></button>
-                        <button class="quick-view"><i class="fa fa-eye"></i><span class="tooltipp">quick view</span></button>
+                        <button class="quick-view">
+                            <a href="{{ path('produit_details', {'id': produit.id}) }}">
+                                <i class="fa fa-eye"></i><span class="tooltipp">quick view</span>
+                            </a>
+                        </button>
                     </div>
                 </div>
-                <div class="add-to-cart">
-                    <button class="add-to-cart-btn" onclick="window.location.href='{{ app.user ? '/CartItem/' ~ produit.id : '/register' }}'">
-                        <i class="fa fa-shopping-cart"></i> add to cart
-                    </button>
-                </div>
+
             </div>
         </div>
         <!-- /product -->
@@ -88,15 +95,56 @@
 
     <!-- store bottom filter -->
     <div class="store-filter clearfix">
-        <span class="store-qty">Showing 20-100 products</span>
+        <span class="store-qty">
+            Showing {{ ((page - 1) * limit) + 1 }}-{{ min(page * limit, totalProducts) }} of {{ totalProducts }} products
+        </span>
         <ul class="store-pagination">
-            <li class="active">1</li>
-            <li><a href="#">2</a></li>
-            <li><a href="#">3</a></li>
-            <li><a href="#">4</a></li>
-            <li><a href="#"><i class="fa fa-angle-right"></i></a></li>
+            {% if page > 1 %}
+                <li><a href="{{ path('app_index', {'page': page-1, 'limit': limit}) }}"><i class="fa fa-angle-left"></i></a></li>
+            {% endif %}
+
+            {% for i in 1..totalPages %}
+                <li {% if i == page %}class="active"{% endif %}>
+                    <a href="{{ path('app_index', {'page': i, 'limit': limit}) }}">{{ i }}</a>
+                </li>
+            {% endfor %}
+
+            {% if page < totalPages %}
+                <li><a href="{{ path('app_index', {'page': page+1, 'limit': limit}) }}"><i class="fa fa-angle-right"></i></a></li>
+            {% endif %}
         </ul>
     </div>
     <!-- /store bottom filter -->
 </div>
+{% endblock %}
+{% block javascripts %}
+
+
+<script>
+    document.getElementById('products-per-page').addEventListener('change', function() {
+        const limit = this.value;
+        const currentUrl = new URL(window.location.href);
+        currentUrl.searchParams.set('limit', limit);
+        currentUrl.searchParams.set('page', 1); // Reset to first page when changing items per page
+        window.location.href = currentUrl.toString();
+    });
+</script>
+
+
+
+<script>
+    document.getElementById('grid-view').addEventListener('click', function() {
+        document.getElementById('store').classList.remove('list-view');
+        document.getElementById('store').classList.add('grid-view');
+        this.classList.add('active');
+        document.getElementById('list-view').classList.remove('active');
+    });
+
+    document.getElementById('list-view').addEventListener('click', function() {
+        document.getElementById('store').classList.remove('grid-view');
+        document.getElementById('store').classList.add('list-view');
+        this.classList.add('active');
+        document.getElementById('grid-view').classList.remove('active');
+    });
+</script>
 {% endblock %}
