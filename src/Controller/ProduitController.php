@@ -26,7 +26,6 @@ final class ProduitController extends AbstractController
         }
 
 
-        // Passez l'entité $produit au formulaire
         $form = $this->createForm(AjoutProduitForm::class, $produit);
         if(!$new){
             $form->remove('categorie');
