@@ -45,7 +45,7 @@
             <ul class="main-nav nav navbar-nav">
                 <li class="active"><a href="/index">Home</a></li>
                 {% for category in categories %}
-                <li><a href="/index/{{ category }}">{{ category }}</a></li>
+                <li><a href="/index/{{ category}}">{{ category|capitalize  }}</a></li>
 
                 {% endfor %}
             </ul>
@@ -95,7 +95,7 @@
                                <input type="checkbox" id="category-{{loop.index }}" value="{{ category }}">
                                <label for="category-{{loop.index }}">
                                    <span></span>
-                                   {{ category }}
+                                   {{ category|capitalize }}
                                    <small>(120)</small>
                                </label>
                            </div>
