@@ -2,60 +2,56 @@
 
 namespace App\Controller;
 
-use App\Repository\ProduitRepository;
+use App\Service\IndexService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 
+
+
 final class IndexController extends AbstractController
 {
-    private ProduitRepository $produitRepository;
+    private IndexService $indexService;
 
-    public function __construct(ProduitRepository $produitRepository)
+    public function __construct(IndexService $indexService)
     {
-        $this->produitRepository = $produitRepository;
+        $this->indexService = $indexService;
     }
-    #[Route('/index', name: 'app_index')]
-    public function index(Request $request): Response
+
+    #[Route('/index/{category?}', name: 'app_index')]
+    public function index(Request $request, ?string $category = null): Response
     {
-
-
-        // Get pagination parameters
         $page = max(1, $request->query->getInt('page', 1));
-        $limit = $request->query->getInt('limit', 10);
+        $limit = $request->query->getInt('limit', 20);
 
-        $produits = $this->produitRepository->findAll();
-        return $this->render('index.html.twig', [
-            'produits' => $produits,
-            'category' => null,
-            'controller_name' => 'IndexController',
-        ]);
-    }
-    #[Route('/index/{category}', name: 'app_index_category')]
-    public function indexParCategory( string $category, Request $request ): Response
-    {
-        // Get pagination parameters
-        $page = max(1, $request->query->getInt('page', 1));
-        $limit = $request->query->getInt('limit', 10);
+        $data = $this->indexService->getPaginatedProducts($category, $page, $limit);
 
-        $produits = $this->produitRepository->findByCategory($category);
         return $this->render('index.html.twig', [
-            'produits' => $produits,
+            'produits' => $data['produits'],
             'category' => $category,
-            'controller_name' => 'IndexController',
-
+            'page' => $page,
+            'limit' => $limit,
+            'totalProducts' => $data['totalProducts'],
+            'totalPages' => $data['totalPages'],
         ]);
     }
+
     #[Route('/index/multiple/{categories}', name: 'app_index_multiple_categories')]
-    public function indexParMultipleCategories(string $categories): Response
+    public function indexParMultipleCategories(string $categories, Request $request): Response
     {
-        $categoryArray = explode(',', $categories);
-        $produits = $this->produitRepository->findByMultipleCategories($categoryArray);
+        $page = max(1, $request->query->getInt('page', 1));
+        $limit = $request->query->getInt('limit', 10);
+
+        $data = $this->indexService->getPaginatedProductsByCategories($categories, $page, $limit);
+
         return $this->render('index.html.twig', [
-            'produits' => $produits,
+            'produits' => $data['produits'],
             'category' => $categories,
-            'controller_name' => 'IndexController',
+            'page' => $page,
+            'limit' => $limit,
+            'totalProducts' => $data['totalProducts'],
+            'totalPages' => $data['totalPages'],
         ]);
     }
 }
