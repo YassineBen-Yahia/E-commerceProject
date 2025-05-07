@@ -54,7 +54,6 @@ security:
         - { path: ^/register, roles: PUBLIC_ACCESS }
         - { path: ^/login, roles: PUBLIC_ACCESS }
         - { path: ^/admin, roles: ROLE_ADMIN }
-        - { path: ^/produit, roles: ROLE_ADMIN }
         - { path: ^/, roles: PUBLIC_ACCESS, allow_if: "not is_granted('ROLE_ADMIN')" }
 
 

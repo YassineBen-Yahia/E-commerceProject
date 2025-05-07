@@ -90,7 +90,8 @@
                                         type="button"
                                         class="primary-btn"
                                         id="proceedToCheckout"
-                                        data-verified="{{ app.user and app.user.isVerified ? 'true' : 'false' }}">
+                                        data-verified="{{ app.user and app.user.isVerified ? 'true' : 'false' }}"
+                                        data-checkout-url="{{ path('app_checkout', {'id': cart.id}) }}">
                                     Proceed to Checkout
                                 </button>
                             </div>
@@ -103,19 +104,25 @@
 </div>
 
 <!-- Modal -->
-<div class="modal fade" id="verifyModal" tabindex="-1" aria-labelledby="verifyModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content">
-            <div class="modal-header" style="background-color: #2B2D42; color: white;">
-                <h5 class="modal-title" id="verifyModalLabel">Email Verification Required</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+<div class="modal fade" id="verifyModal" tabindex="-1" role="dialog" aria-labelledby="verifyModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content shadow-lg">
+            <div class="modal-header" style="background-color: #2B2D42; color: #fff; font-family: 'Montserrat', sans-serif;">
+                <h5 class="modal-title" id="verifyModalLabel" style="color: #fff">Email Verification Required</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close" style="color: #fff;">
+                    <span aria-hidden="true">&times;</span>
+                </button>
             </div>
-            <div class="modal-body">
+            <div class="modal-body" style="font-family: 'Montserrat', sans-serif; font-size: 16px; color: #333;">
                 <p>You need to verify your email address to proceed to checkout. Please verify your email to continue.</p>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                <a href="{{ path('app_index') }}" class="btn btn-primary" style="background-color: #D10024; border-color: #D10024;">Verify Email</a>
+                <button type="button" class="primary-btn" data-dismiss="modal" style="background-color: #6c757d; border: none; color: #fff; font-family: 'Montserrat', sans-serif;">
+                    Cancel
+                </button>
+                <a href="{{ path('app_index') }}" class="primary-btn" style="background-color: #D10024; border: none; color: #fff; font-family: 'Montserrat', sans-serif;">
+                    Verify Email
+                </a>
             </div>
         </div>
     </div>
