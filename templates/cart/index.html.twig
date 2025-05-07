@@ -88,12 +88,23 @@
                                 </div>
                                 <button
                                         type="button"
-                                        class="primary-btn"
+                                        class="primary-btn "
                                         id="proceedToCheckout"
                                         data-verified="{{ app.user and app.user.isVerified ? 'true' : 'false' }}"
                                         data-checkout-url="{{ path('app_checkout', {'id': cart.id}) }}">
                                     Proceed to Checkout
                                 </button>
+
+                                    <a
+                                            class="primary-btn"
+                                            id="proceedToPayment"
+                                            data-verified="{{ app.user and app.user.isVerified ? 'true' : 'false' }}"
+                                            href="{{ path('create_payment_link', {'id': cart.id, 'total': total}) }}">
+                                        Proceed to Online Payment
+                                    </a>
+
+
+
                             </div>
                         </div>
                     </div>
