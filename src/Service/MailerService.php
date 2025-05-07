@@ -10,7 +10,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use SymfonyCasts\Bundle\VerifyEmail\Exception\VerifyEmailExceptionInterface;
 
-class MailerController extends AbstractController
+class MailerService extends AbstractController
 {
     #[Route('/verify/email', name: 'verify_email')]
     public function verifyUserEmail(Request $request, EmailVerifier $emailVerifier, EntityManagerInterface $entityManager): Response
