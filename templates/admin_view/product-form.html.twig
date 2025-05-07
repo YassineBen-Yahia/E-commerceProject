@@ -1,15 +1,16 @@
 {% extends 'base.html.twig' %}
-
-
-{% block title %}Ajouter un Produit{% endblock %}
+{% block header %}
+    {% include 'admin_fragments/header.html.twig' %}
+    {% include 'admin_fragments/navigation.html.twig' with {'role': 'products'} %}
+{% endblock %}
 
 {% block body %}
 <div class="container mt-4">
 
     {% if  id==0   %}
-    <h1>Ajouter un produit</h1>
+    <h1>Add Product</h1>
     {% else %}
-    <h1>Modifier le produit</h1>
+    <h1>Edit Product</h1>
     {% endif %}
 
 
@@ -17,7 +18,7 @@
         <div class="row mb-3">
             <div class="col-md-6">
                 <div class="form-group">
-                    {{ form_label(form.name, 'Nom du produit') }}
+                    {{ form_label(form.name, 'Product Name') }}
                     {{ form_widget(form.name, {'attr': {'class': 'form-control'}}) }}
                     {{ form_errors(form.name) }}
                 </div>
@@ -37,14 +38,14 @@
         <div class="row mb-3">
             <div class="col-md-6">
                 <div class="form-group">
-                    {{ form_label(form.price, 'Prix') }}
+                    {{ form_label(form.price, 'Price') }}
                     {{ form_widget(form.price, {'attr': {'class': 'form-control'}}) }}
                     {{ form_errors(form.price) }}
                 </div>
             </div>
             <div class="col-md-6">
                 <div class="form-group">
-                    {{ form_label(form.stock, 'Stock disponible') }}
+                    {{ form_label(form.stock, 'Stock') }}
                     {{ form_widget(form.stock, {'attr': {'class': 'form-control'}}) }}
                     {{ form_errors(form.stock) }}
                 </div>
@@ -55,7 +56,7 @@
         <div class="row mb-3">
             <div class="col-md-6">
                 <div class="form-group">
-                    {{ form_label(form.categorie, 'Catégorie') }}
+                    {{ form_label(form.categorie, 'Categorie') }}
                     {{ form_widget(form.categorie, {'attr': {'class': 'form-control'}}) }}
                     {{ form_errors(form.categorie) }}
                 </div>
@@ -66,7 +67,7 @@
         <div class="row mb-3">
             <div class="col-md-6">
                 <div class="form-group">
-                    {{ form_label(form.image, 'Image du produit') }}
+                    {{ form_label(form.image, 'Product Image') }}
                     {{ form_widget(form.image, {'attr': {'class': 'form-control'}}) }}
                     <small class="form-text text-muted">Format accepté: JPG, JPEG, PNG (max 1Mo)</small>
                     {{ form_errors(form.image) }}
@@ -76,10 +77,18 @@
 
         <div class="row">
             <div class="col-md-6">
-                <button type="submit" class="btn btn-primary">Ajouter le produit</button>
-                <a href="{{ path('app_index') }}" class="btn btn-secondary">Annuler</a>
+                {% if  id==0   %}
+                    <button type="submit" class="btn btn-primary">Add Product</button>
+                {% else %}
+                    <button type="submit" class="btn btn-primary">Edit Product</button>
+                {% endif %}
+                <a href="{{ url('produit.list') }}" class="btn btn-secondary">cancel</a>
             </div>
         </div>
     {{ form_end(form) }}
 </div>
+{% endblock %}
+
+{% block footer %}
+    {% include 'admin_fragments/footer.html.twig' %}
 {% endblock %}

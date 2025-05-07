@@ -36,7 +36,7 @@ security:
                 login_path: app_login
                 check_path: app_login
                 enable_csrf: true
-                default_target_path: app_index
+                success_handler: App\Security\CustomLoginSuccessHandler
                 #always_remember_me: true
                 # by default, the feature is enabled by checking a checkbox in the
                 # login form, uncomment the following line to always enable it.
@@ -53,8 +53,11 @@ security:
     access_control:
         - { path: ^/register, roles: PUBLIC_ACCESS }
         - { path: ^/login, roles: PUBLIC_ACCESS }
+        - { path: ^/logout, roles: PUBLIC_ACCESS }
         - { path: ^/admin, roles: ROLE_ADMIN }
+        - { path: ^/details, roles: [ROLE_ADMIN, ROLE_USER] }
         - { path: ^/, roles: PUBLIC_ACCESS, allow_if: "not is_granted('ROLE_ADMIN')" }
+
 
 
 when@test:

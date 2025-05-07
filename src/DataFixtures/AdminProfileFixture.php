@@ -8,8 +8,9 @@ use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Faker\Factory;
+use Doctrine\Bundle\FixturesBundle\FixtureGroupInterface;
 
-class AdminProfileFixture extends Fixture
+class AdminProfileFixture extends Fixture implements FixtureGroupInterface
 {
     private UserPasswordHasherInterface $passwordHasher;
 
@@ -36,9 +37,9 @@ class AdminProfileFixture extends Fixture
             $utilisateur->setAdress($faker->address());
             $utilisateur->setRoles(['ROLE_ADMIN']);
 
-            // Générer un mot de passe sécurisé de 8 caractères
-            $password = $faker->regexify('[A-Z][a-z]{4}[!@&][0-9]{2}');
-            $utilisateur->setPassword($password);
+            $plainPassword = "Admin123@";
+            $hashedPassword = $this->passwordHasher->hashPassword($utilisateur, $plainPassword);
+            $utilisateur->setPassword($hashedPassword);
 
             $adminProfile = new AdminProfile();
             $adminProfile->setUtilisateur($utilisateur);
@@ -48,5 +49,10 @@ class AdminProfileFixture extends Fixture
         }
 
         $manager->flush();
+    }
+
+    public static function getGroups(): array
+    {
+        return ['admin-group'];
     }
 }

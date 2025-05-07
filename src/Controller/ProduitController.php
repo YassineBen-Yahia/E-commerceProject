@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\Categorie;
 use App\Entity\Produit;
 use App\Form\AjoutProduitForm;
 use Doctrine\ORM\EntityManagerInterface;
@@ -13,10 +14,9 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\String\Slugger\SluggerInterface;
-#[Route('/admin')]
 final class ProduitController extends AbstractController
 {
-    #[Route('/produit/new/{id?0}', name: 'app_create_produit')]
+    #[Route('/admin/produit/new/{id?0}', name: 'app_create_produit')]
     public function createProduit(Produit $produit = null, Request $request, SluggerInterface $slugger, EntityManagerInterface $entityManager,$id): Response
     {
         $new = false;
@@ -57,33 +57,50 @@ final class ProduitController extends AbstractController
                 if ($categorie) {
                     $categorie->addProduit($produit);
                 }
+                $this->addFlash('success', "Produit d'id: " . $produit->getId() . " a été ajouté avec succès");
+            }else{
+                $this->addFlash('success', "Produit d'id: " . $produit->getId() . " a été modifié avec succès");
             }
+
 
             $entityManager->persist($produit);
             $entityManager->flush();
 
-            return $this->redirectToRoute('app_create_produit');
+            return $this->redirectToRoute('produit.list');
         }
 
-        return $this->render('produit/index.html.twig', [
+        return $this->render('admin_view/product-form.html.twig', [
             'controller_name' => 'ProduitController',
             'form' => $form->createView(),
             'id'=> $id
         ]);
     }
 
-    #[Route('/produit/delete/{id<\d+>}', name: 'produit.delete')]
+    #[Route('/admin/produit/delete/{id<\d+>}', name: 'produit.delete')]
     public function deleteProduit(Produit $produit = null, ManagerRegistry $doctrine): RedirectResponse
     {
         if ($produit) {
             $manager = $doctrine->getManager();
+            $p_id = $produit->getId();
             $manager->remove($produit);
             $manager->flush();
-            $this->addFlash('success', "Produit a été supprimée avec succès");
+            $this->addFlash('success', "Produit d'id: " . $p_id . " a été supprimé avec succès");
         }else{
             $this->addFlash('danger', "Produit inexistant . ");
         }
-        return $this->redirectToRoute('app_index');
+        return $this->redirectToRoute('produit.list');
+    }
+
+    #[Route('/admin/produit/list', name: 'produit.list')]
+    public function listProduit(ManagerRegistry $doctrine): Response
+    {
+        $produits = $doctrine->getRepository(Produit::class)->findAll();
+        $categories = $doctrine->getRepository(Categorie::class)->findAll();
+        return $this->render('admin_view/products-list.html.twig', [
+            'controller_name' => 'ProduitController',
+            'produits' => $produits,
+            'categories' => $categories
+        ]);
     }
 
     #[Route('/details/{id}', name: 'produit_details')]

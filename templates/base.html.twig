@@ -11,201 +11,201 @@
     <!-- Google font -->
     <link href="https://fonts.googleapis.com/css?family=Montserrat:400,500,700" rel="stylesheet">
 
-  <link type="text/css" rel="stylesheet" href="{{ asset('styles/css/bootstrap.min.css') }}">
-  <link type="text/css" rel="stylesheet" href="{{ asset('styles/css/slick.css') }}">
-  <link type="text/css" rel="stylesheet" href="{{ asset('styles/css/slick-theme.css') }}">
-  <link type="text/css" rel="stylesheet" href="{{ asset('styles/css/nouislider.min.css') }}">
-  <link rel="stylesheet" href="{{ asset('styles/css/font-awesome.min.css') }}">
-  <link type="text/css" rel="stylesheet" href="{{ asset('styles/css/style.css') }}">
+    <link type="text/css" rel="stylesheet" href="{{ asset('styles/css/bootstrap.min.css') }}">
+    <link type="text/css" rel="stylesheet" href="{{ asset('styles/css/slick.css') }}">
+    <link type="text/css" rel="stylesheet" href="{{ asset('styles/css/slick-theme.css') }}">
+    <link type="text/css" rel="stylesheet" href="{{ asset('styles/css/nouislider.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('styles/css/font-awesome.min.css') }}">
+    <link type="text/css" rel="stylesheet" href="{{ asset('styles/css/style.css') }}">
     <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
-{#    <!--[if lt IE 9]>#}
-{#    <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>#}
-{#    <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>#}
-{#    <![endif]-->#}
+    {#    <!--[if lt IE 9]>#}
+    {#    <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>#}
+    {#    <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>#}
+    {#    <![endif]-->#}
 
 </head>
 <body>
 
 
 {% block header %}
-{% if showHeader is not defined or showHeader %}
-    {% include 'fragments/header.html.twig' %}
-{% endif %}
+    {% if showHeader is not defined or showHeader %}
+        {% include 'fragments/header.html.twig' %}
+    {% endif %}
 {% endblock %}
 
 {% block body %}
-<!-- NAVIGATION -->
-<nav id="navigation">
-    <!-- container -->
-    <div class="container">
-        <!-- responsive-nav -->
-        <div id="responsive-nav">
-            <!-- NAV -->
-            <ul class="main-nav nav navbar-nav">
-                <li class="active"><a href="/index">Home</a></li>
-                {% for category in categories %}
-                <li><a href="/index/{{ category}}">{{ category|capitalize  }}</a></li>
+    <!-- NAVIGATION -->
+    <nav id="navigation">
+        <!-- container -->
+        <div class="container">
+            <!-- responsive-nav -->
+            <div id="responsive-nav">
+                <!-- NAV -->
+                <ul class="main-nav nav navbar-nav">
+                    <li class="active"><a href="/index">Home</a></li>
+                    {% for category in categories %}
+                        <li><a href="/index/{{ category}}">{{ category|capitalize  }}</a></li>
 
-                {% endfor %}
-            </ul>
-            <!-- /NAV -->
-        </div>
-        <!-- /responsive-nav -->
-    </div>
-    <!-- /container -->
-</nav>
-<!-- /NAVIGATION -->
-
-<!-- BREADCRUMB -->
-<div id="breadcrumb" class="section">
-    <!-- container -->
-    <div class="container">
-        <!-- row -->
-        <div class="row">
-            <div class="col-md-12">
-                <ul class="breadcrumb-tree">
-                    <li><a href="/index">Home</a></li>
-                    <li>{% block emplacement %}{% endblock %}</li>
-
-                </ul>
-            </div>
-        </div>
-        <!-- /row -->
-    </div>
-    <!-- /container -->
-</div>
-<!-- /BREADCRUMB -->
-
-<!-- SECTION -->
-<div class="section">
-    <!-- container -->
-    <div class="container">
-        <!-- row -->
-        <div class="row">
-            <!-- ASIDE -->
-            {% block aside %}
-            <div id="aside" class="col-md-3">
-                <!-- aside Widget -->
-                <div class="aside">
-                    <h3 class="aside-title">Categories</h3>
-                   <div class="checkbox-filter" id="category-filter">
-                       {% for category in categories %}
-                           <div class="input-checkbox">
-                               <input type="checkbox" id="category-{{loop.index }}" value="{{ category }}">
-                               <label for="category-{{loop.index }}">
-                                   <span></span>
-                                   {{ category|capitalize }}
-                                   <small>(120)</small>
-                               </label>
-                           </div>
-                        {% endfor %}
-
-                   </div>
-
-                </div>
-
-                <!-- aside Widget -->
-                <div class="aside">
-                    <h3 class="aside-title">Price</h3>
-                    <div class="price-filter">
-                        <div id="price-slider" ></div>
-                        <div class="input-number price-min">
-                            <label for="price-min"><input id="price-min" type="number" max="9999.0"></label>
-
-                        </div>
-                        <span>-</span>
-                        <div class="input-number price-max" >
-                            <label for="price-max"><input id="price-max" type="number" max="9999.0"></label>
-
-                        </div>
-                    </div>
-                </div>
-                <!-- /aside Widget -->
-
-
-                <div class="mt-3">
-                    <button id="apply-filter-btn" class="primary-btn">Apply Filter</button>
-                </div>
-
-
-
-
-                <!-- /aside Widget -->
-
-                <!-- aside Widget -->
-                <div class="aside">
-                    <h3 class="aside-title">Check Our Products</h3>
-                    {% for product in ThreeProducts %}
-                        <div class="product-widget">
-                            <div class="product-img">
-                                <img src="{{ asset('styles/' ~ product.getImage()) }}" alt="{{ product.name }}">
-                            </div>
-                            <div class="product-body">
-                                <p class="product-category">{{ product.categorie.name }}</p>
-                                <h3 class="product-name"><a href="{{ path('produit_details', {'id': product.id}) }}">{{ product.name }}</a></h3>
-                                <h4 class="product-price">${{ product.price }} <del class="product-old-price">${{ product.price * 1.2|round(2) }}</del></h4>
-                            </div>
-                        </div>
                     {% endfor %}
-
-                </div>
-                <!-- /aside Widget -->
+                </ul>
+                <!-- /NAV -->
             </div>
-            <!-- /ASIDE -->
-            {% endblock %}
-            <!-- STORE -->
-            {% block store %}{% endblock %}
-
-            <!-- /STORE -->
+            <!-- /responsive-nav -->
         </div>
-        <!-- /row -->
+        <!-- /container -->
+    </nav>
+    <!-- /NAVIGATION -->
+
+    <!-- BREADCRUMB -->
+    <div id="breadcrumb" class="section">
+        <!-- container -->
+        <div class="container">
+            <!-- row -->
+            <div class="row">
+                <div class="col-md-12">
+                    <ul class="breadcrumb-tree">
+                        <li><a href="/index">Home</a></li>
+                        <li>{% block emplacement %}{% endblock %}</li>
+
+                    </ul>
+                </div>
+            </div>
+            <!-- /row -->
+        </div>
+        <!-- /container -->
     </div>
-    <!-- /container -->
-</div>
-<!-- /SECTION -->
+    <!-- /BREADCRUMB -->
+
+    <!-- SECTION -->
+    <div class="section">
+        <!-- container -->
+        <div class="container">
+            <!-- row -->
+            <div class="row">
+                <!-- ASIDE -->
+                {% block aside %}
+                    <div id="aside" class="col-md-3">
+                        <!-- aside Widget -->
+                        <div class="aside">
+                            <h3 class="aside-title">Categories</h3>
+                            <div class="checkbox-filter" id="category-filter">
+                                {% for category in categories %}
+                                    <div class="input-checkbox">
+                                        <input type="checkbox" id="category-{{loop.index }}" value="{{ category }}">
+                                        <label for="category-{{loop.index }}">
+                                            <span></span>
+                                            {{ category|capitalize }}
+                                            <small>(120)</small>
+                                        </label>
+                                    </div>
+                                {% endfor %}
+
+                            </div>
+
+                        </div>
+
+                        <!-- aside Widget -->
+                        <div class="aside">
+                            <h3 class="aside-title">Price</h3>
+                            <div class="price-filter">
+                                <div id="price-slider" ></div>
+                                <div class="input-number price-min">
+                                    <label for="price-min"><input id="price-min" type="number" max="9999.0"></label>
+
+                                </div>
+                                <span>-</span>
+                                <div class="input-number price-max" >
+                                    <label for="price-max"><input id="price-max" type="number" max="9999.0"></label>
+
+                                </div>
+                            </div>
+                        </div>
+                        <!-- /aside Widget -->
+
+
+                        <div class="mt-3">
+                            <button id="apply-filter-btn" class="primary-btn">Apply Filter</button>
+                        </div>
+
+
+
+
+                        <!-- /aside Widget -->
+
+                        <!-- aside Widget -->
+                        <div class="aside">
+                            <h3 class="aside-title">Check Our Products</h3>
+                            {% for product in ThreeProducts %}
+                                <div class="product-widget">
+                                    <div class="product-img">
+                                        <img src="{{ asset('styles/' ~ product.getImage()) }}" alt="{{ product.name }}">
+                                    </div>
+                                    <div class="product-body">
+                                        <p class="product-category">{{ product.categorie.name }}</p>
+                                        <h3 class="product-name"><a href="{{ path('produit_details', {'id': product.id}) }}">{{ product.name }}</a></h3>
+                                        <h4 class="product-price">${{ product.price }} <del class="product-old-price">${{ product.price * 1.2|round(2) }}</del></h4>
+                                    </div>
+                                </div>
+                            {% endfor %}
+
+                        </div>
+                        <!-- /aside Widget -->
+                    </div>
+                    <!-- /ASIDE -->
+                {% endblock %}
+                <!-- STORE -->
+                {% block store %}{% endblock %}
+
+                <!-- /STORE -->
+            </div>
+            <!-- /row -->
+        </div>
+        <!-- /container -->
+    </div>
+    <!-- /SECTION -->
 {% endblock %}
 
 {% block footer %}
-{% if showFooter is not defined or showFooter %}
-    {% include 'fragments/footer.html.twig' %}
-{% endif %}
+    {% if showFooter is not defined or showFooter %}
+        {% include 'fragments/footer.html.twig' %}
+    {% endif %}
 {% endblock %}
 
-    <!-- jQuery Plugins -->
-    <script src="{{ asset('styles/js/jquery.min.js') }}"></script>
-    <script src="{{ asset('styles/js/bootstrap.min.js') }}"></script>
-    <script src="{{ asset('styles/js/slick.min.js') }}"></script>
-    <script src="{{ asset('styles/js/nouislider.min.js') }}"></script>
-    <script src="{{ asset('styles/js/jquery.zoom.min.js') }}"></script>
-    <script src="{{ asset('styles/js/main.js') }}"></script>
+<!-- jQuery Plugins -->
+<script src="{{ asset('styles/js/jquery.min.js') }}"></script>
+<script src="{{ asset('styles/js/bootstrap.min.js') }}"></script>
+<script src="{{ asset('styles/js/slick.min.js') }}"></script>
+<script src="{{ asset('styles/js/nouislider.min.js') }}"></script>
+<script src="{{ asset('styles/js/jquery.zoom.min.js') }}"></script>
+<script src="{{ asset('styles/js/main.js') }}"></script>
 
 
 
 
-    <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            const checkboxes = document.querySelectorAll('#category-filter input[type="checkbox"]');
-            const filterButton = document.getElementById('apply-filter-btn');
-            const priceMinInput = document.getElementById('price-min');
-            const priceMaxInput = document.getElementById('price-max');
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const checkboxes = document.querySelectorAll('#category-filter input[type="checkbox"]');
+        const filterButton = document.getElementById('apply-filter-btn');
+        const priceMinInput = document.getElementById('price-min');
+        const priceMaxInput = document.getElementById('price-max');
 
 
-            filterButton.addEventListener('click', () => {
-                const selectedCategories = Array.from(checkboxes)
-                    .filter(cb => cb.checked)
-                    .map(cb => cb.value);
+        filterButton.addEventListener('click', () => {
+            const selectedCategories = Array.from(checkboxes)
+                .filter(cb => cb.checked)
+                .map(cb => cb.value);
 
-                if (selectedCategories.length > 0) {
-                    const queryString = selectedCategories.join(',');
-                    window.location.href = `/index/multiple/${queryString}/${priceMinInput.value}/${priceMaxInput.value}`;
-                } else {
-                    // Redirect to all products if no categories selected
-                    window.location.href = `/index/multiple/all/${priceMinInput.value}/${priceMaxInput.value}`;
-                }
-            });
+            if (selectedCategories.length > 0) {
+                const queryString = selectedCategories.join(',');
+                window.location.href = `/index/multiple/${queryString}/${priceMinInput.value}/${priceMaxInput.value}`;
+            } else {
+                // Redirect to all products if no categories selected
+                window.location.href = `/index/multiple/all/${priceMinInput.value}/${priceMaxInput.value}`;
+            }
         });
-    </script>
+    });
+</script>
 
 
 <script>
