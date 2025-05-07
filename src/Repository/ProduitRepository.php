@@ -33,19 +33,19 @@ class ProduitRepository extends ServiceEntityRepository
         }
 
 
-    /**
-     * @return Produit[] Returns an array of Produit objects
-     */
-    public function findByMultipleCategories(array $categories): array
-    {
-        return $this->createQueryBuilder('p')
-            ->join('p.categorie', 'c')
-            ->andWhere('c.name IN (:categories)')
-            ->setParameter('categories', $categories)
-            ->orderBy('p.id', 'ASC')
-            ->getQuery()
-            ->getResult();
-    }
+//    /**
+//     * @return Produit[] Returns an array of Produit objects
+//     */
+//    public function findByMultipleCategories(array $categories): array
+//    {
+//        return $this->createQueryBuilder('p')
+//            ->join('p.categorie', 'c')
+//            ->andWhere('c.name IN (:categories)')
+//            ->setParameter('categories', $categories)
+//            ->orderBy('p.id', 'ASC')
+//            ->getQuery()
+//            ->getResult();
+//    }
 
     public function countByCategory(string $category): int
     {
@@ -81,16 +81,29 @@ class ProduitRepository extends ServiceEntityRepository
             ->getResult();
     }
 
-    public function findByCategoriesAndLimit(string $categoriesString, int $limit, int $offset): array
+    public function findByFilterAndLimit(string $categoriesString, int $limit, int $offset, float $min, float $max ): array
     {
         $categories = array_map('trim', explode(',', $categoriesString));
 
         return $this->createQueryBuilder('p')
             ->join('p.categorie', 'c')
             ->where('c.name IN (:categories)')
+            ->andWhere('p.price BETWEEN :min AND :max')
             ->setParameter('categories', $categories)
+            ->setParameter('min', $min)
+            ->setParameter('max', $max)
             ->setMaxResults($limit)
             ->setFirstResult($offset)
+            ->getQuery()
+            ->getResult();
+    }
+    public function findByPriceRange( float $min, float $max ): array
+    {
+
+        return $this->createQueryBuilder('p')
+            ->Where('p.price BETWEEN :min AND :max')
+            ->setParameter('min', $min)
+            ->setParameter('max', $max)
             ->getQuery()
             ->getResult();
     }

@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Service\IndexService;
+use phpDocumentor\Reflection\Types\Integer;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -37,13 +38,13 @@ final class IndexController extends AbstractController
         ]);
     }
 
-    #[Route('/index/multiple/{categories}', name: 'app_index_multiple_categories')]
-    public function indexParMultipleCategories(string $categories, Request $request): Response
+    #[Route('/index/multiple/{categories}/{PriceMin}/{PriceMax}', name: 'app_index_multiple_categories')]
+    public function indexParMultipleCategories(float $PriceMin,float $PriceMax,string $categories, Request $request): Response
     {
         $page = max(1, $request->query->getInt('page', 1));
         $limit = $request->query->getInt('limit', 10);
 
-        $data = $this->indexService->getPaginatedProductsByCategories($categories, $page, $limit);
+        $data = $this->indexService->getPaginatedProductsByFilter($categories, $page, $limit,$PriceMin, $PriceMax);
 
         return $this->render('index.html.twig', [
             'produits' => $data['produits'],

@@ -3,6 +3,7 @@
 namespace App\Service;
 
 use App\Repository\ProduitRepository;
+use phpDocumentor\Reflection\Types\Integer;
 
 class IndexService
 {
@@ -30,15 +31,15 @@ class IndexService
         ];
     }
 
-    public function getPaginatedProductsByCategories(string $categories, int $page, int $limit): array
+    public function getPaginatedProductsByFilter(string $categories, int $page, int $limit,float $min, float $max): array
     {
-        if ($categories) {
+        if ($categories!=='all') {
             $totalProducts = $this->produitRepository->countByCategories($categories);
-            $produits = $this->produitRepository->findByCategoriesAndLimit($categories, $limit, ($page - 1) * $limit);
+            $produits = $this->produitRepository->findByFilterAndLimit($categories, $limit, ($page - 1) * $limit, $min, $max);
         } else {
             $totalProducts = $this->produitRepository->count([]);
-            $produits = $this->produitRepository->findBy([], [], $limit, ($page - 1) * $limit);
-        }
+            $produits=$this->produitRepository->findByPriceRange($min, $max);
+                    }
 
         return [
             'produits' => $produits,
