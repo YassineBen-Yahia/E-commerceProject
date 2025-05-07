@@ -1,0 +1,27 @@
+{% extends 'base.html.twig' %}
+
+{% block header %}
+    {% include 'admin_fragments/header.html.twig' %}
+    {% include 'admin_fragments/navigation.html.twig' with {'role': "home"} %}
+{% endblock %}
+
+
+{% block body %}
+<div class="container mt-4">
+    <div class="container mt-4">
+        {% for type, messages in app.flashes %}
+            {% for message in messages %}
+                <div class="alert alert-{{ type }}">
+                    {{ message }}
+                </div>
+            {% endfor %}
+        {% endfor %}
+    </div>
+    <h1>Home</h1>
+    <h5>Welcome to admin space</h5>
+</div>
+{% endblock %}
+
+{% block footer %}
+    {% include 'admin_fragments/footer.html.twig' %}
+{% endblock %}

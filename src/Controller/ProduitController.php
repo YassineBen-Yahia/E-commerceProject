@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\Categorie;
 use App\Entity\Produit;
 use App\Form\AjoutProduitForm;
 use Doctrine\ORM\EntityManagerInterface;
@@ -58,15 +59,19 @@ final class ProduitController extends AbstractController
                 if ($categorie) {
                     $categorie->addProduit($produit);
                 }
+                $this->addFlash('success', "Produit d'id: " . $produit->getId() . " a été ajouté avec succès");
+            }else{
+                $this->addFlash('success', "Produit d'id: " . $produit->getId() . " a été modifié avec succès");
             }
+
 
             $entityManager->persist($produit);
             $entityManager->flush();
 
-            return $this->redirectToRoute('app_create_produit');
+            return $this->redirectToRoute('produit.list');
         }
 
-        return $this->render('produit/index.html.twig', [
+        return $this->render('admin_view/product-form.html.twig', [
             'controller_name' => 'ProduitController',
             'form' => $form->createView(),
             'id'=> $id
@@ -78,12 +83,25 @@ final class ProduitController extends AbstractController
     {
         if ($produit) {
             $manager = $doctrine->getManager();
+            $p_id = $produit->getId();
             $manager->remove($produit);
             $manager->flush();
-            $this->addFlash('success', "Produit a été supprimée avec succès");
+            $this->addFlash('success', "Produit d'id: " . $p_id . " a été supprimé avec succès");
         }else{
             $this->addFlash('danger', "Produit inexistant . ");
         }
-        return $this->redirectToRoute('app_index');
+        return $this->redirectToRoute('produit.list');
+    }
+
+    #[Route('/produit/list', name: 'produit.list')]
+    public function listProduit(ManagerRegistry $doctrine): Response
+    {
+        $produits = $doctrine->getRepository(Produit::class)->findAll();
+        $categories = $doctrine->getRepository(Categorie::class)->findAll();
+        return $this->render('admin_view/products-list.html.twig', [
+            'controller_name' => 'ProduitController',
+            'produits' => $produits,
+            'categories' => $categories
+        ]);
     }
 }

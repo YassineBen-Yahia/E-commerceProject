@@ -17,6 +17,10 @@
   <link type="text/css" rel="stylesheet" href="{{ asset('styles/css/nouislider.min.css') }}">
   <link rel="stylesheet" href="{{ asset('styles/css/font-awesome.min.css') }}">
   <link type="text/css" rel="stylesheet" href="{{ asset('styles/css/style.css') }}">
+    <!-- DataTables CSS -->
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/dataTables.bootstrap5.min.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/buttons/2.3.0/css/buttons.bootstrap5.min.css">
+
     <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
 {#    <!--[if lt IE 9]>#}
@@ -33,7 +37,7 @@
     {% include 'fragments/header.html.twig' %}
 {% endif %}
 {% endblock %}
-
+<div class="container mt-4" style="min-height: 70vh; padding-top: 20px;">
 {% block body %}
 <!-- NAVIGATION -->
 <nav id="navigation">
@@ -230,6 +234,7 @@
 </div>
 <!-- /SECTION -->
 {% endblock %}
+</div>
 
 {% block footer %}
 {% if showFooter is not defined or showFooter %}
@@ -265,6 +270,64 @@
             });
         });
     </script>
+<!-- DataTables JS -->
+<script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+<script src="https://cdn.datatables.net/1.13.6/js/dataTables.bootstrap5.min.js"></script>
+<script src="https://cdn.datatables.net/buttons/2.3.0/js/buttons.html5.min.js"></script>
+
+<script>
+    $(document).ready(function () {
+        // Initialisation pour la table des utilisateurs
+        if ($('#usersTable').length) {
+            $('#usersTable').DataTable({
+                responsive: true,
+                language: {
+                    search: "Search:",
+                    lengthMenu: "Show _MENU_ entries",
+                    info: "Showing _START_ to _END_ of _TOTAL_ entries",
+                    paginate: {
+                        previous: "Previous",
+                        next: "Next"
+                    }
+                }
+            });
+        }
+
+        // Initialisation pour la table des produits
+        if ($('#productsTable').length) {
+            const table = $('#productsTable').DataTable({
+                responsive: true,
+                language: {
+                    search: "Search:",
+                    lengthMenu: "Show _MENU_ entries",
+                    info: "Showing _START_ to _END_ of _TOTAL_ entries",
+                    paginate: {
+                        previous: "Previous",
+                        next: "Next"
+                    }
+                }
+            });
+
+            // Handle category button clicks
+            $('.category-filter').on('click', function () {
+                const category = $(this).data('category');
+
+                // Highlight the active button
+                $('.category-filter').removeClass('btn-primary').addClass('btn-secondary');
+                $(this).removeClass('btn-secondary').addClass('btn-primary');
+
+                if (category === 'all') {
+                    table.column(2).search('').draw();
+                } else {
+                    table.column(2).search('^' + category + '$', true, false).draw(); // Regex exact match
+                }
+            });
+        }
+    });
+</script>
+
+
+
 {% block javascripts %}
 {% endblock %}
 

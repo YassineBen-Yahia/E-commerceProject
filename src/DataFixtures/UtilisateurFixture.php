@@ -13,7 +13,7 @@ class UtilisateurFixture extends Fixture
     {
         $faker = Factory::create('fr_FR');
 
-        for($i=0; $i<10;$i++){
+        for($i=0; $i<30;$i++){
             $utilisateur = new Utilisateur();
             $utilisateur->setEmail($faker->email());
             $utilisateur->setPassword($faker->password());
