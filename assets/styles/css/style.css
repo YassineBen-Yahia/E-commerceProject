@@ -2277,3 +2277,10 @@ textarea.input {
   opacity: 1;
   bottom: 0;
 }
+.product-img {
+  height: 200px; /* ou toute autre hauteur du carré */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+}

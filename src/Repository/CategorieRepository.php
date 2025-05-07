@@ -21,17 +21,17 @@ class CategorieRepository extends ServiceEntityRepository
         /**
          * @return Categorie[] Returns an array of Categorie objects
          */
-//        public function findByName($value): array
-//        {
-//            return $this->createQueryBuilder('c')
-//                ->andWhere('c.name = :val')
-//                ->setParameter('val', $value)
-//                ->orderBy('c.id', 'ASC')
-////                ->setMaxResults(10)
-//                ->getQuery()
-//                ->getResult()
-//            ;
-//        }
+        public function findByName($value): array
+        {
+            return $this->createQueryBuilder('c')
+                ->andWhere('c.name = :val')
+                ->setParameter('val', $value)
+                ->orderBy('c.id', 'ASC')
+//                ->setMaxResults(10)
+                ->getQuery()
+                ->getResult()
+            ;
+        }
 
         public function findOneById($id): ?Categorie
         {
