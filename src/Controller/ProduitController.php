@@ -13,10 +13,9 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\String\Slugger\SluggerInterface;
-#[Route('/admin')]
 final class ProduitController extends AbstractController
 {
-    #[Route('/produit/new/{id?0}', name: 'app_create_produit')]
+    #[Route('/admin/produit/new/{id?0}', name: 'app_create_produit')]
     public function createProduit(Produit $produit = null, Request $request, SluggerInterface $slugger, EntityManagerInterface $entityManager,$id): Response
     {
         $new = false;
@@ -72,7 +71,7 @@ final class ProduitController extends AbstractController
         ]);
     }
 
-    #[Route('/produit/delete/{id<\d+>}', name: 'produit.delete')]
+    #[Route('/admin/produit/delete/{id<\d+>}', name: 'produit.delete')]
     public function deleteProduit(Produit $produit = null, ManagerRegistry $doctrine): RedirectResponse
     {
         if ($produit) {
