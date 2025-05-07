@@ -12,7 +12,7 @@ services:
     App\Twig\AppExtension:
         tags: [ 'twig.extension' ]
         arguments:
-          [ '@App\Repository\ProduitRepository' ]
+          [ '@App\Repository\ProduitRepository','@App\Repository\CategorieRepository' ]
 
 
     # default configuration for services in *this* file
