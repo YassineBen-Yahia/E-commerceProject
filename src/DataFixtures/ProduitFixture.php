@@ -39,7 +39,7 @@ class ProduitFixture extends Fixture implements DependentFixtureInterface,Fixtur
                 $produit->setDescription($faker->sentence());
                 $produit->setPrice($faker->numberBetween(1000, 10000));
                 $produit->setStock($faker->numberBetween(10, 100));
-                $produit->setImage("img/product0".$i.".jpg");
+                $produit->setImage("img/product0".$i.".png");
 
 
                 $randomCategoryId = $categoryIds[array_rand($categoryIds)];

@@ -4,13 +4,17 @@
     <div id="top-header">
         <div class="container">
             <ul class="header-links pull-left">
-                <li><a href="#"><i class="fa fa-phone"></i> +021-95-51-84</a></li>
-                <li><a href="#"><i class="fa fa-envelope-o"></i> email@email.com</a></li>
-                <li><a href="#"><i class="fa fa-map-marker"></i> 1734 Stonecoal Road</a></li>
+                <li style="color: white;"><i class="fa fa-phone"></i> 85 555</li>
+                <li style="color: white;"><i class="fa fa-envelope-o"></i> echriPC@gmail.com</li>
+                <li style="color: white;"><i class="fa fa-map-marker"></i> INSAT - Centre Urbain </li>
             </ul>
             <ul class="header-links pull-right">
-                <li><a href="#"><i class="fa fa-dollar"></i> USD</a></li>
-                <li><a href="#"><i class="fa fa-user-o"></i> My Account</a></li>
+                {% if app.user is not null %}
+                    <li><a href="#"><i class="fa fa-user-o"></i> My Account</a></li>
+                    <li><a href="#"><i class="fa fa-sign-out"></i> Logout </a></li>
+                {% else %}
+                    <li><a href="/register"><i class="fa fa-user-o"></i> Register </a></li>
+                {% endif %}
             </ul>
         </div>
     </div>
@@ -36,17 +40,11 @@
                 <div class="col-md-6">
                     <div class="header-search">
                         <form>
-                            <label>
-                                <select class="input-select">
-                                    <option value="0">All Categories</option>
-                                    <option value="1">Category 01</option>
-                                    <option value="1">Category 02</option>
-                                </select>
-                            </label>
 
-                            <input class="input" placeholder="Search here">
 
-                            <button class="search-btn">Search</button>
+                           <input class="input" placeholder="Search here" style="border-radius: 20px 0 0 20px;">
+
+                            <button class="search-btn" type="button" onclick="redirectToSearch()">Search</button>
                         </form>
                     </div>
                 </div>
@@ -74,50 +72,10 @@
                                     <span>Your Cart</span>
                                 </a>
                             </a>
-                            <div class="cart-dropdown">
-                                <div class="cart-list">
-                                    <div class="product-widget">
-                                        <div class="product-img">
-                                            <img src="{{ asset('styles/img/product01.png') }}" alt="">
-                                        </div>
-                                        <div class="product-body">
-                                            <h3 class="product-name"><a href="#">product name goes here</a></h3>
-                                            <h4 class="product-price"><span class="qty">1x</span>$980.00</h4>
-                                        </div>
-                                        <button class="delete"><i class="fa fa-close"></i></button>
-                                    </div>
 
-                                    <div class="product-widget">
-                                        <div class="product-img">
-                                            <img src="{{ asset('styles/img/product02.png') }}" alt="">
-                                        </div>
-                                        <div class="product-body">
-                                            <h3 class="product-name"><a href="#">product name goes here</a></h3>
-                                            <h4 class="product-price"><span class="qty">3x</span>$980.00</h4>
-                                        </div>
-                                        <button class="delete"><i class="fa fa-close"></i></button>
-                                    </div>
-                                </div>
-                                <div class="cart-summary">
-                                    <small>3 Item(s) selected</small>
-                                    <h5>SUBTOTAL: $2940.00</h5>
-                                </div>
-                                <div class="cart-btns">
-                                    <a href="#">View Cart</a>
-                                    <a href="#">Checkout  <i class="fa fa-arrow-circle-right"></i></a>
-                                </div>
-                            </div>
                         </div>
                         <!-- /Cart -->
 
-                        <!-- Menu Toogle -->
-                        <div class="menu-toggle">
-                            <a href="#">
-                                <i class="fa fa-bars"></i>
-                                <span>Menu</span>
-                            </a>
-                        </div>
-                        <!-- /Menu Toogle -->
                     </div>
                 </div>
                 <!-- /ACCOUNT -->
@@ -127,5 +85,8 @@
         <!-- container -->
     </div>
     <!-- /MAIN HEADER -->
+
+
 </header>
 <!-- /HEADER -->
+
