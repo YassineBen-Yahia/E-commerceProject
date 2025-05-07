@@ -12,7 +12,7 @@ class CategorieFixture extends Fixture
     private array $categories = [
         'laptop',
         'smartphone',
-        'accessoires',
+        'accessoire',
         'smartwatch',
         'ordinateur',
     ];
@@ -25,7 +25,7 @@ class CategorieFixture extends Fixture
             $manager->persist($categorie);
 
             // On ajoute une référence pour chaque catégorie
-            $this->addReference('categorie_' . $index, $categorie);
+            $this->addReference($nom, $categorie);
         }
 
         $manager->flush();
