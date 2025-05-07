@@ -11,8 +11,10 @@
         <div class="row">
             <div class="col-md-6">
                 <div class="product-image-container">
-                    <img src="{{ asset('styles/' ~ produit.image) }}" alt="{{ produit.name }}" class="img-fluid"
-                         onerror="this.src='{{ asset('styles/img/laptop1.png') }}'">
+                    <img src="{{ asset('styles/' ~ produit.getImage()) }}"
+                         alt="{{ produit.name }}"
+                         class="img-fluid"
+                         style="width: 220px; height: 220px; object-fit: contain;">
                 </div>
             </div>
 
