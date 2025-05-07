@@ -19,13 +19,14 @@ final class IndexController extends AbstractController
         $this->indexService = $indexService;
     }
 
-    #[Route('/index/{category?}', name: 'app_index')]
-    public function index(Request $request, ?string $category = null): Response
+    #[Route('/index/{category?}/{sort?}', name: 'app_index')]
+    public function index(Request $request, ?string $category = null,?string $sort="ASC"): Response
     {
         $page = max(1, $request->query->getInt('page', 1));
         $limit = $request->query->getInt('limit', 20);
 
-        $data = $this->indexService->getPaginatedProducts($category, $page, $limit);
+        $sort=$request->query->get('sort','ASC');
+        $data = $this->indexService->getPaginatedProducts($category, $page, $limit,$sort);
 
         return $this->render('index.html.twig', [
             'produits' => $data['produits'],
@@ -34,16 +35,18 @@ final class IndexController extends AbstractController
             'limit' => $limit,
             'totalProducts' => $data['totalProducts'],
             'totalPages' => $data['totalPages'],
+            'sort' => $sort ?? 'ASC',
         ]);
     }
 
-    #[Route('/index/multiple/{categories}/{PriceMin}/{PriceMax}', name: 'app_index_multiple_categories')]
-    public function indexParMultipleCategories(float $PriceMin,float $PriceMax,string $categories, Request $request): Response
+    #[Route('/index/multiple/{categories}/{PriceMin}/{PriceMax}/{sort?}', name: 'app_index_multiple_categories')]
+    public function indexParMultipleCategories(float $PriceMin,float $PriceMax,string $categories, Request $request, ?string $sort="ASC"): Response
     {
         $page = max(1, $request->query->getInt('page', 1));
         $limit = $request->query->getInt('limit', 10);
+        $sort=$request->query->get('sort','ASC');
 
-        $data = $this->indexService->getPaginatedProductsByFilter($categories, $page, $limit,$PriceMin, $PriceMax);
+        $data = $this->indexService->getPaginatedProductsByFilter($categories, $page, $limit,$PriceMin, $PriceMax,$sort);
 
         return $this->render('index.html.twig', [
             'produits' => $data['produits'],
@@ -52,15 +55,17 @@ final class IndexController extends AbstractController
             'limit' => $limit,
             'totalProducts' => $data['totalProducts'],
             'totalPages' => $data['totalPages'],
+            'sort' => $sort ?? 'ASC',
         ]);
     }
-    #[Route('/index/search/{search}', name: 'app_index_search')]
-    public function indexParSearch(string $search, Request $request): Response
+    #[Route('/index/search/{search}/{sort?}', name: 'app_index_search')]
+    public function indexParSearch(string $search, Request $request,?string $sort="ASC"): Response
     {
+        $sort=$request->query->get('sort','ASC');
         $page = max(1, $request->query->getInt('page', 1));
         $limit = $request->query->getInt('limit', 10);
 
-        $data = $this->indexService->getPaginatedProductsBySearch($search, $page, $limit);
+        $data = $this->indexService->getPaginatedProductsBySearch($search, $page, $limit,$sort);
 
         return $this->render('index.html.twig', [
             'produits' => $data['produits'],
@@ -69,6 +74,7 @@ final class IndexController extends AbstractController
             'limit' => $limit,
             'totalProducts' => $data['totalProducts'],
             'totalPages' => $data['totalPages'],
+            'sort' => $sort ?? 'ASC',
         ]);
 
     }

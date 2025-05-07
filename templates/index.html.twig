@@ -6,10 +6,10 @@
     <div class="store-filter clearfix">
         <div class="store-sort">
             <label>
-                Sort By:
-                <select class="input-select">
-                    <option value="0">Popular</option>
-                    <option value="1">Position</option>
+                Sort By Price:
+                <select class="input-select" id="sort-by-price">
+                    <option value="ASC" {% if sort == 'ASC' or sort is not defined %}selected{% endif %}>Ascending</option>
+                    <option value="DESC" {% if sort == 'DESC' %}selected{% endif %}>Descending</option>
                 </select>
             </label>
 
@@ -82,7 +82,6 @@
                         </button>
                     </div>
                 </div>
-
             </div>
         </div>
         <!-- /product -->
@@ -147,4 +146,14 @@
         document.getElementById('grid-view').classList.remove('active');
     });
 </script>
+
+    <script>
+        document.getElementById('sort-by-price').addEventListener('change', function() {
+            const sort = this.value;
+            const currentUrl = new URL(window.location.href);
+            currentUrl.searchParams.set('sort', sort);
+            currentUrl.searchParams.set('page', 1); // Réinitialiser à la première page
+            window.location.href = currentUrl.toString();
+        });
+    </script>
 {% endblock %}
