@@ -54,7 +54,7 @@
                 <div class="product-body">
                     <p class="product-category">{{ produit.categorie.getName() }}</p>
                     <h3 class="product-name"><a href="#">{{ produit.name }}</a></h3>
-                    <h4 class="product-price">$ {{ produit.price}} <del class="product-old-price">${{ (produit.price*100/(100-random(5,30)))|number_format(2) }}</del></h4>
+                    <h4 class="product-price">$ {{ produit.price}} <del class="product-old-price">${{ produit.price * 1.2|round(2)}}</del></h4>
                     <div class="product-rating">
                         <i class="fa fa-star"></i>
                         <i class="fa fa-star"></i>
@@ -118,6 +118,8 @@
 </div>
 {% endblock %}
 {% block javascripts %}
+
+
 <script>
     document.getElementById('products-per-page').addEventListener('change', function() {
         const limit = this.value;
@@ -127,4 +129,6 @@
         window.location.href = currentUrl.toString();
     });
 </script>
+
+
 {% endblock %}
