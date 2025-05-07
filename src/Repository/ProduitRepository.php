@@ -69,7 +69,7 @@ class ProduitRepository extends ServiceEntityRepository
             ->getQuery()
             ->getSingleScalarResult();
     }
-    public function findByCategoryAndLimit(string $category, int $limit, int $offset): array
+    public function findByCategoryAndLimit(string $category, int $limit, int $offset,string $sort): array
     {
         return $this->createQueryBuilder('p')
             ->join('p.categorie', 'c')
@@ -77,11 +77,12 @@ class ProduitRepository extends ServiceEntityRepository
             ->setParameter('category', $category)
             ->setMaxResults($limit)
             ->setFirstResult($offset)
+            ->orderBy("p.price", $sort)
             ->getQuery()
             ->getResult();
     }
 
-    public function findByFilterAndLimit(string $categoriesString, int $limit, int $offset, float $min, float $max ): array
+    public function findByFilterAndLimit(string $categoriesString, int $limit, int $offset, float $min, float $max ,string $sort): array
     {
         $categories = array_map('trim', explode(',', $categoriesString));
 
@@ -94,21 +95,23 @@ class ProduitRepository extends ServiceEntityRepository
             ->setParameter('max', $max)
             ->setMaxResults($limit)
             ->setFirstResult($offset)
+            ->orderBy("p.price", $sort)
             ->getQuery()
             ->getResult();
     }
-    public function findByPriceRange( float $min, float $max ): array
+    public function findByPriceRange( float $min, float $max,string $sort ): array
     {
 
         return $this->createQueryBuilder('p')
             ->Where('p.price BETWEEN :min AND :max')
             ->setParameter('min', $min)
             ->setParameter('max', $max)
+            ->orderBy("p.price", $sort)
             ->getQuery()
             ->getResult();
     }
 
-    public function  findBySearch(string $search, int $limit, int $offset): array
+    public function  findBySearch(string $search, int $limit, int $offset,string $sort): array
     {
         return $this->createQueryBuilder('p')
             ->join('p.categorie', 'c')
@@ -118,6 +121,7 @@ class ProduitRepository extends ServiceEntityRepository
             ->setParameter('search', '%'.$search.'%')
             ->setMaxResults($limit)
             ->setFirstResult($offset)
+            ->orderBy("p.price", $sort)
             ->getQuery()
             ->getResult();
 
