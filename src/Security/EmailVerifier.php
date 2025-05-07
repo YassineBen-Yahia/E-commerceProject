@@ -24,8 +24,7 @@ class EmailVerifier
         $signatureComponents = $this->verifyEmailHelper->generateSignature(
             $verifyEmailRouteName,
             (string) $user->getId(),
-            (string) $user->getEmail(),
-            ['expires' => 600]
+            (string) $user->getEmail()
         );
 
         $context = $email->getContext();
