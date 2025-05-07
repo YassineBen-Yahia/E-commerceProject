@@ -37,7 +37,7 @@ class AdminProfileFixture extends Fixture
             $utilisateur->setRoles(['ROLE_ADMIN']);
 
             // Générer un mot de passe sécurisé de 8 caractères
-            $password = $faker->regexify('[A-Z][a-z][0-9][!@#$%&]{4}');
+            $password = $faker->regexify('[A-Z][a-z]{4}[!@&][0-9]{2}');
             $utilisateur->setPassword($password);
 
             $adminProfile = new AdminProfile();
