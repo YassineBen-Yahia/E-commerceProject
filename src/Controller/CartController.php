@@ -22,6 +22,7 @@ final class CartController extends AbstractController
     #[Route('/cart', name: 'app_cart')]
     public function index(): Response
     {
+        $this->denyAccessUnlessGranted('ROLE_USER');
         // Assuming every registered user has a cart
         $total= 0;
         $clientProfile = $this->clientProfileRepository->findOneByUser($this->getUser());
@@ -41,7 +42,7 @@ final class CartController extends AbstractController
     #[Route('/RemoveFromCart/{id}', name: 'app_cart_remove_item')]
     public function removeItem(CartItem $cartItem, EntityManagerInterface $entityManager): Response
     {
-
+        $this->denyAccessUnlessGranted('ROLE_USER');
         $clientProfile = $this->clientProfileRepository->findOneByUser($this->getUser());
         $cart = $clientProfile->getCart();
         if (!$cart) {

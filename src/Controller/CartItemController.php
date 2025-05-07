@@ -23,6 +23,7 @@ final class CartItemController extends AbstractController
     public function index( Produit $produit=null): Response
     {
 //
+        $this->denyAccessUnlessGranted('ROLE_USER');
         return $this->render('cart_item/index.html.twig', [
             'controller_name' => 'CartItemController',
             'produit' => $produit,
@@ -31,6 +32,7 @@ final class CartItemController extends AbstractController
     #[Route('/Add_CartItem/{id}', name: 'app_cart_add_item')]
     public function addToCart( Produit $produit, Request $request,EntityManagerInterface $entityManager): Response
     {
+        $this->denyAccessUnlessGranted('ROLE_USER');
         $quantity = $request->request->get('quantity');
         $cartItem = new CartItem();
         $cartItem->setUtilisateur($this->getUser());
@@ -61,6 +63,7 @@ final class CartItemController extends AbstractController
     #[Route('/update-cart-item/{id}', name: 'app_cart_update_item')]
     public function updateCartItem(CartItem $cartItem, Request $request, EntityManagerInterface $entityManager): Response
     {
+        $this->denyAccessUnlessGranted('ROLE_USER');
         $newQuantity = (int) $request->request->get('quantity');
         $oldQuantity = $cartItem->getQuantité();
 
@@ -103,6 +106,7 @@ final class CartItemController extends AbstractController
     public function indexUpdate( CartItem $cartItem=null): Response
     {
 //
+        $this->denyAccessUnlessGranted('ROLE_USER');
         return $this->render('cart_item/update.html.twig', [
             'controller_name' => 'CartItemController',
             'cartItem' => $cartItem,

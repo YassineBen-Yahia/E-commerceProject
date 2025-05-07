@@ -19,6 +19,7 @@ final class CheckoutController extends AbstractController
 
     public function index(Cart $cart): Response
     {
+        $this->denyAccessUnlessGranted('ROLE_USER');
         if (!$cart) {
             $this->addFlash('error', 'No cart found for the current user.');
             return $this->redirectToRoute('app_index');
@@ -42,6 +43,7 @@ final class CheckoutController extends AbstractController
 
     public function placeOrder(Cart $cart,EntityManagerInterface $em): Response
     {
+        $this->denyAccessUnlessGranted('ROLE_USER');
         if (!$cart) {
             $this->addFlash('error', 'No cart found for the current user.');
             return $this->redirectToRoute('app_index');
