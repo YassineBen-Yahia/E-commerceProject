@@ -5,21 +5,8 @@
     {% include 'admin_fragments/navigation.html.twig' with {'role': role} %}
 {% endblock %}
 
-{% block aside %}
-    <div id="aside" class="col-md-3">
-        <!-- aside Widget -->
-        <div class="aside">
-            <div class="mt-3">
-                <button id="apply-filter-btn" class="primary-btn">Admins</button>
-                <button id="apply-filter-btn" class="primary-btn">Clients</button>
-            </div>
-        </div>
-    </div>
-
-{% endblock %}
 
 {% block body %}
-
     <div class="container mt-4">
         {% for type, messages in app.flashes %}
             {% for message in messages %}
@@ -37,13 +24,13 @@
             <h1>Users List</h1>
         {% endif %}
 
-        <table class="table table-bordered">
+        <table id="usersTable" class="table table-bordered datatable">
             <thead>
                 <tr>
                     <th>ID</th>
-                    <th>Nom</th>
+                    <th>Name</th>
                     <th>Email</th>
-                    <th>Rôle</th>
+                    <th>Role</th>
                     {% if role == 'ROLE_USER' %} <th>Actions</th>  {% endif %}
                 </tr>
             </thead>
@@ -66,7 +53,6 @@
             </tbody>
         </table>
     </div>
-
 {% endblock %}
 
 {% block footer %}

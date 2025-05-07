@@ -1,31 +1,15 @@
 <!-- NAVIGATION -->
 <nav id="navigation">
-    <!-- container -->
     <div class="container">
-        <!-- responsive-nav -->
         <div id="responsive-nav">
-            <!-- NAV -->
             <ul class="main-nav nav navbar-nav">
-                {% if role == 'ROLE_ADMIN' %}
-                    <li><a href="#">Home</a></li>
-                    <li><a href="{{ url('users.admin', {role: 'ROLE_USER'}) }}">Users List</a></li>
-                    <li><a class="active" href="{{ url('users.admin', {role: 'ROLE_ADMIN'}) }}">Admins List</a></li>
-                {% elseif role == 'ROLE_USER' %}
-                    <li><a href="#">Home</a></li>
-                    <li><a class="active" href="{{ url('users.admin', {role: 'ROLE_USER'}) }}">Users List</a></li>
-                    <li><a href="{{ url('users.admin', {role: 'ROLE_ADMIN'}) }}">Admins List</a></li>
-                {% else %}
-                    <li><a class="active"  href="#">Home</a></li>
-                    <li><a href="{{ url('users.admin', {role: 'ROLE_USER'}) }}">Users List</a></li>
-                    <li><a href="{{ url('users.admin', {role: 'ROLE_ADMIN'}) }}">Admins List</a></li>
-                {% endif %}
-
+                <li><a href="{{ url('admin.home') }}" class="{{ role == 'home' ? 'active' : '' }}">Home</a></li>
+                <li><a href="{{ url('users.admin', {role: 'ROLE_USER'}) }}" class="{{ role == 'ROLE_USER' ? 'active' : '' }}">Users List</a></li>
+                <li><a href="{{ url('users.admin', {role: 'ROLE_ADMIN'}) }}" class="{{ role == 'ROLE_ADMIN' ? 'active' : '' }}">Admins List</a></li>
+                <li><a href="{{ url('produit.list') }}" class="{{ role == 'products' ? 'active' : '' }}">Products List</a></li>
+                <li><a href="{{ url('app_create_produit') }}" class="{{ role == 'products' ? 'active' : '' }}">Add Product</a></li>
                 <li><a href="#">Statistics</a></li>
             </ul>
-            <!-- /NAV -->
         </div>
-        <!-- /responsive-nav -->
     </div>
-    <!-- /container -->
 </nav>
-<!-- /NAVIGATION -->

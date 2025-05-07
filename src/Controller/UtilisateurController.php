@@ -12,6 +12,11 @@ use Symfony\Component\Routing\Attribute\Route;
 #[Route('/admin')]
 final class UtilisateurController extends AbstractController
 {
+    #[Route('/', name: 'admin.home')]
+    public function index(): Response
+    {
+        return $this->render('admin_view/home.html.twig');
+    }
     #[Route('/users/{role?ROLE_USER}', name: 'users.admin')]
     public function usersList(ManagerRegistry $doctrine, $role): Response{
         $repository = $doctrine->getRepository(Utilisateur::class);

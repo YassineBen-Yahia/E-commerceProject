@@ -17,6 +17,10 @@
   <link type="text/css" rel="stylesheet" href="{{ asset('styles/css/nouislider.min.css') }}">
   <link rel="stylesheet" href="{{ asset('styles/css/font-awesome.min.css') }}">
   <link type="text/css" rel="stylesheet" href="{{ asset('styles/css/style.css') }}">
+    <!-- DataTables CSS -->
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/dataTables.bootstrap5.min.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/buttons/2.3.0/css/buttons.bootstrap5.min.css">
+
     <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
 {#    <!--[if lt IE 9]>#}
@@ -43,11 +47,12 @@
         <div id="responsive-nav">
             <!-- NAV -->
             <ul class="main-nav nav navbar-nav">
-                <li class="active"><a href="/index">Home</a></li>
-                {% for category in categories %}
-                <li><a href="/index/{{ category}}">{{ category|capitalize  }}</a></li>
-
-                {% endfor %}
+                <li class="active"><a href="#">Home</a></li>
+                <li><a href="/index">Categories</a></li>
+                <li><a href="/index/ordinateur">Laptops</a></li>
+                <li><a href="/index/smartphone">Smartphones</a></li>
+                <li><a href="/index/camera">Cameras</a></li>
+                <li><a href="/index/accessoire">Accessories</a></li>
             </ul>
             <!-- /NAV -->
         </div>
@@ -65,8 +70,8 @@
         <div class="row">
             <div class="col-md-12">
                 <ul class="breadcrumb-tree">
-                    <li><a href="/index">Home</a></li>
-                    <li>{% block emplacement %}{% endblock %}</li>
+                    <li><a href="#">Home</a></li>
+                    <li><a href="#">{% block emplacement %}{% endblock %}</a></li>
 
                 </ul>
             </div>
@@ -90,65 +95,129 @@
                 <div class="aside">
                     <h3 class="aside-title">Categories</h3>
                    <div class="checkbox-filter" id="category-filter">
-                       {% for category in categories %}
-                           <div class="input-checkbox">
-                               <input type="checkbox" id="category-{{loop.index }}" value="{{ category }}">
-                               <label for="category-{{loop.index }}">
-                                   <span></span>
-                                   {{ category|capitalize }}
-                                   <small>(120)</small>
-                               </label>
-                           </div>
-                        {% endfor %}
 
+                       <div class="input-checkbox">
+                           <input type="checkbox" id="category-1" value="ordinateur">
+                           <label for="category-1">
+                               <span></span>
+                               Laptops
+                               <small>(120)</small>
+                           </label>
+                       </div>
+
+                       <div class="input-checkbox">
+                           <input type="checkbox" id="category-2" value="smartphones">
+                           <label for="category-2">
+                               <span></span>
+                               Smartphones
+                               <small>(740)</small>
+                           </label>
+                       </div>
+
+                       <div class="input-checkbox">
+                           <input type="checkbox" id="category-3" value="cameras">
+                           <label for="category-3">
+                               <span></span>
+                               Cameras
+                               <small>(1450)</small>
+                           </label>
+                       </div>
+
+                       <div class="input-checkbox">
+                           <input type="checkbox" id="category-4" value="accessories">
+                           <label for="category-4">
+                               <span></span>
+                               Accessories
+                               <small>(578)</small>
+                           </label>
+                       </div>
+
+                       <div class="input-checkbox">
+                           <input type="checkbox" id="category-5" value="laptops">
+                           <label for="category-5">
+                               <span></span>
+                               Laptops
+                               <small>(120)</small>
+                           </label>
+                       </div>
+
+                       <div class="input-checkbox">
+                           <input type="checkbox" id="category-6" value="smartphones">
+                           <label for="category-6">
+                               <span></span>
+                               Smartphones
+                               <small>(740)</small>
+                           </label>
+                       </div>
                    </div>
-
+                    <div class="mt-3">
+                        <button id="apply-filter-btn" class="primary-btn">Apply Filter</button>
+                    </div>
                 </div>
 
                 <!-- aside Widget -->
                 <div class="aside">
                     <h3 class="aside-title">Price</h3>
                     <div class="price-filter">
-                        <div id="price-slider" ></div>
+                        <div id="price-slider"></div>
                         <div class="input-number price-min">
-                            <label for="price-min"><input id="price-min" type="number" max="9999.0"></label>
-
+                            <label for="price-min"><input id="price-min" type="number"></label>
+                            <span class="qty-up">+</span>
+                            <span class="qty-down">-</span>
                         </div>
                         <span>-</span>
-                        <div class="input-number price-max" >
-                            <label for="price-max"><input id="price-max" type="number" max="9999.0"></label>
-
+                        <div class="input-number price-max">
+                            <label for="price-max"></label><input id="price-max" type="number">
+                            <span class="qty-up">+</span>
+                            <span class="qty-down">-</span>
                         </div>
                     </div>
                 </div>
                 <!-- /aside Widget -->
 
 
-                <div class="mt-3">
-                    <button id="apply-filter-btn" class="primary-btn">Apply Filter</button>
-                </div>
 
 
+                        <!-- Add filter button here -->
 
 
                 <!-- /aside Widget -->
 
                 <!-- aside Widget -->
                 <div class="aside">
-                    <h3 class="aside-title">Check Our Products</h3>
-                    {% for product in ThreeProducts %}
-                        <div class="product-widget">
-                            <div class="product-img">
-                                <img src="{{ asset('styles/' ~ product.getImage()) }}" alt="{{ product.name }}">
-                            </div>
-                            <div class="product-body">
-                                <p class="product-category">{{ product.categorie.name }}</p>
-                                <h3 class="product-name"><a href="{{ path('produit_details', {'id': product.id}) }}">{{ product.name }}</a></h3>
-                                <h4 class="product-price">${{ product.price }} <del class="product-old-price">${{ product.price * 1.2|round(2) }}</del></h4>
-                            </div>
+                    <h3 class="aside-title">Top selling</h3>
+                    <div class="product-widget">
+                        <div class="product-img">
+                            <img src="{{ asset('styles/img/product01.png') }}" alt="">
                         </div>
-                    {% endfor %}
+                        <div class="product-body">
+                            <p class="product-category">Category</p>
+                            <h3 class="product-name"><a href="#">product name goes here</a></h3>
+                            <h4 class="product-price">$980.00 <del class="product-old-price">$990.00</del></h4>
+                        </div>
+                    </div>
 
+                    <div class="product-widget">
+                        <div class="product-img">
+                            <img src="{{ asset('styles/img/product02.png') }}" alt="">
+                        </div>
+                        <div class="product-body">
+                            <p class="product-category">Category</p>
+                            <h3 class="product-name"><a href="#">product name goes here</a></h3>
+                            <h4 class="product-price">$980.00 <del class="product-old-price">$990.00</del></h4>
+                        </div>
+                    </div>
+
+                    <div class="product-widget">
+                        <div class="product-img">
+                            <img src="{{ asset('styles/img/product01.png') }}" alt="">
+                        </div>
+                        <div class="product-body">
+                            <p class="product-category">Category</p>
+                            <h3 class="product-name"><a href="#">product name goes here</a></h3>
+                            <h4 class="product-price">$980.00 <del class="product-old-price">$990.00</del></h4>
+                        </div>
+                    </div>
                 </div>
                 <!-- /aside Widget -->
             </div>
@@ -180,16 +249,10 @@
     <script src="{{ asset('styles/js/jquery.zoom.min.js') }}"></script>
     <script src="{{ asset('styles/js/main.js') }}"></script>
 
-
-
-
     <script>
         document.addEventListener('DOMContentLoaded', () => {
             const checkboxes = document.querySelectorAll('#category-filter input[type="checkbox"]');
             const filterButton = document.getElementById('apply-filter-btn');
-            const priceMinInput = document.getElementById('price-min');
-            const priceMaxInput = document.getElementById('price-max');
-
 
             filterButton.addEventListener('click', () => {
                 const selectedCategories = Array.from(checkboxes)
@@ -198,28 +261,14 @@
 
                 if (selectedCategories.length > 0) {
                     const queryString = selectedCategories.join(',');
-                    window.location.href = `/index/multiple/${queryString}/${priceMinInput.value}/${priceMaxInput.value}`;
+                    window.location.href = `/index/multiple/${queryString}`;
                 } else {
                     // Redirect to all products if no categories selected
-                    window.location.href = `/index/multiple/all/${priceMinInput.value}/${priceMaxInput.value}`;
+                    window.location.href = '/index';
                 }
             });
         });
     </script>
-
-
-<script>
-    function redirectToSearch() {
-        const searchInput = document.querySelector('.header-search .input').value; // Reset to first page when searching
-
-        if (searchInput.trim() !== '') {
-            window.location.href = `/index/search/${encodeURIComponent(searchInput)}`;
-        }
-    }
-</script>
-
-
-
 {% block javascripts %}
 {% endblock %}
 
