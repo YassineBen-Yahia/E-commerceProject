@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\AdminProfile;
 use App\Entity\Utilisateur;
+use App\Service\UtilisateurService;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
@@ -12,15 +13,15 @@ use Symfony\Component\Routing\Attribute\Route;
 #[Route('/admin')]
 final class UtilisateurController extends AbstractController
 {
-    #[Route('/', name: 'admin.home')]
-    public function index(): Response
-    {
-        return $this->render('admin_view/home.html.twig');
+
+    private UtilisateurService $utilisateurService;
+    public function __construct(UtilisateurService $utilisateurService){
+        $this->utilisateurService = $utilisateurService;
     }
     #[Route('/users/{role?ROLE_USER}', name: 'users.admin')]
     public function usersList(ManagerRegistry $doctrine, $role): Response{
-        $repository = $doctrine->getRepository(Utilisateur::class);
-        $users = $repository->findByRole($role);
+
+        $users = $this->utilisateurService->getUsersByRole($role);
 
         return $this->render('admin_view/users-list.html.twig', [
             'users' => $users,
@@ -32,10 +33,6 @@ final class UtilisateurController extends AbstractController
     #[Route('/users/makeAdmin/{id<\d+>}', name: 'make_admin')]
     public function makeAdmin(Utilisateur $utilisateur = null, ManagerRegistry $doctrine,$id): Response
     {
-        $entityManager = $doctrine->getManager();
-        $repository = $doctrine->getRepository(Utilisateur::class);
-
-
         if (!$utilisateur) {
             $this->addFlash('danger', "Utilisateur introuvable.");
             return $this->redirectToRoute('users.admin', ['role' => 'ROLE_USER']);
@@ -43,14 +40,7 @@ final class UtilisateurController extends AbstractController
 
         $roles = $utilisateur->getRoles();
         if (!in_array('ROLE_ADMIN', $roles)) {
-            $utilisateur->setRoles(['ROLE_ADMIN']);
-
-            $adminProfile = new AdminProfile();
-            $adminProfile->setUtilisateur($utilisateur);
-
-            $entityManager->persist($utilisateur);
-            $entityManager->persist($adminProfile);
-            $entityManager->flush();
+            $this->utilisateurService->promoteUserToAdmin($utilisateur);
 
             $this->addFlash('success', "L'utilisateur a été promu administrateur avec succès.");
         } else {
