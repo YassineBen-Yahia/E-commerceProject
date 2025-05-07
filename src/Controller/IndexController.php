@@ -3,7 +3,6 @@
 namespace App\Controller;
 
 use App\Service\IndexService;
-use phpDocumentor\Reflection\Types\Integer;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -54,5 +53,23 @@ final class IndexController extends AbstractController
             'totalProducts' => $data['totalProducts'],
             'totalPages' => $data['totalPages'],
         ]);
+    }
+    #[Route('/index/search/{search}', name: 'app_index_search')]
+    public function indexParSearch(string $search, Request $request): Response
+    {
+        $page = max(1, $request->query->getInt('page', 1));
+        $limit = $request->query->getInt('limit', 10);
+
+        $data = $this->indexService->getPaginatedProductsBySearch($search, $page, $limit);
+
+        return $this->render('index.html.twig', [
+            'produits' => $data['produits'],
+            'category' => $search,
+            'page' => $page,
+            'limit' => $limit,
+            'totalProducts' => $data['totalProducts'],
+            'totalPages' => $data['totalPages'],
+        ]);
+
     }
 }

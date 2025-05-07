@@ -107,4 +107,32 @@ class ProduitRepository extends ServiceEntityRepository
             ->getQuery()
             ->getResult();
     }
+
+    public function  findBySearch(string $search, int $limit, int $offset): array
+    {
+        return $this->createQueryBuilder('p')
+            ->join('p.categorie', 'c')
+            ->where('p.name LIKE :search')
+            ->orWhere('p.description LIKE :search')
+            ->orWhere('c.name LIKE :search')
+            ->setParameter('search', '%'.$search.'%')
+            ->setMaxResults($limit)
+            ->setFirstResult($offset)
+            ->getQuery()
+            ->getResult();
+
+    }
+    public function countBySearch(string $search): int
+    {
+
+        return $this->createQueryBuilder('p')
+            ->join('p.categorie', 'c')
+            ->select('COUNT(p.id)')
+            ->where('p.name LIKE :search')
+            ->orWhere('p.description LIKE :search')
+            ->orWhere('c.name LIKE :search')
+            ->setParameter('search', '%'.$search.'%')
+            ->getQuery()
+            ->getSingleScalarResult();
+    }
 }

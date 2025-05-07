@@ -47,4 +47,16 @@ class IndexService
             'totalPages' => ceil($totalProducts / $limit)
         ];
     }
+
+    public function getPaginatedProductsBySearch(string $search, int $page, int $limit): array
+    {
+        $totalProducts = $this->produitRepository->countBySearch($search);
+        $produits = $this->produitRepository->findBySearch($search, $limit, ($page - 1) * $limit);
+
+        return [
+            'produits' => $produits,
+            'totalProducts' => $totalProducts,
+            'totalPages' => ceil($totalProducts / $limit)
+        ];
+    }
 }

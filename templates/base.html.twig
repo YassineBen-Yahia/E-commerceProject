@@ -251,6 +251,16 @@
     </script>
 
 
+<script>
+    function redirectToSearch() {
+        const searchInput = document.querySelector('.header-search .input').value;
+        if (searchInput.trim() !== '') {
+            window.location.href = `/index/search/${encodeURIComponent(searchInput)}`;
+        }
+    }
+</script>
+
+
 
 {% block javascripts %}
 {% endblock %}
