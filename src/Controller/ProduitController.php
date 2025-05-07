@@ -91,7 +91,7 @@ final class ProduitController extends AbstractController
         return $this->redirectToRoute('produit.list');
     }
 
-    #[Route('/produit/list', name: 'produit.list')]
+    #[Route('/admin/produit/list', name: 'produit.list')]
     public function listProduit(ManagerRegistry $doctrine): Response
     {
         $produits = $doctrine->getRepository(Produit::class)->findAll();

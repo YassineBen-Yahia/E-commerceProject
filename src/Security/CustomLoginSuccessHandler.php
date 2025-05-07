@@ -21,7 +21,7 @@ class CustomLoginSuccessHandler implements AuthenticationSuccessHandlerInterface
     {
         $roles = $token->getUser()->getRoles();
         if (in_array('ROLE_ADMIN', $roles, true)) {
-            return new RedirectResponse($this->router->generate('app_admin'));
+            return new RedirectResponse($this->router->generate('admin.home'));
         }
         return new RedirectResponse($this->router->generate('app_index'));
     }
