@@ -22,6 +22,7 @@ final class CartItemController extends AbstractController
     public function index( Produit $produit=null): Response
     {
 //
+        $this->denyAccessUnlessGranted('ROLE_USER');
         return $this->render('cart_item/index.html.twig', [
             'controller_name' => 'CartItemController',
             'produit' => $produit,
@@ -30,8 +31,10 @@ final class CartItemController extends AbstractController
     #[Route('/Add_CartItem/{id}', name: 'app_cart_add_item')]
     public function addToCart( Produit $produit, Request $request,EntityManagerInterface $entityManager): Response
     {
+        $this->denyAccessUnlessGranted('ROLE_USER');
         $quantity = $this->cartItemService->getQuantityFromRequest($request);
         $cartItem = new CartItem();
+        $cartItem->setUtilisateur($this->getUser());
 
         if ($produit) {
             $produit->setStock($produit->getStock()-$quantity);
@@ -50,6 +53,7 @@ final class CartItemController extends AbstractController
     #[Route('/update-cart-item/{id}', name: 'app_cart_update_item')]
     public function updateCartItem(CartItem $cartItem, Request $request, EntityManagerInterface $entityManager): Response
     {
+        $this->denyAccessUnlessGranted('ROLE_USER');
         $newQuantity = $this->cartItemService->getQuantityFromRequest($request);
         $oldQuantity = $cartItem->getQuantité();
 
@@ -77,6 +81,9 @@ final class CartItemController extends AbstractController
 
         $this->cartItemService->updateProductStock($produit,$newStock);
 
+        $entityManager->persist($produit);
+        $entityManager->persist($cartItem);
+        $entityManager->flush();
 
        $this->cartItemService->updateCartItemQuantity($cartItem,$newQuantity);
         $this->addFlash('success', 'Cart updated successfully.');
@@ -86,6 +93,7 @@ final class CartItemController extends AbstractController
     public function indexUpdate( CartItem $cartItem=null): Response
     {
 //
+        $this->denyAccessUnlessGranted('ROLE_USER');
         return $this->render('cart_item/update.html.twig', [
             'controller_name' => 'CartItemController',
             'cartItem' => $cartItem,

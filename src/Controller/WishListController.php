@@ -20,6 +20,7 @@ final class WishListController extends AbstractController
     #[Route('/wishList', name: 'app_wish_list')]
     public function index(): Response
     {
+        $this->denyAccessUnlessGranted('ROLE_USER');
         $user = $this->getUser();
         $userProfile = $this->clientProfileRepository->findOneByUser($user);
         $wishList = $userProfile->getWishList();
@@ -33,6 +34,7 @@ final class WishListController extends AbstractController
     #[Route('/wish/list/remove/{id}', name: 'app_wish_list_remove_item')]
     public function removeItem(Produit $produit, EntityManagerInterface $entityManager): Response
     {
+        $this->denyAccessUnlessGranted('ROLE_USER');
         $user = $this->getUser();
         $userProfile = $this->clientProfileRepository->findOneByUser($user);
         $wishList = $userProfile->getWishList();
@@ -51,6 +53,7 @@ final class WishListController extends AbstractController
     #[Route('/AddToWishlist/{id}', name: 'app_Wishlist_add_item')]
     public function addToCart( Produit $produit,EntityManagerInterface $entityManager): Response
     {
+        $this->denyAccessUnlessGranted('ROLE_USER');
         $user = $this->getUser();
         $userProfile = $this->clientProfileRepository->findOneByUser($user);
         $wishList = $userProfile->getWishList();

@@ -20,7 +20,7 @@ final class CartController extends AbstractController
     }
     #[Route('/cart', name: 'app_cart')]
     public function index(): Response
-    {
+    {$this->denyAccessUnlessGranted('ROLE_USER');
        $cart=$this->cartService->getCartByUser($this->getUser());
 
         return $this->render('cart/index.html.twig', [
@@ -32,12 +32,20 @@ final class CartController extends AbstractController
     #[Route('/RemoveFromCart/{id}', name: 'app_cart_remove_item')]
     public function removeItem(CartItem $cartItem, EntityManagerInterface $entityManager): Response
     {
+        $this->denyAccessUnlessGranted('ROLE_USER');
         $cart=$this->cartService->getCartByUser($this->getUser());
         if (!$cart) {
             $this->addFlash('error', 'No cart found for the current user.');
             return $this->redirectToRoute('app_index');
         }
-        $this->cartService->removeCartItem($cart,$cartItem);
+
+
+        $cart->getCartItems()->removeElement($cartItem);
+        $entityManager->remove($cartItem);
+        $entityManager->flush();
+
+
         return $this->redirectToRoute('app_cart');
+
     }
 }
