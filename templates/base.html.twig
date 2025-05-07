@@ -166,10 +166,11 @@
 <!-- /SECTION -->
 {% endblock %}
 
-
+{% block footer %}
 {% if showFooter is not defined or showFooter %}
     {% include 'fragments/footer.html.twig' %}
 {% endif %}
+{% endblock %}
 
     <!-- jQuery Plugins -->
     <script src="{{ asset('styles/js/jquery.min.js') }}"></script>

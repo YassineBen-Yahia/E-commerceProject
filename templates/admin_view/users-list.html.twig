@@ -1,0 +1,74 @@
+{% extends 'base.html.twig' %}
+
+{% block header %}
+    {% include 'admin_fragments/header.html.twig' %}
+    {% include 'admin_fragments/navigation.html.twig' with {'role': role} %}
+{% endblock %}
+
+{% block aside %}
+    <div id="aside" class="col-md-3">
+        <!-- aside Widget -->
+        <div class="aside">
+            <div class="mt-3">
+                <button id="apply-filter-btn" class="primary-btn">Admins</button>
+                <button id="apply-filter-btn" class="primary-btn">Clients</button>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}
+
+{% block body %}
+
+    <div class="container mt-4">
+        {% for type, messages in app.flashes %}
+            {% for message in messages %}
+                <div class="alert alert-{{ type }}">
+                    {{ message }}
+                </div>
+            {% endfor %}
+        {% endfor %}
+    </div>
+
+    <div class="container mt-4">
+        {% if role == 'ROLE_ADMIN' %}
+            <h1>Admins List</h1>
+        {% else %}
+            <h1>Users List</h1>
+        {% endif %}
+
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Nom</th>
+                    <th>Email</th>
+                    <th>Rôle</th>
+                    {% if role == 'ROLE_USER' %} <th>Actions</th>  {% endif %}
+                </tr>
+            </thead>
+            <tbody>
+                {% for user in users %}
+                    <tr>
+                        <td>{{ user.id }}</td>
+                        <td>{{ user.name }}</td>
+                        <td>{{ user.email }}</td>
+                        <td>{{ user.roles[0] }}</td>
+
+                        {% if role == 'ROLE_USER' %}
+                            <td>
+                                <a href="{{ url('make_admin', {id: user.id }) }}" class="btn btn-primary">Make Admin</a>
+                            </td>
+                        {% endif %}
+
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+{% endblock %}
+
+{% block footer %}
+    {% include 'admin_fragments/footer.html.twig' %}
+{% endblock %}

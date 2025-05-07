@@ -13,20 +13,10 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\String\Slugger\SluggerInterface;
-#[Route('/produit')]
+#[Route('/admin')]
 final class ProduitController extends AbstractController
 {
-//    #[Route('/CrerProduit', name: 'app_create')]
-//    public function index(): Response
-//    {
-//        $form = $this->createForm(AjoutProduitForm::class);
-//        return $this->render('produit/index.html.twig', [
-//            'controller_name' => 'ProduitController',
-//
-//        ]);
-//    }
-
-    #[Route('/new/{id?0}', name: 'app_create_produit')]
+    #[Route('/produit/new/{id?0}', name: 'app_create_produit')]
     public function createProduit(Produit $produit = null, Request $request, SluggerInterface $slugger, EntityManagerInterface $entityManager,$id): Response
     {
         $new = false;
@@ -36,7 +26,6 @@ final class ProduitController extends AbstractController
         }
 
 
-        // Passez l'entité $produit au formulaire
         $form = $this->createForm(AjoutProduitForm::class, $produit);
         if(!$new){
             $form->remove('categorie');
@@ -83,7 +72,7 @@ final class ProduitController extends AbstractController
         ]);
     }
 
-    #[Route('/delete/{id<\d+>}', name: 'produit.delete')]
+    #[Route('/produit/delete/{id<\d+>}', name: 'produit.delete')]
     public function deleteProduit(Produit $produit = null, ManagerRegistry $doctrine): RedirectResponse
     {
         if ($produit) {

@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\AdminProfile;
 use App\Entity\Utilisateur;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -11,16 +12,47 @@ use Symfony\Component\Routing\Attribute\Route;
 #[Route('/admin')]
 final class UtilisateurController extends AbstractController
 {
-    #[Route('/users/{role}', name: 'users.admin')]
+    #[Route('/users/{role?ROLE_USER}', name: 'users.admin')]
     public function usersList(ManagerRegistry $doctrine, $role): Response{
         $repository = $doctrine->getRepository(Utilisateur::class);
         $users = $repository->findByRole($role);
 
-        return $this->render('admin/users.html.twig', [
+        return $this->render('admin_view/users-list.html.twig', [
             'users' => $users,
             'role' => $role,
         ]);
 
+    }
+
+    #[Route('/users/makeAdmin/{id<\d+>}', name: 'make_admin')]
+    public function makeAdmin(Utilisateur $utilisateur = null, ManagerRegistry $doctrine,$id): Response
+    {
+        $entityManager = $doctrine->getManager();
+        $repository = $doctrine->getRepository(Utilisateur::class);
+
+
+        if (!$utilisateur) {
+            $this->addFlash('danger', "Utilisateur introuvable.");
+            return $this->redirectToRoute('users.admin', ['role' => 'ROLE_USER']);
+        }
+
+        $roles = $utilisateur->getRoles();
+        if (!in_array('ROLE_ADMIN', $roles)) {
+            $utilisateur->setRoles(['ROLE_ADMIN']);
+
+            $adminProfile = new AdminProfile();
+            $adminProfile->setUtilisateur($utilisateur);
+
+            $entityManager->persist($utilisateur);
+            $entityManager->persist($adminProfile);
+            $entityManager->flush();
+
+            $this->addFlash('success', "L'utilisateur a été promu administrateur avec succès.");
+        } else {
+            $this->addFlash('info', "L'utilisateur est déjà un administrateur.");
+        }
+
+        return $this->redirectToRoute('users.admin', ['role' => 'ROLE_USER']);
     }
 
 /*    #[Route('/stats', name: 'stats.admin')]
