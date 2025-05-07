@@ -15,14 +15,16 @@
 
             <label>
                 Show:
-                <select class="input-select">
-                    <option value="0">20</option>
-                    <option value="1">50</option>
+                <select class="input-select" id="products-per-page">
+                    <option value="10" {% if limit == 10 %}selected{% endif %}>10</option>
+                    <option value="20" {% if limit == 20 or limit is not defined %}selected{% endif %}>20</option>
+                    <option value="50" {% if limit == 50 %}selected{% endif %}>50</option>
+                    <option value="100" {% if limit == 100 %}selected{% endif %}>100</option>
                 </select>
             </label>
         </div>
         <ul class="store-grid">
-            <li class="active"><a href="/index"><i class="fa fa-th"></i></a></li>
+            <li class="active"><a href="{{ path('app_index', {'page': 1, 'limit': limit}) }}"><i class="fa fa-th"></i></a></li>
             <li><a href="#"><i class="fa fa-th-list"></i></a></li>
         </ul>
     </div>
@@ -92,15 +94,36 @@
 
     <!-- store bottom filter -->
     <div class="store-filter clearfix">
-        <span class="store-qty">Showing 20-100 products</span>
+        <span class="store-qty">
+            Showing {{ ((page - 1) * limit) + 1 }}-{{ min(page * limit, totalProducts) }} of {{ totalProducts }} products
+        </span>
         <ul class="store-pagination">
-            <li class="active">1</li>
-            <li><a href="#">2</a></li>
-            <li><a href="#">3</a></li>
-            <li><a href="#">4</a></li>
-            <li><a href="#"><i class="fa fa-angle-right"></i></a></li>
+            {% if page > 1 %}
+                <li><a href="{{ path('app_index', {'page': page-1, 'limit': limit}) }}"><i class="fa fa-angle-left"></i></a></li>
+            {% endif %}
+
+            {% for i in 1..totalPages %}
+                <li {% if i == page %}class="active"{% endif %}>
+                    <a href="{{ path('app_index', {'page': i, 'limit': limit}) }}">{{ i }}</a>
+                </li>
+            {% endfor %}
+
+            {% if page < totalPages %}
+                <li><a href="{{ path('app_index', {'page': page+1, 'limit': limit}) }}"><i class="fa fa-angle-right"></i></a></li>
+            {% endif %}
         </ul>
     </div>
     <!-- /store bottom filter -->
 </div>
+{% endblock %}
+{% block javascripts %}
+<script>
+    document.getElementById('products-per-page').addEventListener('change', function() {
+        const limit = this.value;
+        const currentUrl = new URL(window.location.href);
+        currentUrl.searchParams.set('limit', limit);
+        currentUrl.searchParams.set('page', 1); // Reset to first page when changing items per page
+        window.location.href = currentUrl.toString();
+    });
+</script>
 {% endblock %}

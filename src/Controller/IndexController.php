@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Repository\ProduitRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 
@@ -16,8 +17,13 @@ final class IndexController extends AbstractController
         $this->produitRepository = $produitRepository;
     }
     #[Route('/index', name: 'app_index')]
-    public function index(): Response
+    public function index(Request $request): Response
     {
+
+
+        // Get pagination parameters
+        $page = max(1, $request->query->getInt('page', 1));
+        $limit = $request->query->getInt('limit', 10);
 
         $produits = $this->produitRepository->findAll();
         return $this->render('index.html.twig', [
@@ -27,8 +33,12 @@ final class IndexController extends AbstractController
         ]);
     }
     #[Route('/index/{category}', name: 'app_index_category')]
-    public function indexParCategory( string $category ): Response
+    public function indexParCategory( string $category, Request $request ): Response
     {
+        // Get pagination parameters
+        $page = max(1, $request->query->getInt('page', 1));
+        $limit = $request->query->getInt('limit', 10);
+
         $produits = $this->produitRepository->findByCategory($category);
         return $this->render('index.html.twig', [
             'produits' => $produits,
