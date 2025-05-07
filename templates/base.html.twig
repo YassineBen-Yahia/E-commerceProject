@@ -209,7 +209,8 @@
 
 <script>
     function redirectToSearch() {
-        const searchInput = document.querySelector('.header-search .input').value;
+        const searchInput = document.querySelector('.header-search .input').value; // Reset to first page when searching
+
         if (searchInput.trim() !== '') {
             window.location.href = `/index/search/${encodeURIComponent(searchInput)}`;
         }

@@ -19,8 +19,8 @@ final class IndexController extends AbstractController
         $this->indexService = $indexService;
     }
 
-    #[Route('/index/{category?}/{sort?}', name: 'app_index')]
-    public function index(Request $request, ?string $category = null,?string $sort="ASC"): Response
+    #[Route('/index/{category?}', name: 'app_index')]
+    public function index(Request $request, ?string $category = null): Response
     {
         $page = max(1, $request->query->getInt('page', 1));
         $limit = $request->query->getInt('limit', 20);
@@ -39,9 +39,10 @@ final class IndexController extends AbstractController
         ]);
     }
 
-    #[Route('/index/multiple/{categories}/{PriceMin}/{PriceMax}/{sort?}', name: 'app_index_multiple_categories')]
-    public function indexParMultipleCategories(float $PriceMin,float $PriceMax,string $categories, Request $request, ?string $sort="ASC"): Response
+    #[Route('/index/multiple/{categories}/{PriceMin}/{PriceMax}', name: 'app_index_multiple_categories')]
+    public function indexParMultipleCategories(float $PriceMin,float $PriceMax,string $categories, Request $request): Response
     {
+
         $page = max(1, $request->query->getInt('page', 1));
         $limit = $request->query->getInt('limit', 10);
         $sort=$request->query->get('sort','ASC');
@@ -58,12 +59,15 @@ final class IndexController extends AbstractController
             'sort' => $sort ?? 'ASC',
         ]);
     }
-    #[Route('/index/search/{search}/{sort?}', name: 'app_index_search')]
-    public function indexParSearch(string $search, Request $request,?string $sort="ASC"): Response
+    #[Route('/index/search/{search}', name: 'app_index_search')]
+    public function indexParSearch(string $search, Request $request): Response
     {
+
         $sort=$request->query->get('sort','ASC');
         $page = max(1, $request->query->getInt('page', 1));
         $limit = $request->query->getInt('limit', 10);
+
+
 
         $data = $this->indexService->getPaginatedProductsBySearch($search, $page, $limit,$sort);
 
