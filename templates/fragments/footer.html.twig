@@ -2,51 +2,50 @@
 <footer id="footer">
     <!-- top footer -->
     <div class="section">
-        <!-- container -->
         <div class="container">
-            <!-- row -->
-            <div class="row d-flex justify-content-center ">
-                <div class="d-flex flex-wrap justify-content-center">
-                    <div class="col-md-3 col-xs-12">
-                        <div class="footer">
-                            <h3 class="footer-title">About Us</h3>
-                            <p>At echriPC, we bring you the latest and greatest in tech—computers, accessories, and gadgets—all in one place. Our mission is to make high-quality technology accessible, affordable, and just a click away.</p>
-                            <ul class="footer-links">
-                                <li><a href="#"><i class="fa fa-map-marker"></i>INSAT - Tunis</a></li>
-                                <li><a href="#"><i class="fa fa-phone"></i>85 555</a></li>
-                                <li><a href="#"><i class="fa fa-envelope-o"></i>echrPC@gmail.com</a></li>
-                            </ul>
-                        </div>
+            <!-- row centrée -->
+            <div class="row justify-content-center ">
+                <div class="col-md-5 col-xs-12 mx-auto">
+                    <div class="footer">
+                        <h3 class="footer-title">About Us</h3>
+                        <p>At echriPC, we bring you the latest and greatest in tech—computers, accessories, and gadgets—all in one place. Our mission is to make high-quality technology accessible, affordable, and just a click away.</p>
+                        <ul class="footer-links">
+                            <li><i class="fa fa-map-marker"></i>INSAT - Tunis</li>
+                            <li><i class="fa fa-phone"></i>85 555</li>
+                            <li><i class="fa fa-envelope-o"></i>echrPC@gmail.com</li>
+                        </ul>
                     </div>
+                </div>
 
-                    <div class="col-md-3 col-xs-12">
-                        <div class="footer">
-                            <h3 class="footer-title">Categories</h3>
-                            <ul class="footer-links">
-                                <li><a href="#">Hot deals</a></li>
-                                <li><a href="/index/laptops">Laptops</a></li>
-                                <li><a href="/index/smartphone">Smartphones</a></li>
-                                <li><a href="/index/camera">Cameras</a></li>
-                                <li><a href="/index/accessoires">Accessories</a></li>
-                            </ul>
-                        </div>
+                <div class="col-md-4 col-xs-12 mx-auto">
+                    <div class="footer">
+                        <h3 class="footer-title">Categories</h3>
+                        <ul class="footer-links">
+                            {% for category in categories %}
+                                <li><a href="/index/{{ category }}">{{ category }}</a></li>
+                            {% endfor %}
+                        </ul>
                     </div>
+                </div>
 
-                    <div class="col-md-3 col-xs-12">
-                        <div class="footer">
-                            <h3 class="footer-title">Service</h3>
-                            <ul class="footer-links">
-                                <li><a href="#">My Account</a></li>
-                                <li><a href="#">View Cart</a></li>
-                                <li><a href="#">Wishlist</a></li>
-                            </ul>
-                        </div>
+                <div class="col-md-3 col-xs-12 mx-auto">
+                    <div class="footer">
+                        <h3 class="footer-title">Service</h3>
+                        <ul class="footer-links">
+                            <li><a href="#">My Account</a></li>
+                            {% if app.user is not null %}
+                                <li><a href="/cart">View Cart</a></li>
+                                <li><a href="/wishList">Wishlist</a></li>
+                                <li><a href="#">Logout</a></li>
+                            {% else %}
+                                <li><a href="/register">Register</a></li>
+                            {% endif %}
+                        </ul>
                     </div>
                 </div>
             </div>
             <!-- /row -->
         </div>
-        <!-- /container -->
     </div>
     <!-- /top footer -->
 
