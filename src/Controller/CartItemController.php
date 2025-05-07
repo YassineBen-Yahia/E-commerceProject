@@ -4,7 +4,7 @@ namespace App\Controller;
 
 use App\Entity\CartItem;
 use App\Entity\Produit;
-use App\Repository\ClientProfileRepository;
+use App\Service\CartItemService;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -13,10 +13,9 @@ use Symfony\Component\Routing\Attribute\Route;
 
 final class CartItemController extends AbstractController
 {
-    private ClientProfileRepository $clientProfileRepository;
-    public function __construct(ClientProfileRepository $clientProfileRepository)
-    {
-        $this->clientProfileRepository = $clientProfileRepository;
+    private CartItemService $cartItemService;
+    public function __construct(CartItemService $cartItemService){
+        $this->cartItemService = $cartItemService;
     }
 
     #[Route('/CartItem/{id}', name: 'app_cart_item')]
@@ -31,25 +30,15 @@ final class CartItemController extends AbstractController
     #[Route('/Add_CartItem/{id}', name: 'app_cart_add_item')]
     public function addToCart( Produit $produit, Request $request,EntityManagerInterface $entityManager): Response
     {
-        $quantity = $request->request->get('quantity');
+        $quantity = $this->cartItemService->getQuantityFromRequest($request);
         $cartItem = new CartItem();
-        $cartItem->setUtilisateur($this->getUser());
 
         if ($produit) {
             $produit->setStock($produit->getStock()-$quantity);
             $cartItem->setProduit($produit);
             $cartItem->setQuantité($quantity);
 
-            //recuperer le cart du profil client
-            $clientProfile = $this->clientProfileRepository->findOneByUser($this->getUser());
-            $cart = $clientProfile->getCart();
-
-            $cartItem->setCart($cart);
-            $cart->addCartItem($cartItem);
-
-            $entityManager->persist($produit);
-            $entityManager->persist($cartItem);
-            $entityManager->flush();
+            $this->cartItemService->addCartItem($cartItem,$produit);
         } else {
             throw $this->createNotFoundException('Produit not found');
         }
@@ -61,7 +50,7 @@ final class CartItemController extends AbstractController
     #[Route('/update-cart-item/{id}', name: 'app_cart_update_item')]
     public function updateCartItem(CartItem $cartItem, Request $request, EntityManagerInterface $entityManager): Response
     {
-        $newQuantity = (int) $request->request->get('quantity');
+        $newQuantity = $this->cartItemService->getQuantityFromRequest($request);
         $oldQuantity = $cartItem->getQuantité();
 
         if ($newQuantity <= 0) {
@@ -69,33 +58,27 @@ final class CartItemController extends AbstractController
             return $this->redirectToRoute('app_cart');
         }
 
-        // Get the product associated with this cart item
-        $produit = $cartItem->getProduit();
+
+        $produit = $this->cartItemService->getProductFromCartItem($cartItem);
 
         if (!$produit) {
             throw $this->createNotFoundException('Product not found in cart item');
         }
 
-        // Calculate stock adjustment
-        $stockDiff = $oldQuantity - $newQuantity;
-        $newStock = $produit->getStock() + $stockDiff;
 
-        // Check if we have enough stock
+        $newStock = $this->cartItemService->calculateStockAdjsutment($produit,$oldQuantity,$newQuantity);
+
+
         if ($newStock < 0) {
             $this->addFlash('error', 'Not enough products in stock.');
             return $this->redirectToRoute('app_cart');
         }
 
-        // Update the product stock
-        $produit->setStock($newStock);
 
-        // Update the cart item quantity
-        $cartItem->setQuantité($newQuantity);
+        $this->cartItemService->updateProductStock($produit,$newStock);
 
-        $entityManager->persist($produit);
-        $entityManager->persist($cartItem);
-        $entityManager->flush();
 
+       $this->cartItemService->updateCartItemQuantity($cartItem,$newQuantity);
         $this->addFlash('success', 'Cart updated successfully.');
         return $this->redirectToRoute('app_cart');
     }
