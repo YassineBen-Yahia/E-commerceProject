@@ -1,29 +1,39 @@
 <?php
-    namespace App\Controller;
 
-    use App\Service\EmailVerificationService;
-    use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-    use Symfony\Component\HttpFoundation\Request;
-    use Symfony\Component\HttpFoundation\Response;
-    use Symfony\Component\Routing\Annotation\Route;
+namespace App\Controller;
 
-    class MailerController extends AbstractController
-    {
-    public function __construct(private EmailVerificationService $verificationService) {}
+use App\Security\EmailVerifier;
+use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Mailer\MailerInterface;
+use Symfony\Component\Mime\Email;
+use Symfony\Component\Routing\Annotation\Route;
+use SymfonyCasts\Bundle\VerifyEmail\Exception\VerifyEmailExceptionInterface;
 
+class MailerController extends AbstractController
+{
     #[Route('/verify/email', name: 'verify_email')]
-    public function verifyUserEmail(Request $request): Response
+    public function verifyUserEmail(Request $request, EmailVerifier $emailVerifier, EntityManagerInterface $entityManager): Response
     {
-    $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
 
-    $error = $this->verificationService->verifyEmail($request, $this->getUser());
+        try {
+            $emailVerifier->handleEmailConfirmation($request, $this->getUser());
 
-    if ($error) {
-    $this->addFlash('verify_email_error', $error);
-    return $this->redirectToRoute('app_register');
-    }
+            $user = $this->getUser();
+            $user->setIsVerified(true);
+            $entityManager->persist($user);
+            $entityManager->flush();
+        } catch (VerifyEmailExceptionInterface $exception) {
+            $this->addFlash('verify_email_error', $exception->getReason());
 
-    $this->addFlash('success', 'Your email address has been verified.');
-    return $this->redirectToRoute('app_index');
+            return $this->redirectToRoute('app_register');
+        }
+
+        $this->addFlash('success', 'Your email address has been verified.');
+
+        return $this->redirectToRoute('app_index');
     }
-    }
+}
