@@ -9,112 +9,112 @@
     <link rel="stylesheet" href="{{ asset('styles/css/font-awesome.min.css') }}">
 </head>
 <body>
-<div class="container my-5">
-    <!-- Back to Home Button -->
-    <div class="mb-3">
-        <a href="{{ path('app_index') }}" class="btn btn-outline-secondary">
-            <i class="fa fa-arrow-left"></i> Home
-        </a>
-    </div>
+<div class="d-flex">
+    <!-- Sidebar -->
+    {% include 'fragments/account_sidebar.html.twig' %}
 
-    <h1 class="text-center mb-4" style="color: #2B2D42">Your Profile</h1>
+    <div class="container my-5">
 
-    {% for type, messages in app.flashes %}
-        {% for message in messages %}
-            <div class="alert alert-{{type}} ">
-                {{message}}
-            </div>
+        <h1 class="text-center mb-4" style="color: #2B2D42">Your Profile</h1>
+
+        {% for type, messages in app.flashes %}
+            {% for message in messages %}
+                <div class="alert alert-{{type}} ">
+                    {{message}}
+                </div>
+            {% endfor %}
         {% endfor %}
-    {% endfor %}
 
-    {{ form_start(form, {'attr': {'class': 'needs-validation', 'novalidate': 'novalidate'}}) }}
+        {{ form_start(form, {'attr': {'class': 'needs-validation', 'novalidate': 'novalidate'}}) }}
 
-    <div class="mb-3">
-        {{ form_label(form.name, 'Full Name', {'label_attr': {'class': 'form-label', 'style': 'color: #2B2D42;'}}) }}
-        {{ form_widget(form.name, {
-            'attr': {
-                'class': 'form-control' ~ (form.name.vars.errors|length ? ' is-invalid' : ''),
-                'placeholder': 'Enter your full name'
-            }
-        }) }}
-        <div class="invalid-feedback">
-            {{ form_errors(form.name) }}
-        </div>
-    </div>
-
-    <div class="mb-3">
-        {{ form_label(form.adress, 'Address', {'label_attr': {'class': 'form-label', 'style': 'color: #2B2D42;'}}) }}
-        {{ form_widget(form.adress, {
-            'attr': {
-                'class': 'form-control' ~ (form.adress.vars.errors|length ? ' is-invalid' : ''),
-                'placeholder': 'Enter your address'
-            }
-        }) }}
-        <div class="invalid-feedback">
-            {{ form_errors(form.adress) }}
-        </div>
-    </div>
-
-    <div class="mb-3">
-        {{ form_label(form.email, 'Email Address', {'label_attr': {'class': 'form-label', 'style': 'color: #2B2D42;'}}) }}
-        {{ form_widget(form.email, {
-            'attr': {
-                'class': 'form-control' ~ (form.email.vars.errors|length ? ' is-invalid' : ''),
-                'placeholder': 'example@example.com'
-            }
-        }) }}
-        <div class="invalid-feedback">
-            {{ form_errors(form.email) }}
-        </div>
-    </div>
-
-    <div class="row mb-3">
-        <div class="col-md-6">
-            {{ form_label(form.newPassword, 'New Password', {'label_attr': {'class': 'form-label', 'style': 'color: #2B2D42;'}}) }}
-            {{ form_widget(form.newPassword, {
+        <div class="mb-3">
+            {{ form_label(form.name, 'Full Name', {'label_attr': {'class': 'form-label', 'style': 'color: #2B2D42;'}}) }}
+            {{ form_widget(form.name, {
                 'attr': {
-                    'class': 'form-control' ~ (form.newPassword.vars.errors|length ? ' is-invalid' : ''),
-                    'placeholder': 'Enter new password'
+                    'class': 'form-control' ~ (form.name.vars.errors|length ? ' is-invalid' : ''),
+                    'placeholder': 'Enter your full name'
                 }
             }) }}
             <div class="invalid-feedback">
-                {{ form_errors(form.newPassword) }}
+                {{ form_errors(form.name) }}
             </div>
         </div>
-        <div class="col-md-6">
-            {{ form_label(form.confirmNewPassword, 'Confirm New Password', {'label_attr': {'class': 'form-label', 'style': 'color: #2B2D42;'}}) }}
-            {{ form_widget(form.confirmNewPassword, {
+
+        <div class="mb-3">
+            {{ form_label(form.adress, 'Address', {'label_attr': {'class': 'form-label', 'style': 'color: #2B2D42;'}}) }}
+            {{ form_widget(form.adress, {
                 'attr': {
-                    'class': 'form-control' ~ (form.confirmNewPassword.vars.errors|length ? ' is-invalid' : ''),
-                    'placeholder': 'Confirm new password'
+                    'class': 'form-control' ~ (form.adress.vars.errors|length ? ' is-invalid' : ''),
+                    'placeholder': 'Enter your address'
                 }
             }) }}
             <div class="invalid-feedback">
-                {{ form_errors(form.confirmNewPassword) }}
+                {{ form_errors(form.adress) }}
             </div>
         </div>
-    </div>
 
-    <div class="mb-3">
-        {{ form_label(form.currentPassword, 'Current Password', {'label_attr': {'class': 'form-label', 'style': 'color: #2B2D42;'}}) }}
-        {{ form_widget(form.currentPassword, {
-            'attr': {
-                'class': 'form-control' ~ (form.currentPassword.vars.errors|length ? ' is-invalid' : ''),
-                'placeholder': 'Enter your current password'
-            }
-        }) }}
-        <div class="invalid-feedback">
-            {{ form_errors(form.currentPassword) }}
+        <div class="mb-3">
+            {{ form_label(form.email, 'Email Address', {'label_attr': {'class': 'form-label', 'style': 'color: #2B2D42;'}}) }}
+            {{ form_widget(form.email, {
+                'attr': {
+                    'class': 'form-control' ~ (form.email.vars.errors|length ? ' is-invalid' : ''),
+                    'placeholder': 'example@example.com'
+                }
+            }) }}
+            <div class="invalid-feedback">
+                {{ form_errors(form.email) }}
+            </div>
         </div>
-    </div>
 
-    <div class="d-flex justify-content-end mt-4">
-        <button type="button" class="btn btn-secondary me-2" onclick="window.location.reload()">Cancel</button>
-        <button type="submit" class="btn" style="background-color: #D10024; color: white;">Confirm Changes</button>
-    </div>
+        <div class="row mb-3">
+            <div class="col-md-6">
+                {{ form_label(form.newPassword, 'New Password', {'label_attr': {'class': 'form-label', 'style': 'color: #2B2D42;'}}) }}
+                {{ form_widget(form.newPassword, {
+                    'attr': {
+                        'class': 'form-control' ~ (form.newPassword.vars.errors|length ? ' is-invalid' : ''),
+                        'placeholder': 'Enter new password'
+                    }
+                }) }}
+                <div class="invalid-feedback">
+                    {{ form_errors(form.newPassword) }}
+                </div>
+            </div>
+            <div class="col-md-6">
+                {{ form_label(form.confirmNewPassword, 'Confirm New Password', {'label_attr': {'class': 'form-label', 'style': 'color: #2B2D42;'}}) }}
+                {{ form_widget(form.confirmNewPassword, {
+                    'attr': {
+                        'class': 'form-control' ~ (form.confirmNewPassword.vars.errors|length ? ' is-invalid' : ''),
+                        'placeholder': 'Confirm new password'
+                    }
+                }) }}
+                <div class="invalid-feedback">
+                    {{ form_errors(form.confirmNewPassword) }}
+                </div>
+            </div>
+        </div>
 
-    {{ form_end(form) }}
+        <div class="mb-3">
+            {{ form_label(form.currentPassword, 'Current Password', {'label_attr': {'class': 'form-label', 'style': 'color: #2B2D42;'}}) }}
+            {{ form_widget(form.currentPassword, {
+                'attr': {
+                    'class': 'form-control' ~ (form.currentPassword.vars.errors|length ? ' is-invalid' : ''),
+                    'placeholder': 'Enter your current password'
+                }
+            }) }}
+            <div class="invalid-feedback">
+                {{ form_errors(form.currentPassword) }}
+            </div>
+        </div>
+
+        <div class="d-flex justify-content-end mt-4">
+            <button type="button" class="btn btn-secondary me-2" onclick="window.location.reload()">Cancel</button>
+            <button type="submit" class="btn" style="background-color: #D10024; color: white;">Confirm Changes</button>
+        </div>
+
+        {{ form_end(form) }}
+    </div>
 </div>
+
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 <script>

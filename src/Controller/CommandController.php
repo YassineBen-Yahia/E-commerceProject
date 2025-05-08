@@ -27,7 +27,7 @@ final class CommandController extends AbstractController
     {
         $this->denyAccessUnlessGranted('ROLE_USER');
         if (!$this->getUser()->isVerified()) {
-            return $this->redirectToRoute('app_index');
+            return $this->redirectToRoute('app_account_verify_email');
         }
 
         if (!$cart) {
@@ -49,7 +49,7 @@ final class CommandController extends AbstractController
     {
         $this->denyAccessUnlessGranted('ROLE_USER');
         if (!$this->getUser()->isVerified()) {
-            return $this->redirectToRoute('app_index');
+            return $this->redirectToRoute('app_account_verify_email');
         }
 
         if (!$cart) {
