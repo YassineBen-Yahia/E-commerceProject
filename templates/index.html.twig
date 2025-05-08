@@ -109,19 +109,50 @@
             Showing {{ ((page - 1) * limit) + 1 }}-{{ min(page * limit, totalProducts) }} of {{ totalProducts }} products
         </span>
         <ul class="store-pagination">
-            {% if page > 1 %}
-                <li><a href="{{ path('app_index', {'page': page-1, 'limit': limit}) }}"><i class="fa fa-angle-left"></i></a></li>
-            {% endif %}
+           {% if page > 1 %}
+               {% set uri = app.request.uri %}
+               {% set routeParams = app.request.attributes.get('_route_params') %}
+               {% set queryParams = app.request.query.all %}
+               {% set allParams = (routeParams | default({})) | merge(queryParams | default({})) | merge({'page': page - 1}) %}
+               <li><a href="{{ uri matches '#/index/multiple/#' ? path('app_index_multiple_categories', allParams) : path('app_index', allParams) }}"><i class="fa fa-angle-left"></i></a></li>
+           {% endif %}
 
             {% for i in 1..totalPages %}
+                {% set uri = app.request.uri %}
+                {% set routeParams = app.request.attributes.get('_route_params') %}
+                {% set queryParams = app.request.query.all %}
+                {% set allParams = (routeParams | default({})) | merge(queryParams | default({})) | merge({'page': i}) %}
                 <li {% if i == page %}class="active"{% endif %}>
-                    <a href="{{ path('app_index', {'page': i, 'limit': limit}) }}">{{ i }}</a>
+                    <a href="{{ uri matches '#/index/multiple/#' ? path('app_index_multiple_categories', allParams) : path('app_index', {'page': i, 'limit': limit}) }}">{{ i }}</a>
                 </li>
             {% endfor %}
 
             {% if page < totalPages %}
-                <li><a href="{{ path('app_index', {'page': page+1, 'limit': limit}) }}"><i class="fa fa-angle-right"></i></a></li>
+                {% set uri = app.request.uri %}
+
+
+                {% if uri matches '#/index/multiple/#' %}
+
+
+                    {% set routeParams = app.request.attributes.get('_route_params') %}
+                    {% set queryParams = app.request.query.all %}
+                    {% set allParams = (routeParams | default({})) | merge(queryParams | default({})) | merge({'page': page + 1}) %}
+                    <li>
+
+                        <a href="{{ path('app_index_multiple_categories', allParams) }}">
+                            <i class="fa fa-angle-right"></i>
+                        </a>
+                    </li>
+                {% else %}
+                    <li>
+                        <a href="{{ path('app_index', {'page': page + 1, 'limit': limit}) }}">
+                            <i class="fa fa-angle-right"></i>
+                        </a>
+                    </li>
+                {% endif %}
             {% endif %}
+
+
         </ul>
     </div>
     <!-- /store bottom filter -->
