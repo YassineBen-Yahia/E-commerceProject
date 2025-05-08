@@ -1,0 +1,101 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Your Shopping Cart{% endblock %}
+{% block emplacement %}Shopping Cart{% endblock %}
+
+{% block body %}
+    <div class="section">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12">
+                    <h2 class="section-title">Your commands History</h2>
+                    {% if commands is not empty %}
+                        <div class="table-responsive">
+                            <table class="table cart-table">
+                                <thead>
+                                <tr>
+                                    <th>Product</th>
+                                    <th>Quantity</th>
+                                    <th>Price</th>
+                                    <th>Total</th>
+                                    <th>Date</th>
+
+                                </tr>
+                                </thead>
+                                <tbody>
+                                {% for command in commands %}
+                                    {% for item in command.cartItems %}
+
+                                        <tr>
+                                            <td class="cart-product">
+                                                <div class="product-item">
+                                                    <div class="product-thumb">
+                                                        <img src="{{ asset('styles/' ~ item.produit.image) }}"
+                                                             alt="{{ item.produit.name }}"
+                                                             onerror="this.src='{{ asset('styles/img/laptop1.png') }}'"
+                                                             style="max-width: 80px; max-height: 80px; object-fit: contain;">
+                                                    </div>
+                                                    <div class="product-info">
+                                                        <h4>{{ item.produit.name }}</h4>
+                                                        <p>{{ item.produit.categorie.name }}</p>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                            <td class="cart-quantity">{{ item.quantité }}</td>
+
+                                            <td class="cart-price">€{{ item.produit.price }}</td>
+                                            <td class="cart-subtotal">€{{ item.produit.price * item.quantité}}</td>
+
+
+                                            <td class="cart-price">
+                                                {{ command.createdAt|date('Y-m-d h:m:s A') }}
+                                            </td>
+
+
+                                        </tr>
+
+                                    {% endfor %}
+                                {% endfor %}
+                                </tbody>
+                            </table>
+                            <a href="{{ path('app_index') }}" class="primary-btn">Continue Shopping</a>
+                        </div>
+                    {% else %}
+                        <div class="alert alert-info mt-4" role="alert">
+                            You have no command history yet. <a href="{{ path('app_index') }}" class="primary-btn">Continue Shopping</a>
+                        </div>
+                    {% endif %}
+
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal -->
+    <div class="modal fade" id="verifyModal" tabindex="-1" role="dialog" aria-labelledby="verifyModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content shadow-lg">
+                <div class="modal-header" style="background-color: #2B2D42; color: #fff; font-family: 'Montserrat', sans-serif;">
+                    <h5 class="modal-title" id="verifyModalLabel" style="color: #fff">Email Verification Required</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close" style="color: #fff;">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body" style="font-family: 'Montserrat', sans-serif; font-size: 16px; color: #333;">
+                    <p>You need to verify your email address to proceed to checkout. Please verify your email to continue.</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="primary-btn" data-dismiss="modal" style="background-color: #6c757d; border: none; color: #fff; font-family: 'Montserrat', sans-serif;">
+                        Cancel
+                    </button>
+                    <a href="{{ path('app_index') }}" class="primary-btn" style="background-color: #D10024; border: none; color: #fff; font-family: 'Montserrat', sans-serif;">
+                        Verify Email
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="{{ asset('js/cart.js') }}"></script>
+{% endblock %}
