@@ -3,6 +3,7 @@
 namespace App\Form;
 
 use App\Entity\Utilisateur;
+use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
@@ -18,14 +19,18 @@ use Symfony\Component\Validator\Context\ExecutionContextInterface;
 
 class AccountFormType extends AbstractType
 {
+    private Security $security;
+
+    public function __construct(Security $security)
+    {
+        $this->security = $security;
+    }
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
+
         $builder
             ->add('name', TextType::class, [
                 'label' => 'Name',
-            ])
-            ->add('adress', TextType::class, [
-                'label' => 'Address',
             ])
             ->add('email', EmailType::class, [
                 'label' => 'Email',
@@ -72,6 +77,13 @@ class AccountFormType extends AbstractType
                     ])
                 ],
             ]);
+        if ($this->security->isGranted('ROLE_ADMIN')) {
+            $builder->remove('adress');
+        } else {
+            $builder->add('adress', TextType::class, [
+                'label' => 'Address',
+            ]);
+        }
     }
 
     public function configureOptions(OptionsResolver $resolver): void

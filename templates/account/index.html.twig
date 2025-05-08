@@ -40,6 +40,7 @@
             </div>
         </div>
 
+        {% if not is_granted('ROLE_ADMIN') %}
         <div class="mb-3">
             {{ form_label(form.adress, 'Address', {'label_attr': {'class': 'form-label', 'style': 'color: #2B2D42;'}}) }}
             {{ form_widget(form.adress, {
@@ -52,6 +53,7 @@
                 {{ form_errors(form.adress) }}
             </div>
         </div>
+        {% endif %}
 
         <div class="mb-3">
             {{ form_label(form.email, 'Email Address', {'label_attr': {'class': 'form-label', 'style': 'color: #2B2D42;'}}) }}

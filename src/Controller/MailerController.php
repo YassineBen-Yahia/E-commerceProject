@@ -47,7 +47,7 @@ class MailerController extends AbstractController
     #[Route('/account/verify-email', name: 'app_account_verify_email')]
     public function verifyEmailPage(): Response
     {
-        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_REMEMBERED');
         $user = $this->getUser();
 
         return $this->render('account/email.html.twig',[
@@ -58,7 +58,7 @@ class MailerController extends AbstractController
     #[Route('/send-verification-email', name: 'app_send_verification_email', methods: ['POST'])]
     public function sendVerificationEmail(Request $request): Response
     {
-        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_REMEMBERED');
 
         $user = $this->getUser();
 

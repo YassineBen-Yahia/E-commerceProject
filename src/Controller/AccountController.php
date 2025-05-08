@@ -19,6 +19,8 @@ final class AccountController extends AbstractController
         EntityManagerInterface $entityManager,
         UserPasswordHasherInterface $passwordHasher
     ): Response {
+        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_REMEMBERED');
+
         $user = $this->getUser();
 
         if (!$user instanceof Utilisateur) {

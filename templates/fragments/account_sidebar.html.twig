@@ -9,7 +9,10 @@
         <h5 class="text-center" style="color: #D10024" >Account</h5>
         <ul class="nav flex-column">
             <li class="nav-item">
-                <a class="nav-link active text-white links" href="{{ path("app_index") }}">Home</a>
+                <a class="nav-link active text-white links"
+                   href="{% if is_granted("ROLE_ADMIN") %} {{ path('admin.home') }} {% else %}{{ path("app_index") }} {% endif %}">
+                    Home
+                </a>
             </li>
             <li class="nav-item links">
                 <a class="nav-link text-white links" href="{{ path("app_account") }}">Profile</a>
