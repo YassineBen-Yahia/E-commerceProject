@@ -1,6 +1,18 @@
 {% extends 'base.html.twig' %}
 
+
+{% block header %}
+    {% if is_granted('ROLE_ADMIN') %}
+        {% include 'admin_fragments/header.html.twig' %}
+        {% include 'admin_fragments/navigation.html.twig' with {'role': "home"} %}
+    {% else %}
+        {% include 'fragments/header.html.twig' %}
+    {% endif %}
+{% endblock %}
+
+
 {% block title %}{{ produit.name }} - Details{% endblock %}
+
 
 {% block body %}
 <!-- SECTION -->
@@ -66,18 +78,23 @@
                                 <span class="qty-down">-</span>
                             </div>
                         </div>
-                        <button class="add-to-cart-btn" onclick="window.location.href='{{ app.user ? '/CartItem/' ~ produit.id : '/register' }}'">
-                            <i class="fa fa-shopping-cart"></i> add to cart
-                        </button>
+                        {% if not is_granted('ROLE_ADMIN') %}
+                            <button class="add-to-cart-btn" onclick="window.location.href='{{ app.user ? '/CartItem/' ~ produit.id : '/register' }}'">
+                                <i class="fa fa-shopping-cart"></i> add to cart
+                            </button>
+                        {% endif %}
+
                     </div>
 
-                    <ul class="product-btns">
-                        <li>
-                            <a href="{{ path('app_Wishlist_add_item', {'id': produit.id}) }}">
-                                <i class="fa fa-heart-o"></i> add to wishlist
-                            </a>
-                        </li>
-                    </ul>
+                    {% if not is_granted('ROLE_ADMIN') %}
+                        <ul class="product-btns">
+                            <li>
+                                <a href="{{ path('app_Wishlist_add_item', {'id': produit.id}) }}">
+                                    <i class="fa fa-heart-o"></i> add to wishlist
+                                </a>
+                            </li>
+                        </ul>
+                    {% endif %}
 
                     <ul class="product-links">
                         <li>Share:</li>
@@ -139,4 +156,12 @@
 </div>
 <!-- /Section -->
 
+{% endblock %}
+
+{% block footer %}
+    {% if is_granted('ROLE_ADMIN') %}
+        {% include 'admin_fragments/footer.html.twig' %}
+    {% else %}
+        {% include 'fragments/footer.html.twig' %}
+    {% endif %}
 {% endblock %}

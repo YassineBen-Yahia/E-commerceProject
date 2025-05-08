@@ -10,7 +10,23 @@
             </ul>
             <ul class="header-links pull-right">
                 {% if app.user is not null %}
-                    <li><a href="#"><i class="fa fa-user-o"></i> My Account</a></li>
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+                            <i class="fa fa-user-o"></i> My Account <span class="caret"></span>
+                        </a>
+                        <ul class="dropdown-menu" style="background-color: #333;">
+                            <li>
+                                <a href="#">
+                                    <i class="fa fa-user"></i> My Profile
+                                </a>
+                            </li>
+                            <li>
+                                <a href="{{ path('app_login') }}">
+                                    <i class="fa fa-sign-in"></i> Change Account
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
                     <li><a href={{ path('app_logout') }}><i class="fa fa-sign-out"></i> Logout </a></li>
                 {% else %}
                     <li><a href="/register"><i class="fa fa-user-o"></i> Register </a></li>
