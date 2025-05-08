@@ -139,8 +139,11 @@
                             <h3 class="aside-title">Check Our Products</h3>
                             {% for product in ThreeProducts %}
                                 <div class="product-widget">
-                                    <div class="product-img">
-                                        <img src="{{ asset('styles/' ~ product.getImage()) }}" alt="{{ product.name }}">
+                                    <div class="product-img" style="display: flex; justify-content: flex-start; align-items: flex-start;">
+                                        <img src="{{ asset('styles/' ~ product.getImage()) }}"
+                                             alt="{{ product.name }}"
+                                             class="fluid-image"
+                                             style="width: 50px; height: 50px; object-fit: contain; margin-top: 17px;">
                                     </div>
                                     <div class="product-body">
                                         <p class="product-category">{{ product.categorie.name }}</p>

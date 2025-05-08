@@ -80,11 +80,11 @@
                                 <span class="qty-down">-</span>
                             </div>
                         </div>
-
+                        {% if not is_granted('ROLE_ADMIN') %}
                             <button class="add-to-cart-btn " onclick="window.location.href='{{ app.user ? '/CartItem/' ~ produit.id : '/register' }}'">
                                 <i class="fa fa-shopping-cart"></i> add to cart
                             </button>
-
+                        {% endif %}
                     </div>
                     {% if not is_granted('ROLE_ADMIN') %}
                         <ul class="product-btns">
