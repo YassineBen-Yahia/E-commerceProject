@@ -34,7 +34,7 @@
             <tr>
                 <th>ID</th>
                 <th>Name</th>
-                <th>Categorie</th>
+                <th>Category</th>
                 <th>Description</th>
                 <th>Actions</th>
             </tr>
@@ -46,7 +46,7 @@
                     <td>{{ produit.name }}</td>
                     <td class="product-category">{{ produit.categorie.name }}</td>
                     <td>{{ produit.description }}</td>
-                    <td>
+                    <td class="text-center">
                         <a href="{{ url('app_create_produit', {id: produit.id}) }}" ><i class="fa fa-pencil-square-o"></i></a>
                         &nbsp;
                         <a href="{{ url('produit.delete', {id: produit.id}) }}" ><i class="fa fa-trash"></i></a>
@@ -59,6 +59,46 @@
         </table>
     </div>
 {% endblock %}
+
+{% block javascripts %}
+
+<script>
+    $(document).ready(function () {
+        // Initialisation pour la table des produits
+        if ($('#productsTable').length) {
+            const table = $('#productsTable').DataTable({
+                responsive: true,
+                language: {
+                    search: "Search:",
+                    lengthMenu: "Show _MENU_ entries",
+                    info: "Showing _START_ to _END_ of _TOTAL_ entries",
+                    paginate: {
+                        previous: "Previous",
+                        next: "Next"
+                    }
+                }
+            });
+
+            // Handle category button clicks
+            $('.category-filter').on('click', function () {
+                const category = $(this).data('category');
+
+                // Highlight the active button
+                $('.category-filter').removeClass('btn-primary').addClass('btn-secondary');
+                $(this).removeClass('btn-secondary').addClass('btn-primary');
+
+                if (category === 'all') {
+                    table.column(2).search('').draw();
+                } else {
+                    table.column(2).search('^' + category + '$', true, false).draw(); // Regex exact match
+                }
+            });
+        }
+    });
+</script>
+
+{% endblock %}
+
 
 {% block footer %}
     {% include 'admin_fragments/footer.html.twig' %}

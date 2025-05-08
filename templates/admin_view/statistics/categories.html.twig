@@ -1,0 +1,55 @@
+{% extends 'base_stat.html.twig' %}
+
+{% block title %}Category Sales Statistics{% endblock %}
+
+{% block header %}
+    {% include 'admin_fragments/header.html.twig' %}
+    {% include 'admin_fragments/navigation.html.twig' with {'role': "home"} %}
+{% endblock %}
+
+{% block body %}
+    <div class="row" >
+        <div class="col-md-9 ">
+            <h1>Items Sold per Category</h1>
+            <canvas id="categoryChart" class="text-center" width="200" height="200" style="max-width: 500px; max-height: 500px;"></canvas>
+        </div>
+    </div>
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        const ctx = document.getElementById('categoryChart').getContext('2d');
+        const chart = new Chart(ctx, {
+            type: 'pie',
+            data: {
+                labels: {{ labels|raw }},
+                datasets: [{
+                    label: 'Items Sold',
+                    data: {{ data|raw }},
+                    backgroundColor: [
+                        '#FF6384', '#36A2EB', '#FFCE56', '#8BC34A', '#FF9800', '#9C27B0', '#00BCD4'
+                    ],
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: {
+                        position: 'bottom'
+                    },
+                    title: {
+                        display: true,
+                        text: 'Total Items Sold per Category'
+                    }
+                }
+            }
+        });
+    </script>
+{% endblock %}
+
+{% block footer %}
+    {% include 'admin_fragments/footer.html.twig' %}
+{% endblock %}

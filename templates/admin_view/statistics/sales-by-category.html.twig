@@ -1,0 +1,52 @@
+{% extends 'base_stat.html.twig' %}
+
+{% block title %}Category Sales Per Month{% endblock %}
+{% block header %}
+    {% include 'admin_fragments/header.html.twig' %}
+    {% include 'admin_fragments/navigation.html.twig' with {'role': "home"} %}
+{% endblock %}
+
+{% block body %}
+    <div class="row">
+        <div class="col-md-9">
+            <h1 class="mb-4">Sales by Category Per Month</h1>
+            <canvas id="categorySalesChart" width="200" height="200" style="max-width: 500px; max-height: 500px;"></canvas>
+        </div>
+    </div>
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        const ctx = document.getElementById('categorySalesChart').getContext('2d');
+        new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: {{ months|json_encode|raw }},
+                datasets: {{ datasets|json_encode|raw }}
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    tooltip: { mode: 'index', intersect: false },
+                    title: { display: true, text: 'Category Sales per Month (€)' }
+                },
+                scales: {
+                    x: { stacked: true },
+                    y: {
+                        stacked: true,
+                        beginAtZero: true,
+                        ticks: {
+                            callback: value => '€' + value
+                        }
+                    }
+                }
+            }
+        });
+    </script>
+{% endblock %}
+
+{% block footer %}
+    {% include 'admin_fragments/footer.html.twig' %}
+{% endblock %}

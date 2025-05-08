@@ -23,18 +23,19 @@
             <hr>
 
             <div class="mt-4">
-                <h5>✔ Product Management</h5>
+                <a href="{{ url('produit.list') }}"><h5>✔ Product Management</h5></a>
                 <p>View, add, update, and remove product listings. Ensure that the catalog is always up to date.</p>
 
-                <h5>✔ User Management</h5>
+                <a href="{{ url('users.admin')}}" ><h5>✔ User Management</h5></a>
                 <p>Monitor registered users, manage their roles, and handle account-related operations.</p>
 
-                <h5>✔ Order Management</h5>
+                <a href="{{ url('orders.list') }}" ><h5>✔ Order Management</h5></a>
                 <p>Track customer orders, view order details, and manage the delivery or cancellation processes.</p>
 
-                <h5>✔ Statistics & Reports</h5>
+                <a href="{{ url('admin_statistics_categories') }}"><h5>✔ Statistics & Reports</h5></a>
                 <p>Access sales statistics, user activity, and other data to help make informed decisions.</p>
             </div>
+
         </div>
 
     </div>

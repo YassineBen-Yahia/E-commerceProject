@@ -3,8 +3,10 @@
 namespace App\Controller;
 
 use App\Entity\Categorie;
+use App\Entity\Commande;
 use App\Entity\Produit;
 use App\Form\AjoutProduitForm;
+use App\Repository\CommandeRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -103,13 +105,35 @@ final class ProduitController extends AbstractController
         ]);
     }
 
-    #[Route('/admin/orders/list', name: 'orders.list')]
-    public function listCommandes(ManagerRegistry $doctrine): Response{
+// src/Controller/ProduitController.php
+    #[Route('/admin/orders/view/{id}', name: 'orders.view')]
+    public function viewOrder(Commande $commande): Response
+    {
+        $total = 0;
 
-        return $this->render('admin_view/orders-list.html.twig', [
-            'controller_name' => 'ProduitController',
+        foreach ($commande->getCartItems() as $item) {
+            $total += $item->getProduit()->getPrice() * $item->getQuantité();
+        }
+
+        return $this->render('admin_view/order-view.html.twig', [
+            'commande' => $commande,
+            'total' => $total,
         ]);
     }
+
+    #[Route('/admin/orders/list/{id?0}', name: 'orders.list')]
+    public function listCommandes(ManagerRegistry $doctrine,$id): Response{
+
+        $commandes = $doctrine->getRepository(Commande::class)->findAll();
+        return $this->render('admin_view/orders-list.html.twig', [
+            'controller_name' => 'ProduitController',
+            'commandes' => $commandes,
+            'user_id' => $id
+        ]);
+
+
+    }
+
 
     #[Route('/details/{id}', name: 'produit_details')]
     public function detailsProduit(Produit $produit , ManagerRegistry $doctrine): Response
@@ -123,4 +147,134 @@ final class ProduitController extends AbstractController
             return $this->redirectToRoute('app_index');
         }
     }
+
+    #[Route('/admin/statistics/categories', name: 'admin_statistics_categories')]
+    public function categorySales(CommandeRepository $commandeRepo): Response
+    {
+        $commandes = $commandeRepo->findAll();
+
+        $categoryCounts = [];
+
+        foreach ($commandes as $commande) {
+            foreach ($commande->getCartItems() as $item) {
+                $categorieName = $item->getProduit()->getCategorie()->getName();
+                $categoryCounts[$categorieName] = ($categoryCounts[$categorieName] ?? 0) + $item->getQuantité();
+            }
+        }
+
+        return $this->render('admin_view/statistics/categories.html.twig', [
+            'labels' => json_encode(array_keys($categoryCounts)),
+            'data' => json_encode(array_values($categoryCounts))
+        ]);
+    }
+
+    #[Route('/admin/statistics/sales', name: 'admin_statistics_sales')]
+    public function salesStatistics(EntityManagerInterface $em): Response
+    {
+        $commandes = $em->getRepository(Commande::class)->findAll();
+
+        $salesByMonth = [];
+
+        foreach ($commandes as $commande) {
+            $month = $commande->getCreatedAt()->format('F Y'); // Format as '2025-05'
+            $total = 0;
+            foreach ($commande->getCartItems() as $item) {
+                $total += $item->getProduit()->getPrice() * $item->getQuantité();
+            }
+            $salesByMonth[$month] = ($salesByMonth[$month] ?? 0) + $total;
+        }
+
+        ksort($salesByMonth); // Sort by date ascending
+
+        return $this->render('admin_view/statistics/sales.html.twig', [
+            'salesByMonthLabels' => array_keys($salesByMonth),
+            'salesByMonthData' => array_values($salesByMonth),
+        ]);
+    }
+
+    #[Route('/admin/statistics/sales-by-category', name: 'admin_statistics_sales_by_category')]
+    public function salesByCategoryStatistics(EntityManagerInterface $em): Response
+    {
+        $commandes = $em->getRepository(Commande::class)->findAll();
+
+        $salesData = []; // [month][category] => total
+        $categories = [];
+
+        foreach ($commandes as $commande) {
+            $month = $commande->getCreatedAt()->format('F Y');
+
+            foreach ($commande->getCartItems() as $item) {
+                $produit = $item->getProduit();
+                $category = $produit->getCategorie()->getName(); // Adjust according to your entity
+                $amount = $produit->getPrice() * $item->getQuantité();
+
+                $categories[$category] = true;
+                $salesData[$month][$category] = ($salesData[$month][$category] ?? 0) + $amount;
+            }
+        }
+
+        ksort($salesData);
+        ksort($categories);
+
+        $months = array_keys($salesData);
+        $categoryNames = array_keys($categories);
+
+        // Define a color palette (darker colors)
+        $colorPalette = [
+            '#1f77b4', // blue
+            '#ff7f0e', // orange
+            '#2ca02c', // green
+            '#d62728', // red
+            '#9467bd', // purple
+            '#8c564b', // brown
+            '#e377c2', // pink
+            '#7f7f7f', // gray
+            '#bcbd22', // olive
+            '#17becf'  // cyan
+        ];
+
+        // Build datasets
+        $datasets = [];
+        foreach ($categoryNames as $index => $category) {
+            $data = [];
+            foreach ($months as $month) {
+                $data[] = $salesData[$month][$category] ?? 0;
+            }
+            $datasets[] = [
+                'label' => $category,
+                'data' => $data,
+                'backgroundColor' => $colorPalette[$index % count($colorPalette)],
+                'borderColor' => '#111',
+                'borderWidth' => 1
+            ];
+        }
+
+        return $this->render('admin_view/statistics/sales-by-category.html.twig', [
+            'months' => $months,
+            'datasets' => $datasets
+        ]);
+    }
+
+    #[Route('/admin/statistics/top-products', name: 'admin_statistics_top_products')]
+    public function topProductsStatistics(CommandeRepository $commandeRepo): Response
+    {
+        $commandes = $commandeRepo->findAll();
+
+        $productSales = []; // [product name] => quantity sold
+
+        foreach ($commandes as $commande) {
+            foreach ($commande->getCartItems() as $item) {
+                $productName = $item->getProduit()->getName();
+                $productSales[$productName] = ($productSales[$productName] ?? 0) + $item->getQuantité();
+            }
+        }
+
+        arsort($productSales); // Sort descending by quantity
+
+        return $this->render('admin_view/statistics/top-products.html.twig', [
+            'allSales' => json_encode($productSales)
+        ]);
+    }
+
+
 }

@@ -21,31 +21,19 @@
 
                 <div class="col-md-3 col-xs-6">
                     <div class="footer">
-                        <h3 class="footer-title">Categories</h3>
+                        <h3 class="footer-title">Pages</h3>
                         <ul class="footer-links">
-                            <li><a href="#">All</a></li>
-                            <li><a href="#">Laptops</a></li>
-                            <li><a href="#">Smartphones</a></li>
-                            <li><a href="#">Cameras</a></li>
-                            <li><a href="#">Accessories</a></li>
+                            <li><a href="{{ url('admin.home') }}">Home</a></li>
+                            <li><a href="{{ url('users.admin')}}">Users List</a></li>
+                            <li><a href="{{ url('produit.list') }}">Products List</a></li>
+                            <li><a href="{{ url('app_create_produit') }}">Add Product</a></li>
+                            <li><a href="{{ url('orders.list') }}">Orders List</a></li>
+                            <li><a href="{{ url('admin_statistics_categories') }}">Statistics</a></li>
                         </ul>
                     </div>
                 </div>
 
                 <div class="clearfix visible-xs"></div>
-
-                <div class="col-md-3 col-xs-6">
-                    <div class="footer">
-                        <h3 class="footer-title">Information</h3>
-                        <ul class="footer-links">
-                            <li><a href="#">About Us</a></li>
-                            <li><a href="#">Contact Us</a></li>
-                            <li><a href="#">Privacy Policy</a></li>
-                            <li><a href="#">Orders and Returns</a></li>
-                            <li><a href="#">Terms & Conditions</a></li>
-                        </ul>
-                    </div>
-                </div>
 
                 <div class="col-md-3 col-xs-6">
                     <div class="footer">
@@ -69,6 +57,14 @@
             <!-- row -->
             <div class="row">
                 <div class="col-md-12 text-center">
+                    <ul class="footer-payments">
+                        <li><i class="fa fa-cc-visa"></i></li>
+                        <li><i class="fa fa-credit-card"></i></li>
+                        <li><i class="fa fa-cc-paypal"></i></li>
+                        <li><i class="fa fa-cc-mastercard"></i></li>
+                        <li><i class="fa fa-cc-discover"></i></li>
+                        <li><i class="fa fa-cc-amex"></i></li>
+                    </ul>
                     <span class="copyright">
                         Copyright &copy;<script>document.write(new Date().getFullYear());</script> All rights reserved
                     </span>

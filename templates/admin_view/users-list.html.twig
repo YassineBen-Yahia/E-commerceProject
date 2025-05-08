@@ -43,8 +43,9 @@
                         <td>{{ user.roles[0] }}</td>
 
                         {% if role == 'ROLE_USER' %}
-                            <td>
+                            <td class="text-center">
                                 <a href="{{ url('make_admin', {id: user.id }) }}" class="btn btn-primary">Make Admin</a>
+                                <a href="{{ url('orders.list', {id: user.id }) }}" class="btn btn-primary">Orders History</a>
                             </td>
                         {% endif %}
 
@@ -53,6 +54,30 @@
             </tbody>
         </table>
     </div>
+{% endblock %}
+
+{% block javascripts %}
+
+    <script>
+        $(document).ready(function () {
+            // Initialisation pour la table des utilisateurs
+            if ($('#usersTable').length) {
+                $('#usersTable').DataTable({
+                    responsive: true,
+                    language: {
+                        search: "Search:",
+                        lengthMenu: "Show _MENU_ entries",
+                        info: "Showing _START_ to _END_ of _TOTAL_ entries",
+                        paginate: {
+                            previous: "Previous",
+                            next: "Next"
+                        }
+                    }
+                });
+            }
+        });
+    </script>
+
 {% endblock %}
 
 {% block footer %}

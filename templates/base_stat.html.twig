@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>{% block title %}EchriPc - Statistics{% endblock %}</title>
+
+    <!-- Google font -->
+    <link href="https://fonts.googleapis.com/css?family=Montserrat:400,500,700" rel="stylesheet">
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="{{ asset('styles/css/bootstrap.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('styles/css/slick.css') }}">
+    <link rel="stylesheet" href="{{ asset('styles/css/slick-theme.css') }}">
+    <link rel="stylesheet" href="{{ asset('styles/css/nouislider.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('styles/css/font-awesome.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('styles/css/style.css') }}">
+
+    <!-- DataTables -->
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/dataTables.bootstrap5.min.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/buttons/2.3.0/css/buttons.bootstrap5.min.css">
+
+    <style>
+        body, html {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+        }
+        .stats-layout {
+            display: flex;
+            min-height: 70vh;
+        }
+        .sidebar {
+            width: 220px;
+            background-color: #f8f9fa;
+            padding: 20px;
+            border-right: 1px solid #dee2e6;
+        }
+        .sidebar h5 {
+            margin-bottom: 1rem;
+        }
+        .sidebar .nav-link {
+            color: #333;
+            padding: 8px 0;
+            display: block;
+        }
+        .sidebar .nav-link:hover {
+            color: #007bff;
+        }
+        .main-content {
+            flex: 1;
+            justify-content: center;
+            padding: 30px;
+            overflow-y: auto; /* Allows scrolling in the main content area if necessary */
+        }
+    </style>
+</head>
+<body>
+
+{% block header %}
+    <!-- Header content goes here -->
+{% endblock %}
+
+<div class="stats-layout">
+    <!-- Sidebar -->
+    <aside class="sidebar">
+        {% block sidebar %}
+            <h5>Statistics Menu</h5>
+            <ul class="nav flex-column">
+                <li class="nav-item"><a class="nav-link" href="{{ path('admin_statistics_categories') }}">Items Sold per Category</a></li>
+                <li class="nav-item"><a class="nav-link" href="{{ path('admin_statistics_sales') }}">Total Sales (€)</a></li>
+                <li class="nav-item"><a class="nav-link" href="{{ path('admin_statistics_sales_by_category') }}">Sales by Category per Month</a></li>
+                <li class="nav-item"><a class="nav-link" href="{{ path('admin_statistics_top_products') }}">Top Products Sold</a></li>
+            </ul>
+        {% endblock %}
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        {% block body %}
+        {% endblock %}
+    </main>
+</div>
+
+{% block footer %}
+    <!-- Footer content goes here -->
+{% endblock %}
+
+<!-- Scripts -->
+<script src="{{ asset('styles/js/jquery.min.js') }}"></script>
+<script src="{{ asset('styles/js/bootstrap.min.js') }}"></script>
+<script src="{{ asset('styles/js/slick.min.js') }}"></script>
+<script src="{{ asset('styles/js/nouislider.min.js') }}"></script>
+<script src="{{ asset('styles/js/jquery.zoom.min.js') }}"></script>
+<script src="{{ asset('styles/js/main.js') }}"></script>
+
+{% block javascripts %}
+{% endblock %}
+
+</body>
+</html>

@@ -1,0 +1,60 @@
+{% extends 'base_stat.html.twig' %}
+
+{% block title %}Category Sales Statistics{% endblock %}
+{% block header %}
+    {% include 'admin_fragments/header.html.twig' %}
+    {% include 'admin_fragments/navigation.html.twig' with {'role': "home"} %}
+{% endblock %}
+
+
+{% block body %}
+    <div class="row">
+        <div class="col-md-9">
+            <h1 class="mb-4">Sales Statistics</h1>
+            <canvas id="salesMonthChart" width="200" height="200" style="max-width: 500px; max-height: 500px;"></canvas>
+        </div>
+    </div>
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        const ctx2 = document.getElementById('salesMonthChart').getContext('2d');
+        new Chart(ctx2, {
+            type: 'line',
+            data: {
+                labels: {{ salesByMonthLabels|json_encode|raw }},
+                datasets: [{
+                    label: 'Sales (€)',
+                    data: {{ salesByMonthData|json_encode|raw }},
+                    fill: false,
+                    borderColor: 'rgb(196,12,40)',
+                    backgroundColor: 'rgb(194,12,40)',
+                    tension: 0.3, // smooth curve
+                    pointBackgroundColor: 'rgb(194,12,40)',
+                    pointBorderColor: '#fff',
+                    pointHoverBackgroundColor: '#fff',
+                    pointHoverBorderColor: 'rgb(196,12,40)'
+                }]
+            },
+            options: {
+                responsive: true,
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        ticks: {
+                            callback: value => '€' + value
+                        }
+                    }
+                }
+            }
+        });
+
+    </script>
+{% endblock %}
+
+
+{% block footer %}
+    {% include 'admin_fragments/footer.html.twig' %}
+{% endblock %}
