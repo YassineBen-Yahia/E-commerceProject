@@ -23,19 +23,21 @@
         <div class="row">
             <!-- Product main img -->
             <div class="col-md-5 col-md-push-2">
-                <div id="product-main-img">
-                    <div class="product-preview">
-                        <img src="{{ asset('styles/' ~ produit.getImage()) }}" alt="{{ produit.name }}" class="img-fluid">
+                <div id="product-main-img slick-slide slider-active" data-slick-init="true">
+                    <div class="product-preview ">
+                        <img src="{{ asset('styles/' ~ produit.getImage()) }}"
+                             alt="{{ produit.name }}"
+                             class="product-img zoomImg"
+
+                             style="width: 370px; height: 370px; object-fit: contain;">
                     </div>
                 </div>
             </div>
-            <!-- /Product main img -->
 
-            <!-- Product thumb imgs -->
             <div class="col-md-2 col-md-pull-5">
                 <div id="product-imgs">
-                    <div class="product-preview">
-                        <img src="{{ asset('styles/' ~ produit.getImage()) }}" alt="{{ produit.name }}">
+                    <div class="product-preview slick-slide slider-active" data-slick-init="true">
+                        <img class="zoomImg" src="{{ asset('styles/' ~ produit.getImage()) }}" alt="{{ produit.name }}">
                     </div>
                 </div>
             </div>
@@ -78,14 +80,12 @@
                                 <span class="qty-down">-</span>
                             </div>
                         </div>
-                        {% if not is_granted('ROLE_ADMIN') %}
-                            <button class="add-to-cart-btn" onclick="window.location.href='{{ app.user ? '/CartItem/' ~ produit.id : '/register' }}'">
+
+                            <button class="add-to-cart-btn " onclick="window.location.href='{{ app.user ? '/CartItem/' ~ produit.id : '/register' }}'">
                                 <i class="fa fa-shopping-cart"></i> add to cart
                             </button>
-                        {% endif %}
 
                     </div>
-
                     {% if not is_granted('ROLE_ADMIN') %}
                         <ul class="product-btns">
                             <li>
@@ -164,4 +164,33 @@
     {% else %}
         {% include 'fragments/footer.html.twig' %}
     {% endif %}
+{% endblock %}
+
+
+{% block stylesheets %}
+    {{ parent() }}
+    <style>
+        /* Override spécifique à cette page */
+        .product-details .add-to-cart {
+            opacity: 1 !important;
+            position: static !important;
+            bottom: auto !important;
+        }
+
+        #product-imgs .product-preview {
+            overflow: hidden;
+            border: 1px solid #ddd;
+        }
+
+        #product-imgs .product-preview img {
+            transition: transform 0.3s ease;
+        }
+
+        #product-imgs .product-preview:hover img {
+            transform: scale(1.5);
+        }
+        #product-imgs .product-preview:first-child:hover img {
+            transform: scale(1.5);
+        }
+    </style>
 {% endblock %}

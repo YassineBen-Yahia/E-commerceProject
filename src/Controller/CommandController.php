@@ -62,4 +62,17 @@ final class CommandController extends AbstractController
         $this->addFlash('success', 'Your order has been placed successfully!');
         return $this->redirectToRoute('app_cart');
     }
+    #[Route('/command-history', name: 'app_order_history')]
+
+    public function getHistory(): Response
+    {
+
+
+        $commandes=$this->commandService->getCommandByUser($this->getUser());
+
+        return $this->render('command/history.html.twig', [
+            'commands'=>$commandes,
+        ]);
+
+    }
 }
