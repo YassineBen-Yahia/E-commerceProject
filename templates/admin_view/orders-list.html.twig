@@ -1,0 +1,84 @@
+{% extends 'base.html.twig' %}
+
+{% block header %}
+    {% include 'admin_fragments/header.html.twig' %}
+    {% include 'admin_fragments/navigation.html.twig' with {'role': 'orders'} %}
+{% endblock %}
+
+{% block body %}
+    <div class="container mt-4">
+        {% for type, messages in app.flashes %}
+            {% for message in messages %}
+                <div class="alert alert-{{ type }}">
+                    {{ message }}
+                </div>
+            {% endfor %}
+        {% endfor %}
+    </div>
+
+    <div class="container mt-4">
+        <h1>Orders List</h1>
+        {% set i = true %}
+        {% for commande in commandes %}
+        {% if commande.utilisateur.id == user_id and i  %}
+            <h2>History of orders by {{ commande.utilisateur.name }} </h2>
+            {% set i = false %}
+        {% endif %}
+        {% endfor %}
+        <table id="ordersTable" class="table table-bordered datatable">
+            <thead>
+            <tr>
+                <th>ID</th>
+                <th>User</th>
+                <th>Created At</th>
+                <th>Items</th>
+                <th>Total Price</th>
+                <th>Actions</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for commande in commandes %}
+                {% if user_id == 0 or commande.utilisateur.id == user_id %}
+                    <tr>
+                        <td>{{ commande.id }}</td>
+                        <td>{{ commande.utilisateur.name }}</td>
+                        <td>{{ commande.createdAt|date('Y-m-d H:i') }}</td>
+                        <td>
+                            {{ commande.cartItems|reduce((carry, item) => carry + item.quantité, 0) }}
+                        </td>
+                        <td>
+                            €{{ commande.cartItems|reduce((carry, item) => carry + (item.produit.price * item.quantité), 0) }}
+                        </td>
+                        <td class="text-center">
+                            <a href="{{ path('orders.view', {id: commande.id}) }}" ><i class="fa fa-eye"></i></a>
+                        </td>
+                    </tr>
+                {% endif %}
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+{% endblock %}
+
+{% block javascripts %}
+    <script>
+        $(document).ready(function () {
+            $('#ordersTable').DataTable({
+                responsive: true,
+                language: {
+                    search: "Search:",
+                    lengthMenu: "Show _MENU_ entries",
+                    info: "Showing _START_ to _END_ of _TOTAL_ entries",
+                    paginate: {
+                        previous: "Previous",
+                        next: "Next"
+                    }
+                }
+            });
+        });
+    </script>
+{% endblock %}
+
+{% block footer %}
+    {% include 'admin_fragments/footer.html.twig' %}
+{% endblock %}

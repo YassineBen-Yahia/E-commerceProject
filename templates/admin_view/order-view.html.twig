@@ -1,0 +1,76 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Order View{% endblock %}
+
+{% block header %}
+    {% include 'admin_fragments/header.html.twig' %}
+    {% include 'admin_fragments/navigation.html.twig' with {'role': 'orders'} %}
+{% endblock %}
+
+{% block body %}
+<div class="container mt-4">
+        <h1>Order View</h1>
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="mb-3">
+                        <p><strong>Order ID:</strong> {{ commande.id }}</p>
+                        <p><strong>Customer:</strong> {{ commande.utilisateur.name }}</p>
+                        <p><strong>Created At:</strong> {{ commande.createdAt|date('Y-m-d H:i') }}</p>
+                    </div>
+
+                    <div class="table-responsive">
+                        <table class="table cart-table">
+                            <thead>
+                            <tr>
+                                <th>Product</th>
+                                <th>Price</th>
+                                <th>Quantity</th>
+                                <th>Subtotal</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {% set total = 0 %}
+                            {% for item in commande.cartItems %}
+                                {% set subtotal = item.produit.price * item.quantité %}
+                                {% set total = total + subtotal %}
+                                <tr>
+                                    <td class="cart-product">
+                                        <div class="product-item d-flex align-items-center">
+                                            <div class="product-thumb mr-3">
+                                                <img src="{{ asset('styles/' ~ item.produit.image) }}"
+                                                     alt="{{ item.produit.name }}"
+                                                     onerror="this.src='{{ asset('styles/img/laptop1.png') }}'"
+                                                     style="max-width: 80px; max-height: 80px; object-fit: contain;">
+                                            </div>
+                                            <div class="product-info">
+                                                <h5>{{ item.produit.name }}</h5>
+                                                <p>{{ item.produit.categorie.name }}</p>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td>€{{ item.produit.price }}</td>
+                                    <td>{{ item.quantité }}</td>
+                                    <td>€{{ subtotal }}</td>
+                                </tr>
+                            {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div class="mt-4 text-right">
+                        <h3>Order Summary</h3>
+                        <div class="summary-row"><span>Subtotal:</span> <span>€{{ total }}</span></div>
+                        <div class="summary-row"><span>Shipping:</span> <span>€0.00</span></div>
+                        <div class="summary-row total"><strong>Total:</strong> <strong>€{{ total }}</strong></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+
+{% block footer %}
+    {% include 'admin_fragments/footer.html.twig' %}
+{% endblock %}

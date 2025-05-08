@@ -1,0 +1,90 @@
+{% extends 'base_stat.html.twig' %}
+
+{% block title %}Top Sold Products{% endblock %}
+
+{% block header %}
+    {% include 'admin_fragments/header.html.twig' %}
+    {% include 'admin_fragments/navigation.html.twig' with {'role': "home"} %}
+{% endblock %}
+
+{% block body %}
+    <div class="row">
+        <div class="col-md-9">
+            <h1 class="mb-4">Top Sold Products</h1>
+
+            <div class="mb-3">
+                <button class="btn btn-outline-primary btn-toggle me-2" onclick="renderChart(10)">Top 10</button>
+                <button class="btn btn-outline-primary btn-toggle me-2" onclick="renderChart(20)">Top 20</button>
+                <button class="btn btn-outline-primary btn-toggle" onclick="renderChart(30)">Top 30</button>
+            </div>
+
+
+
+            <canvas id="topProductsChart" style="max-width: 750px; max-height: 500px;"></canvas>
+        </div>
+    </div>
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        const allSales = {{ allSales|raw }};
+        const productNames = Object.keys(allSales);
+        const quantities = Object.values(allSales);
+
+        let chartInstance;
+
+        function renderChart(limit) {
+            const slicedNames = productNames.slice(0, limit);
+            const slicedQuantities = quantities.slice(0, limit);
+
+            const ctx = document.getElementById('topProductsChart').getContext('2d');
+
+            // Destroy previous chart if it exists
+            if (chartInstance) chartInstance.destroy();
+
+            chartInstance = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: slicedNames,
+                    datasets: [{
+                        label: 'Items Sold',
+                        data: slicedQuantities,
+                        backgroundColor: '#4CAF50',
+                        borderColor: '#388E3C',
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        title: {
+                            display: true,
+                            text: `Top ${limit} Products by Quantity Sold`
+                        },
+                        tooltip: {
+                            mode: 'index',
+                            intersect: false
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            ticks: {
+                                stepSize: 1
+                            }
+                        }
+                    }
+                }
+            });
+        }
+
+        // Render default on load
+        document.addEventListener('DOMContentLoaded', () => renderChart(10));
+    </script>
+{% endblock %}
+
+{% block footer %}
+    {% include 'admin_fragments/footer.html.twig' %}
+{% endblock %}
