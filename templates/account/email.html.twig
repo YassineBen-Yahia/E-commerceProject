@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Verify Email</title>
+    <link type="text/css" rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="{{ asset('styles/css/font-awesome.min.css') }}">
+</head>
+<body>
+<div class="d-flex">
+    <!-- Sidebar -->
+    {% include 'fragments/account_sidebar.html.twig' %}
+
+    <div class="container my-5">
+
+        <!-- Title -->
+        <h1 class="text-center mb-4" style="color: #2B2D42;">Verify Email</h1>
+
+        {% for type, messages in app.flashes %}
+            {% for message in messages %}
+                <div class="alert alert-{{ type}} ">
+                    {{message }}
+                </div>
+            {% endfor %}
+        {% endfor %}
+
+        {% if isVerified %}
+            <p class="text-center mb-4" style="font-size: 1.2rem;">
+                Your email is already verified
+            </p>
+        {% else %}
+            <!-- Message -->
+            <p class="text-center mb-4" style="font-size: 1.2rem;">
+                To verify your email, click on the button below.
+            </p>
+
+            <!-- Send Email Button -->
+            <div class="text-center mb-4">
+                <form method="post" action="{{ path('app_send_verification_email') }}">
+                    <button type="submit" class="btn btn-lg" style="background-color: #D10024; color: white; width: 200px;">
+                        Send Email
+                    </button>
+                </form>
+            </div>
+        {% endif %}
+
+
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

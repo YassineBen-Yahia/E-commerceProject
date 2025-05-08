@@ -55,6 +55,8 @@ security:
         - { path: ^/login, roles: PUBLIC_ACCESS }
         - { path: ^/logout, roles: PUBLIC_ACCESS }
         - { path: ^/details, roles: PUBLIC_ACCESS }
+        - { path: ^/account, roles: IS_AUTHENTICATED_REMEMBERED }
+        - { path: ^/send-verification-email, roles: IS_AUTHENTICATED_REMEMBERED }
         - { path: ^/admin, roles: ROLE_ADMIN }
         - { path: ^/, roles: PUBLIC_ACCESS, allow_if: "not is_granted('ROLE_ADMIN')" }
 

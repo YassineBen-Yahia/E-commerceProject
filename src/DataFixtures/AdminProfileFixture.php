@@ -24,7 +24,7 @@ class AdminProfileFixture extends Fixture implements FixtureGroupInterface
         $faker = Factory::create('fr_FR');
 
         $admins = [
-            ['name' => 'Mohamed Amine Laouini', 'email' => 'medaminelaouini61@gmail.com'],
+            ['name' => 'Mohamed Amine Laouini', 'email' => 'laouini@gmail.com'],
             ['name' => 'Louay Chatti', 'email' => 'chatti@gmail.cim'],
             ['name' => 'Yassine Benyahya', 'email' => 'benyahya@gmail.com'],
             ['name' => 'Aziz bel Haj', 'email' => 'aziz@gmail.com'],

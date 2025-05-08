@@ -17,6 +17,10 @@
     <link type="text/css" rel="stylesheet" href="{{ asset('styles/css/nouislider.min.css') }}">
     <link rel="stylesheet" href="{{ asset('styles/css/font-awesome.min.css') }}">
     <link type="text/css" rel="stylesheet" href="{{ asset('styles/css/style.css') }}">
+
+    <!-- DataTables CSS -->
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/dataTables.bootstrap5.min.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/buttons/2.3.0/css/buttons.bootstrap5.min.css">
     <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
     {#    <!--[if lt IE 9]>#}
@@ -35,6 +39,7 @@
     {% endif %}
 {% endblock %}
 
+<div class="container mt-4" style="min-height: 70vh; padding: 20px;">
 {% block body %}
     <!-- NAVIGATION -->
     <nav id="navigation">
@@ -169,6 +174,7 @@
     </div>
     <!-- /SECTION -->
 {% endblock %}
+</div>
 
 {% block footer %}
     {% if showFooter is not defined or showFooter %}
@@ -221,7 +227,10 @@
         }
     }
 </script>
-
+<!-- DataTables JS -->
+<script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+<script src="https://cdn.datatables.net/1.13.6/js/dataTables.bootstrap5.min.js"></script>
+<script src="https://cdn.datatables.net/buttons/2.3.0/js/buttons.html5.min.js"></script>
 
 
 {% block javascripts %}

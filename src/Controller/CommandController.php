@@ -27,7 +27,7 @@ final class CommandController extends AbstractController
     {
         $this->denyAccessUnlessGranted('ROLE_USER');
         if (!$this->getUser()->isVerified()) {
-            return $this->redirectToRoute('app_index');
+            return $this->redirectToRoute('app_account_verify_email');
         }
 
         if (!$cart) {
@@ -49,7 +49,7 @@ final class CommandController extends AbstractController
     {
         $this->denyAccessUnlessGranted('ROLE_USER');
         if (!$this->getUser()->isVerified()) {
-            return $this->redirectToRoute('app_index');
+            return $this->redirectToRoute('app_account_verify_email');
         }
 
         if (!$cart) {
@@ -61,5 +61,18 @@ final class CommandController extends AbstractController
 
         $this->addFlash('success', 'Your order has been placed successfully!');
         return $this->redirectToRoute('app_cart');
+    }
+    #[Route('/command-history', name: 'app_order_history')]
+
+    public function getHistory(): Response
+    {
+
+
+        $commandes=$this->commandService->getCommandByUser($this->getUser());
+
+        return $this->render('command/history.html.twig', [
+            'commands'=>$commandes,
+        ]);
+
     }
 }

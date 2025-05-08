@@ -1,0 +1,25 @@
+<style>
+    .links:hover {
+        color: #D10024 !important; /* Hover text color */
+    }
+</style>
+
+<div class="border-end" style="background-color: #2B2D42; width: 250px; min-height: 100vh;">
+    <div class="p-3">
+        <h5 class="text-center" style="color: #D10024" >Account</h5>
+        <ul class="nav flex-column">
+            <li class="nav-item">
+                <a class="nav-link active text-white links"
+                   href="{% if is_granted("ROLE_ADMIN") %} {{ path('admin.home') }} {% else %}{{ path("app_index") }} {% endif %}">
+                    Home
+                </a>
+            </li>
+            <li class="nav-item links">
+                <a class="nav-link text-white links" href="{{ path("app_account") }}">Profile</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link text-white links" href="{{ path("app_account_verify_email") }}">Verify Email</a>
+            </li>
+        </ul>
+    </div>
+</div>
