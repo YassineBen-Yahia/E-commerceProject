@@ -29,7 +29,7 @@ class ExceptionListener
 
             switch ($statusCode) {
                 case 401:
-                    $response = new RedirectResponse($this->router->generate('app_register'));
+                    $response = new RedirectResponse($this->router->generate('app_login'));
                     break;
                 case 403:
                     $response = new Response(

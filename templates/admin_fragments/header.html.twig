@@ -1,3 +1,4 @@
+{% include 'fragments/logout_modal.html.twig' %}
 <!-- HEADER -->
 <header>
     <!-- TOP HEADER -->
@@ -27,7 +28,11 @@
                             </li>
                         </ul>
                     </li>
-                    <li><a href={{ path('app_logout') }}><i class="fa fa-sign-out"></i> Logout </a></li>
+                    <li>
+                        <a href="#" data-toggle="modal" data-target="#logoutModal">
+                            <i class="fa fa-sign-out"></i> Logout
+                        </a>
+                    </li>
                 {% else %}
                     <li><a href="/register"><i class="fa fa-user-o"></i> Register </a></li>
                     <li><a href={{ path('app_login') }}><i class="fa fa-sign-in"></i> Login </a></li>
