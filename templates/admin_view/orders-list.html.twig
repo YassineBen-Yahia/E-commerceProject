@@ -1,0 +1,55 @@
+{% extends 'base.html.twig' %}
+
+{% block header %}
+    {% include 'admin_fragments/header.html.twig' %}
+    {% include 'admin_fragments/navigation.html.twig' with {'role': 'orders'} %}
+{% endblock %}
+
+{% block body %}
+    <div class="container mt-4">
+        {% for type, messages in app.flashes %}
+            {% for message in messages %}
+                <div class="alert alert-{{ type }}">
+                    {{ message }}
+                </div>
+            {% endfor %}
+        {% endfor %}
+    </div>
+
+    <div class="container mt-4">
+        <h1>Orders List</h1>
+
+{#        <table id="ordersTable" class="table table-bordered datatable">
+            <thead>
+            <tr>
+                <th>ID</th>
+                <th>Name</th>
+                <th>Categorie</th>
+                <th>Description</th>
+                <th>Actions</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for produit in produits %}
+                <tr>
+                    <td>{{ produit.id }}</td>
+                    <td>{{ produit.name }}</td>
+                    <td class="product-category">{{ produit.categorie.name }}</td>
+                    <td>{{ produit.description }}</td>
+                    <td>
+                        <a href="{{ url('app_create_produit', {id: produit.id}) }}" ><i class="fa fa-pencil-square-o"></i></a>
+                        &nbsp;
+                        <a href="{{ url('produit.delete', {id: produit.id}) }}" ><i class="fa fa-trash"></i></a>
+                        &nbsp;
+                        <a href="#" ><i class="fa fa-eye"></i></a>
+                    </td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>#}
+    </div>
+{% endblock %}
+
+{% block footer %}
+    {% include 'admin_fragments/footer.html.twig' %}
+{% endblock %}

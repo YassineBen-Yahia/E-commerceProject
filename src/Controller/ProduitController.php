@@ -103,6 +103,14 @@ final class ProduitController extends AbstractController
         ]);
     }
 
+    #[Route('/admin/orders/list', name: 'orders.list')]
+    public function listCommandes(ManagerRegistry $doctrine): Response{
+
+        return $this->render('admin_view/orders-list.html.twig', [
+            'controller_name' => 'ProduitController',
+        ]);
+    }
+
     #[Route('/details/{id}', name: 'produit_details')]
     public function detailsProduit(Produit $produit , ManagerRegistry $doctrine): Response
     {

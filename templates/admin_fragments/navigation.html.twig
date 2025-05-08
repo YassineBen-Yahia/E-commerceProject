@@ -8,6 +8,7 @@
                 <li><a href="{{ url('users.admin', {role: 'ROLE_ADMIN'}) }}" class="{{ role == 'ROLE_ADMIN' ? 'active' : '' }}">Admins List</a></li>
                 <li><a href="{{ url('produit.list') }}" class="{{ role == 'products' ? 'active' : '' }}">Products List</a></li>
                 <li><a href="{{ url('app_create_produit') }}" class="{{ role == 'products' ? 'active' : '' }}">Add Product</a></li>
+                <li><a href="{{ url('orders.list') }}" class="{{ role == 'orders' ? 'active' : '' }}">Orders List</a></li>
                 <li><a href="#">Statistics</a></li>
             </ul>
         </div>
