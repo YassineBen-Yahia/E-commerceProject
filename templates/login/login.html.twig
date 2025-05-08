@@ -53,11 +53,33 @@
 
                         <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
 
-                        <div class="d-flex justify-content-center">
+                        <div class="d-flex justify-content-center mb-3">
                             <button class="btn btn-lg" style="background-color: #D10024; color: white; width: 200px;"
                                     type="submit">Sign In
                             </button>
                         </div>
+
+                        {% if app.user and is_granted('ROLE_ADMIN')%}
+                            <div class="d-flex justify-content-center">
+                                <a class="btn" href="{{ path("admin.home") }}" style="background-color: #2B2D42; color: white;">
+                                    Continue as {{ app.user.name }}
+                                </a>
+                            </div>
+                        {% elseif app.user %}
+                            <div class="d-flex justify-content-center">
+                                <a class="btn" href="{{ path("app_index") }}" style="background-color: #2B2D42; color: white;">
+                                    Continue as {{ app.user.name }}
+                                </a>
+                            </div>
+                        {% else %}
+                        <div class="d-flex justify-content-center">
+                            <a class="btn" href="{{ path("app_index") }}" style="background-color: #2B2D42; color: white;">
+                                    Continue as guest
+                            </a>
+                        </div>
+                        {% endif %}
+
+
                     </form>
 
                     <div class="mt-3 text-center">

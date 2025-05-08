@@ -1,0 +1,23 @@
+<div class="modal fade" id="verifyModal" tabindex="-1" role="dialog" aria-labelledby="verifyModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content shadow-lg">
+            <div class="modal-header" style="background-color: #2B2D42; color: #fff; font-family: 'Montserrat', sans-serif;">
+                <h5 class="modal-title" id="verifyModalLabel" style="color: #fff">Logging out</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close" style="color: #fff;">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body" style="font-family: 'Montserrat', sans-serif; font-size: 16px; color: #333;">
+                <p>Are you sure ?</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="primary-btn" data-dismiss="modal" style="background-color: #6c757d; border: none; color: #fff; font-family: 'Montserrat', sans-serif;">
+                    Cancel
+                </button>
+                <a href="{{ path('app_logout') }}" class="primary-btn" style="background-color: #D10024; border: none; color: #fff; font-family: 'Montserrat', sans-serif;">
+                    Logout
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
