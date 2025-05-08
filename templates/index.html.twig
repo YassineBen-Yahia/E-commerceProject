@@ -1,14 +1,15 @@
 {% extends 'base.html.twig' %}
 {% block emplacement %} {% if category is not null %}{{ category }} {% endif %}{% endblock %}
 {% block store %}
-{% for type, messages in app.flashes %}
-    {% for message in messages %}
-        <div class="alert alert-{{ type}} ">
-            {{message }}
-        </div>
-    {% endfor %}
-{% endfor %}
+
 <div id="store" class="col-md-9">
+    {% for type, messages in app.flashes %}
+        {% for message in messages %}
+            <div class="alert alert-{{ type}} ">
+                {{message }}
+            </div>
+        {% endfor %}
+    {% endfor %}
     <!-- store top filter -->
     <div class="store-filter clearfix">
         <div class="store-sort">
