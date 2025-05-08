@@ -21,8 +21,8 @@
 
     {% for type, messages in app.flashes %}
         {% for message in messages %}
-            <div class="alert alert-{{ type}} ">
-                {{message }}
+            <div class="alert alert-{{type}} ">
+                {{message}}
             </div>
         {% endfor %}
     {% endfor %}
@@ -65,6 +65,46 @@
         }) }}
         <div class="invalid-feedback">
             {{ form_errors(form.email) }}
+        </div>
+    </div>
+
+    <div class="row mb-3">
+        <div class="col-md-6">
+            {{ form_label(form.newPassword, 'New Password', {'label_attr': {'class': 'form-label', 'style': 'color: #2B2D42;'}}) }}
+            {{ form_widget(form.newPassword, {
+                'attr': {
+                    'class': 'form-control' ~ (form.newPassword.vars.errors|length ? ' is-invalid' : ''),
+                    'placeholder': 'Enter new password'
+                }
+            }) }}
+            <div class="invalid-feedback">
+                {{ form_errors(form.newPassword) }}
+            </div>
+        </div>
+        <div class="col-md-6">
+            {{ form_label(form.confirmNewPassword, 'Confirm New Password', {'label_attr': {'class': 'form-label', 'style': 'color: #2B2D42;'}}) }}
+            {{ form_widget(form.confirmNewPassword, {
+                'attr': {
+                    'class': 'form-control' ~ (form.confirmNewPassword.vars.errors|length ? ' is-invalid' : ''),
+                    'placeholder': 'Confirm new password'
+                }
+            }) }}
+            <div class="invalid-feedback">
+                {{ form_errors(form.confirmNewPassword) }}
+            </div>
+        </div>
+    </div>
+
+    <div class="mb-3">
+        {{ form_label(form.currentPassword, 'Current Password', {'label_attr': {'class': 'form-label', 'style': 'color: #2B2D42;'}}) }}
+        {{ form_widget(form.currentPassword, {
+            'attr': {
+                'class': 'form-control' ~ (form.currentPassword.vars.errors|length ? ' is-invalid' : ''),
+                'placeholder': 'Enter your current password'
+            }
+        }) }}
+        <div class="invalid-feedback">
+            {{ form_errors(form.currentPassword) }}
         </div>
     </div>
 
