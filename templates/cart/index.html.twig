@@ -95,13 +95,6 @@
                                     Proceed to Checkout
                                 </button>
 
-                                    <a
-                                            class="primary-btn"
-                                            id="proceedToPayment"
-                                            data-verified="{{ app.user and app.user.isVerified ? 'true' : 'false' }}"
-                                            href="{{ path('create_payment_link', {'id': cart.id, 'total': total}) }}">
-                                        Proceed to Online Payment
-                                    </a>
 
 
 

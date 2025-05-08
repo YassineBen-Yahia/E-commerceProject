@@ -20,7 +20,7 @@ security:
             provider: app_user_provider
             logout:
                 path: app_logout
-                target: app_index
+                target: app_login
                 invalidate_session: true
                 # where to redirect after logout
                 # target: app_any_route
@@ -54,8 +54,8 @@ security:
         - { path: ^/register, roles: PUBLIC_ACCESS }
         - { path: ^/login, roles: PUBLIC_ACCESS }
         - { path: ^/logout, roles: PUBLIC_ACCESS }
+        - { path: ^/details, roles: PUBLIC_ACCESS }
         - { path: ^/admin, roles: ROLE_ADMIN }
-        - { path: ^/details, roles: [ROLE_ADMIN, ROLE_USER] }
         - { path: ^/, roles: PUBLIC_ACCESS, allow_if: "not is_granted('ROLE_ADMIN')" }
 
 

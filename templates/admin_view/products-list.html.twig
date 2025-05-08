@@ -51,7 +51,7 @@
                         &nbsp;
                         <a href="{{ url('produit.delete', {id: produit.id}) }}" ><i class="fa fa-trash"></i></a>
                         &nbsp;
-                        <a href="#" ><i class="fa fa-eye"></i></a>
+                        <a href="{{ path('produit_details', {'id': produit.id}) }}" ><i class="fa fa-eye"></i></a>
                     </td>
                 </tr>
             {% endfor %}

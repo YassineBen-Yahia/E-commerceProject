@@ -40,10 +40,7 @@ final class CartController extends AbstractController
         }
 
 
-        $cart->getCartItems()->removeElement($cartItem);
-        $entityManager->remove($cartItem);
-        $entityManager->flush();
-
+        $this->cartService->removeCartItem($cart,$cartItem);
 
         return $this->redirectToRoute('app_cart');
 
