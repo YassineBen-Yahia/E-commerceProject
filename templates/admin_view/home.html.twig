@@ -5,10 +5,9 @@
     {% include 'admin_fragments/navigation.html.twig' with {'role': "home"} %}
 {% endblock %}
 
-
 {% block body %}
-<div class="container mt-4">
     <div class="container mt-4">
+
         {% for type, messages in app.flashes %}
             {% for message in messages %}
                 <div class="alert alert-{{ type }}">
@@ -16,10 +15,29 @@
                 </div>
             {% endfor %}
         {% endfor %}
+
+        <div class="card shadow-sm p-4">
+            <h1 class="mb-3">Admin Dashboard</h1>
+            <p class="lead">Welcome to the <strong>Admin Space</strong>. Here you can manage and monitor the main features of the website.</p>
+
+            <hr>
+
+            <div class="mt-4">
+                <h5>✔ Product Management</h5>
+                <p>View, add, update, and remove product listings. Ensure that the catalog is always up to date.</p>
+
+                <h5>✔ User Management</h5>
+                <p>Monitor registered users, manage their roles, and handle account-related operations.</p>
+
+                <h5>✔ Order Management</h5>
+                <p>Track customer orders, view order details, and manage the delivery or cancellation processes.</p>
+
+                <h5>✔ Statistics & Reports</h5>
+                <p>Access sales statistics, user activity, and other data to help make informed decisions.</p>
+            </div>
+        </div>
+
     </div>
-    <h1>Home</h1>
-    <h5>Welcome to admin space</h5>
-</div>
 {% endblock %}
 
 {% block footer %}
