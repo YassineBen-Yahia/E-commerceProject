@@ -21,7 +21,7 @@ final class CommandController extends AbstractController
     {
         $this->commandService = $commandService;
     }
-    #[Route('/checkout/{id}', name: 'app_checkout')]
+    #[Route('/command/{id}', name: 'app_checkout')]
 
     public function index(Cart $cart): Response
     {
@@ -36,14 +36,14 @@ final class CommandController extends AbstractController
         }
         $total=$this->commandService->calculateTotal($cart);
 
-        return $this->render('checkout/index.html.twig', [
+        return $this->render('command/index.html.twig', [
             'cartItems' => $cart->getCartItems(),
             'cart'=>$cart,
             'total' => $total,
 
         ]);
     }
-    #[Route('/checkout/order/{id}', name: 'app_place_order')]
+    #[Route('/command/order/{id}', name: 'app_place_order')]
 
     public function placeOrder(Cart $cart): Response
     {

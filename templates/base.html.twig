@@ -6,325 +6,216 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
 
-    <title>Electro - HTML Ecommerce Template</title>
+    <title>EchriPc - Best tech gadgets provider</title>
 
     <!-- Google font -->
     <link href="https://fonts.googleapis.com/css?family=Montserrat:400,500,700" rel="stylesheet">
 
-  <link type="text/css" rel="stylesheet" href="{{ asset('styles/css/bootstrap.min.css') }}">
-  <link type="text/css" rel="stylesheet" href="{{ asset('styles/css/slick.css') }}">
-  <link type="text/css" rel="stylesheet" href="{{ asset('styles/css/slick-theme.css') }}">
-  <link type="text/css" rel="stylesheet" href="{{ asset('styles/css/nouislider.min.css') }}">
-  <link rel="stylesheet" href="{{ asset('styles/css/font-awesome.min.css') }}">
-  <link type="text/css" rel="stylesheet" href="{{ asset('styles/css/style.css') }}">
-    <!-- DataTables CSS -->
-    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/dataTables.bootstrap5.min.css">
-    <link rel="stylesheet" href="https://cdn.datatables.net/buttons/2.3.0/css/buttons.bootstrap5.min.css">
-
+    <link type="text/css" rel="stylesheet" href="{{ asset('styles/css/bootstrap.min.css') }}">
+    <link type="text/css" rel="stylesheet" href="{{ asset('styles/css/slick.css') }}">
+    <link type="text/css" rel="stylesheet" href="{{ asset('styles/css/slick-theme.css') }}">
+    <link type="text/css" rel="stylesheet" href="{{ asset('styles/css/nouislider.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('styles/css/font-awesome.min.css') }}">
+    <link type="text/css" rel="stylesheet" href="{{ asset('styles/css/style.css') }}">
     <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
-{#    <!--[if lt IE 9]>#}
-{#    <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>#}
-{#    <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>#}
-{#    <![endif]-->#}
+    {#    <!--[if lt IE 9]>#}
+    {#    <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>#}
+    {#    <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>#}
+    {#    <![endif]-->#}
 
 </head>
 <body>
 
 
 {% block header %}
-{% if showHeader is not defined or showHeader %}
-    {% include 'fragments/header.html.twig' %}
-{% endif %}
+    {% if showHeader is not defined or showHeader %}
+        {% include 'fragments/header.html.twig' %}
+    {% endif %}
 {% endblock %}
 
-<div class="container mt-4" style="min-height: 70vh; padding-top: 20px;">
 {% block body %}
-<!-- NAVIGATION -->
-<nav id="navigation">
-    <!-- container -->
-    <div class="container">
-        <!-- responsive-nav -->
-        <div id="responsive-nav">
-            <!-- NAV -->
-            <ul class="main-nav nav navbar-nav">
-                <li class="active"><a href="#">Home</a></li>
-                <li><a href="/index">Categories</a></li>
-                <li><a href="/index/ordinateur">Laptops</a></li>
-                <li><a href="/index/smartphone">Smartphones</a></li>
-                <li><a href="/index/camera">Cameras</a></li>
-                <li><a href="/index/accessoire">Accessories</a></li>
-            </ul>
-            <!-- /NAV -->
-        </div>
-        <!-- /responsive-nav -->
-    </div>
-    <!-- /container -->
-</nav>
-<!-- /NAVIGATION -->
+    <!-- NAVIGATION -->
+    <nav id="navigation">
+        <!-- container -->
+        <div class="container">
+            <!-- responsive-nav -->
+            <div id="responsive-nav">
+                <!-- NAV -->
+                <ul class="main-nav nav navbar-nav">
+                    <li class="active"><a href="/index">Home</a></li>
+                    {% for category in categories %}
+                        <li><a href="/index/{{ category}}">{{ category|capitalize  }}</a></li>
 
-<!-- BREADCRUMB -->
-<div id="breadcrumb" class="section">
-    <!-- container -->
-    <div class="container">
-        <!-- row -->
-        <div class="row">
-            <div class="col-md-12">
-                <ul class="breadcrumb-tree">
-                    <li><a href="#">Home</a></li>
-                    <li><a href="#">{% block emplacement %}{% endblock %}</a></li>
-
+                    {% endfor %}
                 </ul>
+                <!-- /NAV -->
             </div>
+            <!-- /responsive-nav -->
         </div>
-        <!-- /row -->
-    </div>
-    <!-- /container -->
-</div>
-<!-- /BREADCRUMB -->
+        <!-- /container -->
+    </nav>
+    <!-- /NAVIGATION -->
 
-<!-- SECTION -->
-<div class="section">
-    <!-- container -->
-    <div class="container">
-        <!-- row -->
-        <div class="row">
-            <!-- ASIDE -->
-            {% block aside %}
-            <div id="aside" class="col-md-3">
-                <!-- aside Widget -->
-                <div class="aside">
-                    <h3 class="aside-title">Categories</h3>
-                   <div class="checkbox-filter" id="category-filter">
+    <!-- BREADCRUMB -->
+    <div id="breadcrumb" class="section">
+        <!-- container -->
+        <div class="container">
+            <!-- row -->
+            <div class="row">
+                <div class="col-md-12">
+                    <ul class="breadcrumb-tree">
+                        <li><a href="/index">Home</a></li>
+                        <li>{% block emplacement %}{% endblock %}</li>
 
-                       <div class="input-checkbox">
-                           <input type="checkbox" id="category-1" value="ordinateur">
-                           <label for="category-1">
-                               <span></span>
-                               Laptops
-                               <small>(120)</small>
-                           </label>
-                       </div>
-
-                       <div class="input-checkbox">
-                           <input type="checkbox" id="category-2" value="smartphones">
-                           <label for="category-2">
-                               <span></span>
-                               Smartphones
-                               <small>(740)</small>
-                           </label>
-                       </div>
-
-                       <div class="input-checkbox">
-                           <input type="checkbox" id="category-3" value="cameras">
-                           <label for="category-3">
-                               <span></span>
-                               Cameras
-                               <small>(1450)</small>
-                           </label>
-                       </div>
-
-                       <div class="input-checkbox">
-                           <input type="checkbox" id="category-4" value="accessories">
-                           <label for="category-4">
-                               <span></span>
-                               Accessories
-                               <small>(578)</small>
-                           </label>
-                       </div>
-
-                       <div class="input-checkbox">
-                           <input type="checkbox" id="category-5" value="laptops">
-                           <label for="category-5">
-                               <span></span>
-                               Laptops
-                               <small>(120)</small>
-                           </label>
-                       </div>
-
-                       <div class="input-checkbox">
-                           <input type="checkbox" id="category-6" value="smartphones">
-                           <label for="category-6">
-                               <span></span>
-                               Smartphones
-                               <small>(740)</small>
-                           </label>
-                       </div>
-                   </div>
-                    <div class="mt-3">
-                        <button id="apply-filter-btn" class="primary-btn">Apply Filter</button>
-                    </div>
+                    </ul>
                 </div>
-
-                <!-- aside Widget -->
-                <div class="aside">
-                    <h3 class="aside-title">Price</h3>
-                    <div class="price-filter">
-                        <div id="price-slider"></div>
-                        <div class="input-number price-min">
-                            <label for="price-min"><input id="price-min" type="number"></label>
-                            <span class="qty-up">+</span>
-                            <span class="qty-down">-</span>
-                        </div>
-                        <span>-</span>
-                        <div class="input-number price-max">
-                            <label for="price-max"></label><input id="price-max" type="number">
-                            <span class="qty-up">+</span>
-                            <span class="qty-down">-</span>
-                        </div>
-                    </div>
-                </div>
-                <!-- /aside Widget -->
-
-
-
-
-                        <!-- Add filter button here -->
-
-
-                <!-- /aside Widget -->
-
-                <!-- aside Widget -->
-                <div class="aside">
-                    <h3 class="aside-title">Top selling</h3>
-                    <div class="product-widget">
-                        <div class="product-img">
-                            <img src="{{ asset('styles/img/product01.png') }}" alt="">
-                        </div>
-                        <div class="product-body">
-                            <p class="product-category">Category</p>
-                            <h3 class="product-name"><a href="#">product name goes here</a></h3>
-                            <h4 class="product-price">$980.00 <del class="product-old-price">$990.00</del></h4>
-                        </div>
-                    </div>
-
-                    <div class="product-widget">
-                        <div class="product-img">
-                            <img src="{{ asset('styles/img/product02.png') }}" alt="">
-                        </div>
-                        <div class="product-body">
-                            <p class="product-category">Category</p>
-                            <h3 class="product-name"><a href="#">product name goes here</a></h3>
-                            <h4 class="product-price">$980.00 <del class="product-old-price">$990.00</del></h4>
-                        </div>
-                    </div>
-
-                    <div class="product-widget">
-                        <div class="product-img">
-                            <img src="{{ asset('styles/img/product01.png') }}" alt="">
-                        </div>
-                        <div class="product-body">
-                            <p class="product-category">Category</p>
-                            <h3 class="product-name"><a href="#">product name goes here</a></h3>
-                            <h4 class="product-price">$980.00 <del class="product-old-price">$990.00</del></h4>
-                        </div>
-                    </div>
-                </div>
-                <!-- /aside Widget -->
             </div>
-            <!-- /ASIDE -->
-            {% endblock %}
-            <!-- STORE -->
-            {% block store %}{% endblock %}
-
-            <!-- /STORE -->
+            <!-- /row -->
         </div>
-        <!-- /row -->
+        <!-- /container -->
     </div>
-    <!-- /container -->
-</div>
-<!-- /SECTION -->
+    <!-- /BREADCRUMB -->
+
+    <!-- SECTION -->
+    <div class="section">
+        <!-- container -->
+        <div class="container">
+            <!-- row -->
+            <div class="row">
+                <!-- ASIDE -->
+                {% block aside %}
+                    <div id="aside" class="col-md-3">
+                        <!-- aside Widget -->
+                        <div class="aside">
+                            <h3 class="aside-title">Categories</h3>
+                            <div class="checkbox-filter" id="category-filter">
+                                {% for category in categories %}
+                                    <div class="input-checkbox">
+                                        <input type="checkbox" id="category-{{loop.index }}" value="{{ category }}">
+                                        <label for="category-{{loop.index }}">
+                                            <span></span>
+                                            {{ category|capitalize }}
+                                            <small>(120)</small>
+                                        </label>
+                                    </div>
+                                {% endfor %}
+
+                            </div>
+
+                        </div>
+
+                        <!-- aside Widget -->
+                        <div class="aside">
+                            <h3 class="aside-title">Price</h3>
+                            <div class="price-filter">
+                                <div id="price-slider" ></div>
+                                <div class="input-number price-min">
+                                    <label for="price-min"><input id="price-min" type="number" max="9999.0"></label>
+
+                                </div>
+                                <span>-</span>
+                                <div class="input-number price-max" >
+                                    <label for="price-max"><input id="price-max" type="number" max="9999.0"></label>
+
+                                </div>
+                            </div>
+                        </div>
+                        <!-- /aside Widget -->
+
+
+                        <div class="mt-3">
+                            <button id="apply-filter-btn" class="primary-btn">Apply Filter</button>
+                        </div>
+
+
+
+
+                        <!-- /aside Widget -->
+
+                        <!-- aside Widget -->
+                        <div class="aside">
+                            <h3 class="aside-title">Check Our Products</h3>
+                            {% for product in ThreeProducts %}
+                                <div class="product-widget">
+                                    <div class="product-img">
+                                        <img src="{{ asset('styles/' ~ product.getImage()) }}" alt="{{ product.name }}">
+                                    </div>
+                                    <div class="product-body">
+                                        <p class="product-category">{{ product.categorie.name }}</p>
+                                        <h3 class="product-name"><a href="{{ path('produit_details', {'id': product.id}) }}">{{ product.name }}</a></h3>
+                                        <h4 class="product-price">${{ product.price }} <del class="product-old-price">${{ product.price * 1.2|round(2) }}</del></h4>
+                                    </div>
+                                </div>
+                            {% endfor %}
+
+                        </div>
+                        <!-- /aside Widget -->
+                    </div>
+                    <!-- /ASIDE -->
+                {% endblock %}
+                <!-- STORE -->
+                {% block store %}{% endblock %}
+
+                <!-- /STORE -->
+            </div>
+            <!-- /row -->
+        </div>
+        <!-- /container -->
+    </div>
+    <!-- /SECTION -->
 {% endblock %}
-</div>
 
 {% block footer %}
-{% if showFooter is not defined or showFooter %}
-    {% include 'fragments/footer.html.twig' %}
-{% endif %}
+    {% if showFooter is not defined or showFooter %}
+        {% include 'fragments/footer.html.twig' %}
+    {% endif %}
 {% endblock %}
 
-    <!-- jQuery Plugins -->
-    <script src="{{ asset('styles/js/jquery.min.js') }}"></script>
-    <script src="{{ asset('styles/js/bootstrap.min.js') }}"></script>
-    <script src="{{ asset('styles/js/slick.min.js') }}"></script>
-    <script src="{{ asset('styles/js/nouislider.min.js') }}"></script>
-    <script src="{{ asset('styles/js/jquery.zoom.min.js') }}"></script>
-    <script src="{{ asset('styles/js/main.js') }}"></script>
+<!-- jQuery Plugins -->
+<script src="{{ asset('styles/js/jquery.min.js') }}"></script>
+<script src="{{ asset('styles/js/bootstrap.min.js') }}"></script>
+<script src="{{ asset('styles/js/slick.min.js') }}"></script>
+<script src="{{ asset('styles/js/nouislider.min.js') }}"></script>
+<script src="{{ asset('styles/js/jquery.zoom.min.js') }}"></script>
+<script src="{{ asset('styles/js/main.js') }}"></script>
 
-    <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            const checkboxes = document.querySelectorAll('#category-filter input[type="checkbox"]');
-            const filterButton = document.getElementById('apply-filter-btn');
 
-            filterButton.addEventListener('click', () => {
-                const selectedCategories = Array.from(checkboxes)
-                    .filter(cb => cb.checked)
-                    .map(cb => cb.value);
 
-                if (selectedCategories.length > 0) {
-                    const queryString = selectedCategories.join(',');
-                    window.location.href = `/index/multiple/${queryString}`;
-                } else {
-                    // Redirect to all products if no categories selected
-                    window.location.href = '/index';
-                }
-            });
-        });
-    </script>
-<!-- DataTables JS -->
-<script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
-<script src="https://cdn.datatables.net/1.13.6/js/dataTables.bootstrap5.min.js"></script>
-<script src="https://cdn.datatables.net/buttons/2.3.0/js/buttons.html5.min.js"></script>
 
 <script>
-    $(document).ready(function () {
-        // Initialisation pour la table des utilisateurs
-        if ($('#usersTable').length) {
-            $('#usersTable').DataTable({
-                responsive: true,
-                language: {
-                    search: "Search:",
-                    lengthMenu: "Show _MENU_ entries",
-                    info: "Showing _START_ to _END_ of _TOTAL_ entries",
-                    paginate: {
-                        previous: "Previous",
-                        next: "Next"
-                    }
-                }
-            });
-        }
+    document.addEventListener('DOMContentLoaded', () => {
+        const checkboxes = document.querySelectorAll('#category-filter input[type="checkbox"]');
+        const filterButton = document.getElementById('apply-filter-btn');
+        const priceMinInput = document.getElementById('price-min');
+        const priceMaxInput = document.getElementById('price-max');
 
-        // Initialisation pour la table des produits
-        if ($('#productsTable').length) {
-            const table = $('#productsTable').DataTable({
-                responsive: true,
-                language: {
-                    search: "Search:",
-                    lengthMenu: "Show _MENU_ entries",
-                    info: "Showing _START_ to _END_ of _TOTAL_ entries",
-                    paginate: {
-                        previous: "Previous",
-                        next: "Next"
-                    }
-                }
-            });
 
-            // Handle category button clicks
-            $('.category-filter').on('click', function () {
-                const category = $(this).data('category');
+        filterButton.addEventListener('click', () => {
+            const selectedCategories = Array.from(checkboxes)
+                .filter(cb => cb.checked)
+                .map(cb => cb.value);
 
-                // Highlight the active button
-                $('.category-filter').removeClass('btn-primary').addClass('btn-secondary');
-                $(this).removeClass('btn-secondary').addClass('btn-primary');
-
-                if (category === 'all') {
-                    table.column(2).search('').draw();
-                } else {
-                    table.column(2).search('^' + category + '$', true, false).draw(); // Regex exact match
-                }
-            });
-        }
+            if (selectedCategories.length > 0) {
+                const queryString = selectedCategories.join(',');
+                window.location.href = `/index/multiple/${queryString}/${priceMinInput.value}/${priceMaxInput.value}`;
+            } else {
+                // Redirect to all products if no categories selected
+                window.location.href = `/index/multiple/all/${priceMinInput.value}/${priceMaxInput.value}`;
+            }
+        });
     });
+</script>
+
+
+<script>
+    function redirectToSearch() {
+        const searchInput = document.querySelector('.header-search .input').value; // Reset to first page when searching
+
+        if (searchInput.trim() !== '') {
+            window.location.href = `/index/search/${encodeURIComponent(searchInput)}`;
+        }
+    }
 </script>
 
 
