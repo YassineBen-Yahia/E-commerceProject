@@ -37,9 +37,15 @@ final class CartItemController extends AbstractController
         $cartItem->setUtilisateur($this->getUser());
 
         if ($produit) {
-            $produit->setStock($produit->getStock()-$quantity);
-            $cartItem->setProduit($produit);
-            $cartItem->setQuantité($quantity);
+            if ($produit->getStock() < $quantity) {
+                $this->addFlash('error', 'Not enough stock available.');
+                return $this->redirectToRoute('app_cart');
+            }
+            else {
+                $produit->setStock($produit->getStock() - $quantity);
+                $cartItem->setProduit($produit);
+                $cartItem->setQuantité($quantity);
+            }
 
             $this->cartItemService->addCartItem($cartItem,$produit);
         } else {
@@ -70,7 +76,7 @@ final class CartItemController extends AbstractController
         }
 
 
-        $newStock = $this->cartItemService->calculateStockAdjsutment($produit,$oldQuantity,$newQuantity);
+        $newStock = $this->cartItemService->calculateStockAdjustment($produit,$oldQuantity,$newQuantity);
 
 
         if ($newStock < 0) {
@@ -81,9 +87,7 @@ final class CartItemController extends AbstractController
 
         $this->cartItemService->updateProductStock($produit,$newStock);
 
-        $entityManager->persist($produit);
-        $entityManager->persist($cartItem);
-        $entityManager->flush();
+        $this->cartItemService->addCartItem($cartItem,$produit);
 
        $this->cartItemService->updateCartItemQuantity($cartItem,$newQuantity);
         $this->addFlash('success', 'Cart updated successfully.');

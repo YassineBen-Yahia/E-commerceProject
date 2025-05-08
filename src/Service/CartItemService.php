@@ -28,7 +28,7 @@ class CartItemService
     }
 
     public function addCartItem(CartItem $cartItem, Produit $produit): void {
-        $user = $this->security->getUser(); // get the currently logged-in user
+        $user = $this->security->getUser();
         if (!$user) {
             throw new \LogicException('No authenticated user.');
         }
@@ -50,7 +50,7 @@ class CartItemService
         return $cartItem->getProduit();
     }
 
-    public function calculateStockAdjsutment(Produit $produit,int $oldQuantity,int $newQuantity): float {
+    public function calculateStockAdjustment(Produit $produit,int $oldQuantity,int $newQuantity): float {
         $stockDiff = $oldQuantity - $newQuantity;
         return $produit->getStock() + $stockDiff;
     }
