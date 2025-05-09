@@ -1,20 +1,138 @@
-{% extends 'base.html.twig' %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Account</title>
+    <link type="text/css" rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="{{ asset('styles/css/font-awesome.min.css') }}">
+</head>
+<body>
+<div class="d-flex">
+    <!-- Sidebar -->
+    {% include 'fragments/account_sidebar.html.twig' %}
 
-{% block title %}Hello AccountController!{% endblock %}
+    <div class="container my-5">
 
-{% block body %}
-<style>
-    .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
-    .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
-</style>
+        <h1 class="text-center mb-4" style="color: #2B2D42">Your Profile</h1>
 
-<div class="example-wrapper">
-    <h1>Hello {{ controller_name }}! ✅</h1>
+        {% for type, messages in app.flashes %}
+            {% for message in messages %}
+                <div class="alert alert-{{type}} ">
+                    {{message}}
+                </div>
+            {% endfor %}
+        {% endfor %}
 
-    This friendly message is coming from:
-    <ul>
-        <li>Your controller at <code>C:/Users/louay/PhpstormProjects/E-commerceProject/src/Controller/AccountController.php</code></li>
-        <li>Your template at <code>C:/Users/louay/PhpstormProjects/E-commerceProject/templates/account/index.html.twig</code></li>
-    </ul>
+        {{ form_start(form, {'attr': {'class': 'needs-validation', 'novalidate': 'novalidate'}}) }}
+
+        <div class="mb-3">
+            {{ form_label(form.name, 'Full Name', {'label_attr': {'class': 'form-label', 'style': 'color: #2B2D42;'}}) }}
+            {{ form_widget(form.name, {
+                'attr': {
+                    'class': 'form-control' ~ (form.name.vars.errors|length ? ' is-invalid' : ''),
+                    'placeholder': 'Enter your full name'
+                }
+            }) }}
+            <div class="invalid-feedback">
+                {{ form_errors(form.name) }}
+            </div>
+        </div>
+
+        {% if not is_granted('ROLE_ADMIN') %}
+        <div class="mb-3">
+            {{ form_label(form.adress, 'Address', {'label_attr': {'class': 'form-label', 'style': 'color: #2B2D42;'}}) }}
+            {{ form_widget(form.adress, {
+                'attr': {
+                    'class': 'form-control' ~ (form.adress.vars.errors|length ? ' is-invalid' : ''),
+                    'placeholder': 'Enter your address'
+                }
+            }) }}
+            <div class="invalid-feedback">
+                {{ form_errors(form.adress) }}
+            </div>
+        </div>
+        {% endif %}
+
+        <div class="mb-3">
+            {{ form_label(form.email, 'Email Address', {'label_attr': {'class': 'form-label', 'style': 'color: #2B2D42;'}}) }}
+            {{ form_widget(form.email, {
+                'attr': {
+                    'class': 'form-control' ~ (form.email.vars.errors|length ? ' is-invalid' : ''),
+                    'placeholder': 'example@example.com'
+                }
+            }) }}
+            <div class="invalid-feedback">
+                {{ form_errors(form.email) }}
+            </div>
+        </div>
+
+        <div class="row mb-3">
+            <div class="col-md-6">
+                {{ form_label(form.newPassword, 'New Password', {'label_attr': {'class': 'form-label', 'style': 'color: #2B2D42;'}}) }}
+                {{ form_widget(form.newPassword, {
+                    'attr': {
+                        'class': 'form-control' ~ (form.newPassword.vars.errors|length ? ' is-invalid' : ''),
+                        'placeholder': 'Enter new password'
+                    }
+                }) }}
+                <div class="invalid-feedback">
+                    {{ form_errors(form.newPassword) }}
+                </div>
+            </div>
+            <div class="col-md-6">
+                {{ form_label(form.confirmNewPassword, 'Confirm New Password', {'label_attr': {'class': 'form-label', 'style': 'color: #2B2D42;'}}) }}
+                {{ form_widget(form.confirmNewPassword, {
+                    'attr': {
+                        'class': 'form-control' ~ (form.confirmNewPassword.vars.errors|length ? ' is-invalid' : ''),
+                        'placeholder': 'Confirm new password'
+                    }
+                }) }}
+                <div class="invalid-feedback">
+                    {{ form_errors(form.confirmNewPassword) }}
+                </div>
+            </div>
+        </div>
+
+        <div class="mb-3">
+            {{ form_label(form.currentPassword, 'Current Password', {'label_attr': {'class': 'form-label', 'style': 'color: #2B2D42;'}}) }}
+            {{ form_widget(form.currentPassword, {
+                'attr': {
+                    'class': 'form-control' ~ (form.currentPassword.vars.errors|length ? ' is-invalid' : ''),
+                    'placeholder': 'Enter your current password'
+                }
+            }) }}
+            <div class="invalid-feedback">
+                {{ form_errors(form.currentPassword) }}
+            </div>
+        </div>
+
+        <div class="d-flex justify-content-end mt-4">
+            <button type="button" class="btn btn-secondary me-2" onclick="window.location.reload()">Cancel</button>
+            <button type="submit" class="btn" style="background-color: #D10024; color: white;">Confirm Changes</button>
+        </div>
+
+        {{ form_end(form) }}
+    </div>
 </div>
-{% endblock %}
+
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+    (function () {
+        'use strict';
+        const forms = document.querySelectorAll('.needs-validation');
+        Array.from(forms).forEach(function (form) {
+            form.addEventListener('submit', function (event) {
+                if (!form.checkValidity()) {
+                    event.preventDefault();
+                    event.stopPropagation();
+                }
+                form.classList.add('was-validated');
+            }, false);
+        });
+    })();
+</script>
+</body>
+</html>

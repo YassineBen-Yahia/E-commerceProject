@@ -4,6 +4,7 @@ namespace App\Service;
 
 use App\Entity\Cart;
 use App\Entity\Commande;
+use App\Entity\Utilisateur;
 use Doctrine\ORM\EntityManagerInterface;
 
 
@@ -39,6 +40,10 @@ class CommandService
 
        $this->entityManager->persist($commande);
        $this->entityManager->flush();
+   }
+
+   public function getCommandByUser(Utilisateur $user){
+       return $this->entityManager->getRepository(Commande::class)->findCommandByUser($user);
    }
 
 
