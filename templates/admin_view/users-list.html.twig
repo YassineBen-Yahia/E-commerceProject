@@ -44,12 +44,13 @@
 
                         {% if role == 'ROLE_USER' %}
                             <td class="text-center">
-                                <a href="{{ url('make_admin', {id: user.id }) }}" class="btn btn-primary">Make Admin</a>
+                                <a href="#" data-toggle="modal" data-target="#makeAdminModal-{{ user.id }}" class="btn btn-primary">Make Admin</a>
                                 <a href="{{ url('orders.list', {id: user.id }) }}" class="btn btn-primary">Orders History</a>
                             </td>
                         {% endif %}
 
                     </tr>
+                    {% include 'admin_fragments/makeAdmin_modal.html.twig' with {'u_id': user.id , 'u_name': user.name } %}
                 {% endfor %}
             </tbody>
         </table>
