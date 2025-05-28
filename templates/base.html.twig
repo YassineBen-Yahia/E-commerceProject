@@ -33,6 +33,7 @@
 <body>
 
 
+
 {% block header %}
     {% if showHeader is not defined or showHeader %}
         {% include 'fragments/header.html.twig' %}
@@ -51,7 +52,7 @@
                 <ul class="main-nav nav navbar-nav">
                     <li class="active"><a href="/index">Home</a></li>
                     {% for category in categories %}
-                        <li><a href="/index/{{ category}}">{{ category|capitalize  }}</a></li>
+                        <li><a href="/index/{{ category.categoryName}}">{{ category.categoryName|capitalize  }}</a></li>
 
                     {% endfor %}
                 </ul>
@@ -98,11 +99,11 @@
                             <div class="checkbox-filter" id="category-filter">
                                 {% for category in categories %}
                                     <div class="input-checkbox">
-                                        <input type="checkbox" id="category-{{loop.index }}" value="{{ category }}">
+                                        <input type="checkbox" id="category-{{loop.index }}" value="{{ category.categoryName }}">
                                         <label for="category-{{loop.index }}">
                                             <span></span>
-                                            {{ category|capitalize }}
-                                            <small>(120)</small>
+                                            {{ category.categoryName|capitalize }}
+                                            <small>({{ category.totalStock }})</small>
                                         </label>
                                     </div>
                                 {% endfor %}

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="JavaScriptLibraryMappings">
-    <file url="PROJECT" libraries="{all, bootstrap-icons, font-awesome, jquery}" />
+    <file url="PROJECT" libraries="{all, bootstrap-icons, buttons.bootstrap5, buttons.html5, dataTables.bootstrap5, font-awesome, jquery, jquery.dataTables}" />
   </component>
 </project>

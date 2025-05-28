@@ -1,162 +1,171 @@
 {% extends 'base.html.twig' %}
-{% block emplacement %} {% if category is not null %}{{ category }} {% endif %}{% endblock %}
-{% block store %}
+    {% block emplacement %} {% if category is not null %}{{ category }} {% endif %}{% endblock %}
+    {% block store %}
 
-<div id="store" class="col-md-9">
-    {% for type, messages in app.flashes %}
-        {% for message in messages %}
-            <div class="alert alert-{{ type}} ">
-                {{message }}
-            </div>
-        {% endfor %}
-    {% endfor %}
-    <!-- store top filter -->
-    <div class="store-filter clearfix">
-        <div class="store-sort">
-            <label>
-                Sort By Price:
-                <select class="input-select" id="sort-by-price">
-                    <option value="ASC" {% if sort == 'ASC' or sort is not defined %}selected{% endif %}>Ascending</option>
-                    <option value="DESC" {% if sort == 'DESC' %}selected{% endif %}>Descending</option>
-                </select>
-            </label>
-
-            <label>
-                Show:
-                <select class="input-select" id="products-per-page">
-                    <option value="2" {% if limit == 2 %}selected{% endif %}>2</option>
-                    <option value="10" {% if limit == 10 %}selected{% endif %}>10</option>
-                    <option value="20" {% if limit == 20 or limit is not defined %}selected{% endif %}>20</option>
-                    <option value="50" {% if limit == 50 %}selected{% endif %}>50</option>
-                    <option value="100" {% if limit == 100 %}selected{% endif %}>100</option>
-                </select>
-            </label>
-        </div>
-        <ul class="store-grid">
-            <li class="active" id="grid-view"><i class="fa fa-th"></i></li>
-            <li id="list-view"><i class="fa fa-th-list"></i></li>
-        </ul>
-    </div>
-    <!-- /store top filter -->
-
-    <!-- store products -->
-    <div class="row">
-        {% if produits is empty %}
-            <div class="col-md-12">
-                <div class="alert alert-info" role="alert">
-                    No products found.
+    <div id="store" class="col-md-9">
+        {% for type, messages in app.flashes %}
+            {% for message in messages %}
+                <div class="alert alert-{{ type}} ">
+                    {{message }}
                 </div>
-            </div>
-        {% else %}
-        <!-- product -->
-        {% for produit in produits %}
-        <div class="col-md-4 col-xs-6">
-            <div class="product">
-                <div class="product-img">
-                    <img src="{{ asset('styles/' ~ produit.getImage()) }}"
-                         alt="{{ produit.name }}"
-                         class="img-fluid"
-                         style="width: 180px; height: 180px; object-fit: contain;">
-                <div class="product-label">
-                        <span class="new">NEW</span>
-                    </div>
-                </div>
-                <div class="add-to-cart">
-                    <button class="add-to-cart-btn" onclick="window.location.href='{{ app.user ? '/CartItem/' ~ produit.id : '/register' }}'">
-                        <i class="fa fa-shopping-cart"></i> add to cart
-                    </button>
-                </div>
-                <div class="product-body">
-                    <p class="product-category">{{ produit.categorie.getName() }}</p>
-                    <h3 class="product-name">{{ produit.name }}</h3>
-                    <h4 class="product-price">$ {{ produit.price}} <del class="product-old-price">${{ produit.price * 1.2|round(2)}}</del></h4>
-                    <div class="product-rating">
-                        <i class="fa fa-star"></i>
-                        <i class="fa fa-star"></i>
-                        <i class="fa fa-star"></i>
-                        <i class="fa fa-star"></i>
-                        <i class="fa fa-star"></i>
-                    </div>
-                    <div class="product-btns">
-
-                        <button class="add-to-wishlist">
-                            <a href="{{ path('app_Wishlist_add_item', {'id': produit.id}) }}">
-                                <i class="fa fa-heart-o"></i><span class="tooltipp">add to wishlist</span>
-
-                            </a>
-                        </button>
-
-                        <button class="quick-view">
-                            <a href="{{ path('produit_details', {'id': produit.id}) }}">
-                                <i class="fa fa-eye"></i><span class="tooltipp">quick view</span>
-                            </a>
-                        </button>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <!-- /product -->
-        <div class="clearfix visible-sm visible-xs"></div>
-        {% endfor %}
-
-    </div>
-        {% endif %}
-    <!-- /store products -->
-
-    <!-- store bottom filter -->
-    <div class="store-filter clearfix">
-        <span class="store-qty">
-            Showing {{ ((page - 1) * limit) + 1 }}-{{ min(page * limit, totalProducts) }} of {{ totalProducts }} products
-        </span>
-        <ul class="store-pagination">
-            {% if page > 1 %}
-                <li><a href="{{ path('app_index', {'page': page-1, 'limit': limit}) }}"><i class="fa fa-angle-left"></i></a></li>
-            {% endif %}
-
-            {% for i in 1..totalPages %}
-                <li {% if i == page %}class="active"{% endif %}>
-                    <a href="{{ path('app_index', {'page': i, 'limit': limit}) }}">{{ i }}</a>
-                </li>
             {% endfor %}
+        {% endfor %}
+        <!-- store top filter -->
+        <div class="store-filter clearfix">
+            <div class="store-sort">
+                <label>
+                    Sort By Price:
+                    <select class="input-select" id="sort-by-price">
+                        <option value="ASC" {% if sort == 'ASC' or sort is not defined %}selected{% endif %}>Ascending</option>
+                        <option value="DESC" {% if sort == 'DESC' %}selected{% endif %}>Descending</option>
+                    </select>
+                </label>
 
-            {% if page < totalPages %}
-                <li><a href="{{ path('app_index', {'page': page+1, 'limit': limit}) }}"><i class="fa fa-angle-right"></i></a></li>
+                <label>
+                    Show:
+                    <select class="input-select" id="products-per-page">
+                        <option value="2" {% if limit == 2 %}selected{% endif %}>2</option>
+                        <option value="10" {% if limit == 10 %}selected{% endif %}>10</option>
+                        <option value="20" {% if limit == 20 or limit is not defined %}selected{% endif %}>20</option>
+                        <option value="50" {% if limit == 50 %}selected{% endif %}>50</option>
+                        <option value="100" {% if limit == 100 %}selected{% endif %}>100</option>
+                    </select>
+                </label>
+            </div>
+            <ul class="store-grid">
+                <li class="active" id="grid-view"><i class="fa fa-th"></i></li>
+                <li id="list-view"><i class="fa fa-th-list"></i></li>
+            </ul>
+        </div>
+        <!-- /store top filter -->
+
+        <!-- store products -->
+        <div class="row">
+            {% if produits is empty %}
+                <div class="col-md-12">
+                    <div class="alert alert-info" role="alert">
+                        No products found.
+                    </div>
+                </div>
+            {% else %}
+                <!-- product -->
+                {% for produit in produits %}
+                <div class="col-md-4 col-xs-6">
+                    <div class="product">
+                        <div class="product-img">
+                            <img src="{{ asset('styles/' ~ produit.getImage()) }}"
+                                 alt="{{ produit.name }}"
+                                 class="img-fluid"
+                                 style="width: 180px; height: 180px; object-fit: contain;">
+                            <div class="product-label">
+                                <span class="new">NEW</span>
+                            </div>
+                        </div>
+                        <div class="product-body">
+                            <p class="product-category">{{ produit.categorie.getName() }}</p>
+                            <h3 class="product-name">{{ produit.name }}</h3>
+                            <h4 class="product-price">$ {{ produit.price}} <del class="product-old-price">${{ produit.price * 1.2|round(2)}}</del></h4>
+                            <div class="product-rating">
+                                <i class="fa fa-star"></i>
+                                <i class="fa fa-star"></i>
+                                <i class="fa fa-star"></i>
+                                <i class="fa fa-star"></i>
+                                <i class="fa fa-star"></i>
+                            </div>
+                            <div class="product-btns">
+                                <button class="add-to-wishlist">
+                                    <a href="{{ path('app_Wishlist_add_item', {'id': produit.id}) }}">
+                                        <i class="fa fa-heart-o"></i><span class="tooltipp">add to wishlist</span>
+                                    </a>
+                                </button>
+                                <button class="quick-view">
+                                    <a href="{{ path('produit_details', {'id': produit.id}) }}">
+                                        <i class="fa fa-eye"></i><span class="tooltipp">quick view</span>
+                                    </a>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="add-to-cart">
+                            <button class="add-to-cart-btn" onclick="window.location.href='{{ app.user ? '/CartItem/' ~ produit.id : '/register' }}'">
+                                <i class="fa fa-shopping-cart"></i> add to cart
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <!-- /product -->
+                <div class="clearfix visible-sm visible-xs"></div>
+                {% endfor %}
             {% endif %}
-        </ul>
+        </div>
+        <!-- /store products -->
+
+        <!-- store bottom filter -->
+        <div class="store-filter clearfix">
+            <span class="store-qty">
+                Showing {{ ((page - 1) * limit) + 1 }}-{{ min(page * limit, totalProducts) }} of {{ totalProducts }} products
+            </span>
+            <ul class="store-pagination">
+               {% if page > 1 %}
+                   {% set uri = app.request.uri %}
+                   {% set routeParams = app.request.attributes.get('_route_params') %}
+                   {% set queryParams = app.request.query.all %}
+                   {% set allParams = (routeParams | default({})) | merge(queryParams | default({})) | merge({'page': page - 1}) %}
+                   <li><a href="{{ uri matches '#/index/multiple/#' ? path('app_index_multiple_categories', allParams) : path('app_index', allParams) }}"><i class="fa fa-angle-left"></i></a></li>
+               {% endif %}
+
+                {% for i in 1..totalPages %}
+                    {% set uri = app.request.uri %}
+                    {% set routeParams = app.request.attributes.get('_route_params') %}
+                    {% set queryParams = app.request.query.all %}
+                    {% set allParams = (routeParams | default({})) | merge(queryParams | default({})) | merge({'page': i}) %}
+                    <li {% if i == page %}class="active"{% endif %}>
+                        <a href="{{ uri matches '#/index/multiple/#' ? path('app_index_multiple_categories', allParams) : path('app_index', {'page': i, 'limit': limit}) }}">{{ i }}</a>
+                    </li>
+                {% endfor %}
+
+                {% if page < totalPages %}
+                    {% set uri = app.request.uri %}
+                    {% set routeParams = app.request.attributes.get('_route_params') %}
+                    {% set queryParams = app.request.query.all %}
+                    {% set allParams = (routeParams | default({})) | merge(queryParams | default({})) | merge({'page': page + 1}) %}
+                    <li>
+                        <a href="{{ uri matches '#/index/multiple/#' ? path('app_index_multiple_categories', allParams) : path('app_index', {'page': page + 1, 'limit': limit}) }}">
+                            <i class="fa fa-angle-right"></i>
+                        </a>
+                    </li>
+                {% endif %}
+            </ul>
+        </div>
+        <!-- /store bottom filter -->
     </div>
-    <!-- /store bottom filter -->
-</div>
-{% endblock %}
-{% block javascripts %}
+    {% endblock %}
 
+    {% block javascripts %}
+    <script>
+        document.getElementById('products-per-page').addEventListener('change', function() {
+            const limit = this.value;
+            const currentUrl = new URL(window.location.href);
+            currentUrl.searchParams.set('limit', limit);
+            currentUrl.searchParams.set('page', 1); // Reset to first page when changing items per page
+            window.location.href = currentUrl.toString();
+        });
+    </script>
 
-<script>
-    document.getElementById('products-per-page').addEventListener('change', function() {
-        const limit = this.value;
-        const currentUrl = new URL(window.location.href);
-        currentUrl.searchParams.set('limit', limit);
-        currentUrl.searchParams.set('page', 1); // Reset to first page when changing items per page
-        window.location.href = currentUrl.toString();
-    });
-</script>
+    <script>
+        document.getElementById('grid-view').addEventListener('click', function() {
+            document.getElementById('store').classList.remove('list-view');
+            document.getElementById('store').classList.add('grid-view');
+            this.classList.add('active');
+            document.getElementById('list-view').classList.remove('active');
+        });
 
-
-
-<script>
-    document.getElementById('grid-view').addEventListener('click', function() {
-        document.getElementById('store').classList.remove('list-view');
-        document.getElementById('store').classList.add('grid-view');
-        this.classList.add('active');
-        document.getElementById('list-view').classList.remove('active');
-    });
-
-    document.getElementById('list-view').addEventListener('click', function() {
-        document.getElementById('store').classList.remove('grid-view');
-        document.getElementById('store').classList.add('list-view');
-        this.classList.add('active');
-        document.getElementById('grid-view').classList.remove('active');
-    });
-</script>
+        document.getElementById('list-view').addEventListener('click', function() {
+            document.getElementById('store').classList.remove('grid-view');
+            document.getElementById('store').classList.add('list-view');
+            this.classList.add('active');
+            document.getElementById('grid-view').classList.remove('active');
+        });
+    </script>
 
     <script>
         document.getElementById('sort-by-price').addEventListener('change', function() {
@@ -167,4 +176,8 @@
             window.location.href = currentUrl.toString();
         });
     </script>
-{% endblock %}
+    {% endblock %}
+
+    {% block footer %}
+        {% include 'fragments/footer.html.twig' %}
+    {% endblock %}

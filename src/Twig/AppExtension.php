@@ -26,19 +26,16 @@ class AppExtension extends AbstractExtension implements GlobalsInterface
             shuffle($products);
             $topThreeProducts = array_slice($products, 0, 3);
 
-            $categories = $this->categoryRepository->findAll();
+            $stocks = $this->categoryRepository->findStockInCategory();
 
             // Extract just the names if needed
-            $categoryNames = [];
-            foreach ($categories as $category) {
-                $categoryNames[] = $category->getName();
-            }
+
 
 
 
         return [
         'ThreeProducts' => $topThreeProducts,
-        'categories' => $categoryNames,
+        'categories' => $stocks,
 
     ];
 }

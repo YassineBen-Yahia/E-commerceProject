@@ -23,7 +23,7 @@
                         <h3 class="footer-title">Categories</h3>
                         <ul class="footer-links">
                             {% for category in categories %}
-                                <li><a href="/index/{{ category }}">{{ category }}</a></li>
+                                <li><a href="/index/{{ category.categoryName }}">{{ category.categoryName }}</a></li>
                             {% endfor %}
                         </ul>
                     </div>

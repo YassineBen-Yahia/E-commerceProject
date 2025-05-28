@@ -33,6 +33,18 @@ class CategorieRepository extends ServiceEntityRepository
             ;
         }
 
+        public function findStockInCategory()
+        {
+            return $this->createQueryBuilder('c')
+                ->select('SUM(p.stock) as totalStock')
+                ->addSelect('c.name as categoryName')
+                ->join('c.Produits', 'p')
+                ->groupBy('c.id')
+                ->getQuery()
+                ->getResult()
+            ;
+
+        }
         public function findOneById($id): ?Categorie
         {
             return $this->createQueryBuilder('c')
