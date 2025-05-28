@@ -72,14 +72,6 @@
                     </div>
 
                     <div class="add-to-cart">
-                        <div class="qty-label">
-                            Qty
-                            <div class="input-number">
-                                <input type="number" value="1" min="1" max="{{ produit.stock }}">
-                                <span class="qty-up">+</span>
-                                <span class="qty-down">-</span>
-                            </div>
-                        </div>
                         {% if not is_granted('ROLE_ADMIN') %}
                             <button class="add-to-cart-btn " onclick="window.location.href='{{ app.user ? '/CartItem/' ~ produit.id : '/register' }}'">
                                 <i class="fa fa-shopping-cart"></i> add to cart

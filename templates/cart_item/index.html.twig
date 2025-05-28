@@ -30,6 +30,15 @@
                         <p>{{ produit.description }}</p>
                     </div>
 
+                    <div class="product-options">
+                        <label>
+                            Category: <strong>{{ produit.categorie.getName() }}</strong>
+                        </label>
+                        <label>
+                            Stock: <strong>{{ produit.stock }} units</strong>
+                        </label>
+                    </div>
+
                     <!-- Add to Cart Form -->
                     <form method="post" action="{{ path('app_cart_add_item', {'id': produit.id}) }}">
                         <div class="form-group mb-3">
@@ -38,7 +47,7 @@
                                    min="1" max="{{ produit.stock }}" value="1" required>
                         </div>
 
-                       <button type="submit" class="primary-btn" onclick="window.location.href='{{ path('app_cart') }}'; return true;">Add to Cart</button>
+                        <button type="submit" class="primary-btn">Add to Cart</button>
                     </form>
                 </div>
             </div>
@@ -46,4 +55,42 @@
     </div>
 </div>
 <!-- /SECTION -->
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const form = document.querySelector('form');
+
+        form.addEventListener('submit', function(event) {
+            event.preventDefault();
+
+            const quantityInput = document.getElementById('quantity');
+            const quantity = parseInt(quantityInput.value, 10);
+            const maxQuantity = parseInt(quantityInput.max, 10);
+            const minQuantity = parseInt(quantityInput.min, 10);
+
+            if (isNaN(quantity) || quantity < minQuantity || quantity > maxQuantity) {
+                alert(`Please enter a valid quantity between ${minQuantity} and ${maxQuantity}.`);
+                return false;
+            }
+
+            fetch(form.action, {
+                method: 'POST',
+                body: new FormData(form),
+                headers: {
+                    'X-Requested-With': 'XMLHttpRequest'
+                }
+            })
+            .then(response => {
+                if (response.ok) {
+                    window.location.href = '{{ path('app_cart') }}';
+                } else {
+                    alert('An error occurred. Please try again.');
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('An error occurred. Please try again.');
+            });
+        });
+    });
+</script>
 {% endblock %}
