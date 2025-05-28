@@ -23,13 +23,11 @@
         <div class="row">
             <!-- Product main img -->
             <div class="col-md-5 col-md-push-2">
-                <div id="product-main-img slick-slide slider-active" data-slick-init="true">
-                    <div class="product-preview ">
+                <div id="product-main-img">
+                    <div class="main-product"  data-slick-init="true">
                         <img src="{{ asset('styles/' ~ produit.getImage()) }}"
                              alt="{{ produit.name }}"
-                             class="product-img zoomImg"
-
-                             style="width: 370px; height: 370px; object-fit: contain;">
+                             class="product-img">
                     </div>
                 </div>
             </div>
@@ -146,8 +144,7 @@
     </div>
     <!-- /container -->
 </div>
-<!-- /Section -->
-
+<!-- /Section --><script src="{{ asset('js/details.js') }}"></script>
 {% endblock %}
 
 {% block footer %}
@@ -169,20 +166,12 @@
             bottom: auto !important;
         }
 
-        #product-imgs .product-preview {
-            overflow: hidden;
-            border: 1px solid #ddd;
+        #product-main-img .main-product img {
+            width: 370px;
+            height: 370px;
+            object-fit: contain;
         }
 
-        #product-imgs .product-preview img {
-            transition: transform 0.3s ease;
-        }
-
-        #product-imgs .product-preview:hover img {
-            transform: scale(1.5);
-        }
-        #product-imgs .product-preview:first-child:hover img {
-            transform: scale(1.5);
-        }
     </style>
+
 {% endblock %}
