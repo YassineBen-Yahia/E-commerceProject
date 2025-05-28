@@ -15,7 +15,8 @@
 
 
 {% block body %}
-<!-- SECTION -->
+{% include 'fragments/add_to_wishlist_modal.html.twig' %}
+    <!-- SECTION -->
 <div class="section">
     <!-- container -->
     <div class="container">
@@ -79,7 +80,7 @@
                     {% if not is_granted('ROLE_ADMIN') %}
                         <ul class="product-btns">
                             <li>
-                                <a href="{{ path('app_Wishlist_add_item', {'id': produit.id}) }}">
+                                <a href="" class="add-to-wishlist" data-url="{{ path('app_Wishlist_add_item', {'id': produit.id}) }}" data-id="{{ produit.id }}">
                                     <i class="fa fa-heart-o"></i> add to wishlist
                                 </a>
                             </li>
@@ -144,7 +145,9 @@
     </div>
     <!-- /container -->
 </div>
-<!-- /Section --><script src="{{ asset('js/details.js') }}"></script>
+<!-- /Section -->
+<script src="{{ asset('js/details.js') }}"></script>
+<script src="{{ asset('js/addToWishList.js') }}"></script>
 {% endblock %}
 
 {% block footer %}

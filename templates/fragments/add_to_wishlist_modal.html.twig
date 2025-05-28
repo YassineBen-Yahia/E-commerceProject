@@ -1,0 +1,31 @@
+<style>
+    .custom-toast {
+        position: fixed;
+        bottom: 50px;
+        right: 20px;
+        z-index: 1050;
+        display: none;
+        background-color: #D10024;
+        color: #fff;
+        padding: 10px 20px;
+        border-radius: 5px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        animation: fadeInOut 3s ease-in-out;
+    }
+    .custom-toast-body {
+        font-size: 14px;
+    }
+
+    @keyframes fadeInOut {
+        0% { opacity: 0; transform: translateY(-20px); }
+        10% { opacity: 1; transform: translateY(0); }
+        90% { opacity: 1; transform: translateY(0); }
+        100% { opacity: 0; transform: translateY(-20px); }
+    }
+</style>
+
+<div id="custom-toast" class="custom-toast">
+    <div class="custom-toast-body" id="custom-toast-message">
+        <!-- Message will be dynamically updated -->
+    </div>
+</div>

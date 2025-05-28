@@ -1,7 +1,7 @@
 {% extends 'base.html.twig' %}
 {% block emplacement %} {% if category is not null %}{{ category }} {% endif %}{% endblock %}
 {% block store %}
-
+{% include 'fragments/add_to_wishlist_modal.html.twig' %}
 <div id="store" class="col-md-9">
     {% for type, messages in app.flashes %}
         {% for message in messages %}
@@ -73,9 +73,8 @@
                             <i class="fa fa-star"></i>
                         </div>
                         <div class="product-btns">
-                            <button class="add-to-wishlist">
+                            <button class="add-to-wishlist" data-url="{{ path('app_Wishlist_add_item', {'id': produit.id}) }}" data-id="{{ produit.id }}">
                                 <i class="fa fa-heart-o"></i><span class="tooltipp">add to wishlist</span>
-                                <a href="{{ path('app_Wishlist_add_item', {'id': produit.id}) }}" class="button-link"></a>
                             </button>
                             <button class="quick-view">
                                 <i class="fa fa-eye"></i><span class="tooltipp">quick view</span>
@@ -174,6 +173,7 @@
         window.location.href = currentUrl.toString();
     });
 </script>
+<script src="{{ asset('js/addToWishList.js') }}"></script>
 {% endblock %}
 
 {% block footer %}
@@ -194,6 +194,7 @@
             height: 100%;
             z-index: 10;
         }
+
     </style>
 
 

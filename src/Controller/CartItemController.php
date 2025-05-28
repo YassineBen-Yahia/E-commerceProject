@@ -51,10 +51,7 @@ final class CartItemController extends AbstractController
         } else {
             throw $this->createNotFoundException('Produit not found');
         }
-        return $this->render('cart_item/index.html.twig', [
-            'controller_name' => 'CartItemController',
-            'produit' => $produit,
-        ]);
+        return $this->redirectToRoute('app_cart');
     }
     #[Route('/update-cart-item/{id}', name: 'app_cart_update_item')]
     public function updateCartItem(CartItem $cartItem, Request $request, EntityManagerInterface $entityManager): Response
@@ -90,8 +87,7 @@ final class CartItemController extends AbstractController
         $this->cartItemService->addCartItem($cartItem,$produit);
 
        $this->cartItemService->updateCartItemQuantity($cartItem,$newQuantity);
-        $this->addFlash('success', 'Cart updated successfully.');
-        return $this->redirectToRoute('app_cart');
+       return $this->redirectToRoute('app_cart');
     }
     #[Route('/update/{id}', name: 'app_update_item')]
     public function indexUpdate( CartItem $cartItem=null): Response

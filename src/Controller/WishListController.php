@@ -41,18 +41,17 @@ final class WishListController extends AbstractController
     }
 
     #[Route('/AddToWishlist/{id}', name: 'app_Wishlist_add_item')]
-    public function addToCart( Produit $produit,EntityManagerInterface $entityManager): Response
+    public function addToWishlist(Produit $produit): Response
     {
         $this->denyAccessUnlessGranted('ROLE_USER');
-        $user = $this->getUser();
         $wishList = $this->wishListService->getWishListByUser($this->getUser());
 
-        $this->wishListService->addProductToWishlist($wishList,$produit);
-        return $this->render('wish_list/index.html.twig', [
-            'controller_name' => 'WishListController',
-            'wishList' => $wishList,
+        $this->wishListService->addProductToWishlist($wishList, $produit);
+
+        // Return JSON response for AJAX requests
+        return $this->json([
+            'success' => true,
+            'message' => sprintf('"%s" has been added to your wishlist.', $produit->getName()),
         ]);
-
-
     }
 }
