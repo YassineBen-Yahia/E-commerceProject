@@ -8,9 +8,8 @@
 }
 
 .custom-btn:hover {
-    background-color: #E8E8E8;
-    color: #2B2D42;
-    border-color: #2B2D42;
+    background-color: #2B2D42;
+    color: #fff;
 }
 
 .remove-btn {
@@ -40,4 +39,19 @@
     background-color: #1A1C2A;
     color: #fff;
     border-color: #1A1C2A;
+}
+
+.admin-cancel-btn {
+    background-color: #fff;
+    color: #2B2D42;
+    border-color: #2B2D42;
+    border-radius: 5px;
+    text-decoration: none;
+    transition: all 0.25s ease;
+}
+
+.admin-cancel-btn:hover {
+    background-color: #E8E8E8;
+    color: #2B2D42;
+    border-color: #2B2D42;
 }

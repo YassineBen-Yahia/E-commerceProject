@@ -64,17 +64,15 @@
 
                     <div class="input-checkbox">
                         <input type="checkbox" id="terms" required>
-                        <label for="terms">
+                        <label for="terms" id="label" data-toggle="popover" data-content="Please check this box." data-placement="top">
                             <span></span>
                             I've read and accept the <a href="#" >terms & conditions</a>
                         </label>
                     </div>
-                    <a href="{{ path('app_place_order',{'id':cart.id})}} " class="primary-btn order-submit">Pay On Delivery</a>
-                    <a
-                            class="primary-btn order-submit"
-                            id="proceedToPayment"
-                            data-verified="{{ app.user and app.user.isVerified ? 'true' : 'false' }}"
-                            href="{{ path('create_payment_link', {'id': cart.id, 'total': total}) }}">
+                    <a href="#" class="primary-btn order-submit" id="payOnDeliveryBtn" data-path="{{ path('app_place_order', {'id': cart.id}) }}">
+                        Pay On Delivery
+                    </a>
+                    <a href="#" class="primary-btn order-submit" id="proceedToPaymentBtn" data-path="{{ path('create_payment_link', {'id': cart.id, 'total': total}) }}">
                         Proceed to Online Payment
                     </a>
 
@@ -89,5 +87,27 @@
     </div>
     <!-- /SECTION -->
 
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const termsCheckbox = $('#terms');
+            const popoverTrigger = $('#label');
+            const payOnDeliveryBtn = document.getElementById('payOnDeliveryBtn');
+            const proceedToPaymentBtn = document.getElementById('proceedToPaymentBtn');
 
+            popoverTrigger.popover({ trigger: 'manual' });
+
+            function handleButtonClick(event) {
+                event.preventDefault();
+                if (termsCheckbox.is(':checked')) {
+                    window.location.href = event.target.getAttribute('data-path');
+                } else {
+                    popoverTrigger.popover('show');
+                    setTimeout(() => $(popoverTrigger).popover('hide'), 3000);
+                }
+            }
+
+            payOnDeliveryBtn.addEventListener('click', handleButtonClick);
+            proceedToPaymentBtn.addEventListener('click', handleButtonClick);
+        });
+    </script>
 {% endblock %}
