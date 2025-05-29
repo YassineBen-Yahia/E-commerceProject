@@ -57,6 +57,8 @@ final class IndexController extends AbstractController
             'totalProducts' => $data['totalProducts'],
             'totalPages' => $data['totalPages'],
             'sort' => $sort ?? 'ASC',
+            'PriceMin' => $PriceMin,
+            'PriceMax' => $PriceMax,
         ]);
     }
     #[Route('/index/search/{search}', name: 'app_index_search')]

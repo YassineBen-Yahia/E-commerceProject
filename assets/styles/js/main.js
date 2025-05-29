@@ -149,8 +149,11 @@
 	// Price Slider
 	var priceSlider = document.getElementById('price-slider');
 	if (priceSlider) {
+		var initialMin = parseFloat(priceInputMin.value) || 1;
+		var initialMax = parseFloat(priceInputMax.value) || 9999;
+
 		noUiSlider.create(priceSlider, {
-			start: [1, 9999],
+			start: [initialMin, initialMax],
 			connect: true,
 			step: 1,
 			range: {
