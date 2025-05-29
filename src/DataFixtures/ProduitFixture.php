@@ -18,23 +18,23 @@ class ProduitFixture extends Fixture implements DependentFixtureInterface
     public function load(ObjectManager $manager): void
     {
         $productsByCategory = [
-            'smartphone' => [
+            'Smartphones' => [
                 'names' => ['Galaxy S Ultra', 'iPhone Pro Max', 'Pixel Pro', 'OnePlus Nord', 'Xiaomi Note', 'Huawei Nova', 'Realme GT', 'Sony Xperia', 'Asus ROG Phone'],
                 'description' => "Découvrez une expérience mobile révolutionnaire avec ce smartphone alliant performance, design et autonomie exceptionnelle."
             ],
-            'smartwatch' => [
+            'Smartwatches' => [
                 'names' => ['Apple Watch Series', 'Galaxy Watch', 'Fitbit Sense', 'Huawei Watch', 'Garmin Venu', 'Withings ScanWatch', 'Amazfit GTR', 'TicWatch Pro', 'Fossil Gen'],
                 'description' => "Restez connecté avec style grâce à cette montre intelligente aux fonctionnalités avancées de santé et de sport."
             ],
-            'ordinateur' => [
+            'Desktop Computers' => [
                 'names' => ['Dell XPS', 'iMac M1', 'HP Pavilion', 'Asus Zen', 'Acer Aspire', 'Lenovo ThinkCentre', 'Microsoft Surface Studio', 'MSI Modern', 'Alienware Aurora'],
                 'description' => "Un ordinateur de bureau puissant et élégant, idéal pour le multitâche, la créativité et les performances professionnelles."
             ],
-            'laptop' => [
+            'Laptops' => [
                 'names' => ['MacBook Air', 'HP Spectre', 'Dell Inspiron', 'Asus ROG Zephyrus', 'Lenovo Yoga', 'Acer Swift', 'MSI Prestige', 'Samsung Galaxy Book', 'Huawei MateBook'],
                 'description' => "Alliez portabilité et puissance avec cet ordinateur portable conçu pour vous accompagner partout avec efficacité."
             ],
-            'accessoire' => [
+            'Headphones' => [
                 'names' => ['Chargeur USB-C', 'Casque Bluetooth', 'Clavier mécanique', 'Souris ergonomique', 'Webcam HD', 'Disque SSD externe', 'Station d’accueil', 'Support PC', 'Tapis RGB'],
                 'description' => "Un accessoire essentiel pour améliorer votre expérience technologique au quotidien, alliant confort et performance."
             ]

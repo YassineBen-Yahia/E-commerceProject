@@ -10,11 +10,11 @@ class CategorieFixture extends Fixture
 {
     // Noms personnalisés des catégories
     private array $categories = [
-        'laptop',
-        'smartphone',
-        'accessoire',
-        'smartwatch',
-        'ordinateur',
+        'Laptops',
+        'Smartphones',
+        'Headphones',
+        'Smartwatches',
+        'Desktop Computers',
     ];
 
     public function load(ObjectManager $manager): void
