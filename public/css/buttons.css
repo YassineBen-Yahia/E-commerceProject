@@ -4,11 +4,13 @@
     border-color: #2B2D42;
     border-radius: 5px;
     text-decoration: none;
+    transition: all 0.25s ease;
 }
 
 .custom-btn:hover {
-    background-color: #2B2D42;
-    color: #fff;
+    background-color: #E8E8E8;
+    color: #2B2D42;
+    border-color: #2B2D42;
 }
 
 .remove-btn {
@@ -17,9 +19,25 @@
     border-color: #D10024;
     border-radius: 5px;
     text-decoration: none;
+    transition: all 0.25s ease;
 }
 
 .remove-btn:hover {
     background-color: #D10024;
     color: #fff;
+}
+
+.custom-admin-btn {
+    background-color: #2B2D42;
+    color: #fff;
+    border-color: #2B2D42;
+    border-radius: 5px;
+    text-decoration: none;
+    transition: all 0.25s ease;
+}
+
+.custom-admin-btn:hover {
+    background-color: #1A1C2A;
+    color: #fff;
+    border-color: #1A1C2A;
 }

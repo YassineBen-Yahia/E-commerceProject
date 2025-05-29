@@ -7,6 +7,7 @@
 
 
 {% block body %}
+    <link rel="stylesheet" href="{{ asset('css/buttons.css') }}">
     <div class="container mt-4">
         {% for type, messages in app.flashes %}
             {% for message in messages %}
@@ -44,8 +45,8 @@
 
                         {% if role == 'ROLE_USER' %}
                             <td class="text-center">
-                                <a href="{{ url('make_admin', {id: user.id }) }}" class="btn btn-primary">Make Admin</a>
-                                <a href="{{ url('orders.list', {id: user.id }) }}" class="btn btn-primary">Orders History</a>
+                                <a href="{{ url('make_admin', {id: user.id }) }}" class="btn custom-admin-btn">Make Admin</a>
+                                <a href="{{ url('orders.list', {id: user.id }) }}" class="btn custom-admin-btn">Orders History</a>
                             </td>
                         {% endif %}
 
