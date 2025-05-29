@@ -4,6 +4,11 @@
 {% block emplacement %}Shopping Cart{% endblock %}
 
 {% block body %}
+    <link rel="stylesheet" href="{{ asset('css/buttons.css') }}">
+    {% set currentContainer = 'WishList' %}
+    {% include 'fragments/remove_item_modal.html.twig' %}
+
+
     <div class="section">
         <div class="container">
             <div class="row">
@@ -43,8 +48,12 @@
                                         </td>
                                         <td class="cart-price">€{{ item.price }}</td>
                                         <td class="cart-actions">
-                                            <a href="{{ path('app_wish_list_remove_item', {'id': item.id}) }}"
-                                               class="btn btn-sm btn-danger"><i class="fa fa-trash"></i> Remove</a>
+                                            <a href="{{ path('produit_details', {'id': item.id}) }}"
+                                               class="btn custom-btn btn-sm"><i class="fa fa-eye"></i> Details</a>
+                                            <a href="{{ path('app_cart_item', {'id': item.id}) }}"
+                                               class="btn custom-btn btn-sm"><i class="fa fa-shopping-cart"></i> Add To cart</a>
+                                            <a href="#" data-toggle="modal" data-target="#removeItemModal" data-url="{{ url('app_wish_list_remove_item', {'id': item.id }) }}"
+                                               class="btn remove-btn btn-sm"><i class="fa fa-trash"></i> Remove</a>
                                         </td>
                                     </tr>
                                 {% endfor %}
@@ -62,4 +71,19 @@
             </div>
         </div>
     </div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const removeButtons = document.querySelectorAll('.remove-btn');
+        const confirmRemoveButton = document.querySelector('.confirm-remove');
+
+        removeButtons.forEach(button => {
+            button.addEventListener('click', function () {
+                const removeUrl = this.getAttribute('data-url');
+                confirmRemoveButton.setAttribute('href', removeUrl);
+            });
+        });
+    });
+</script>
 {% endblock %}
+

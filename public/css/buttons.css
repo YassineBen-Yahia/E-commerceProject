@@ -1,0 +1,25 @@
+.custom-btn {
+    background-color: #fff;
+    color: #2B2D42;
+    border-color: #2B2D42;
+    border-radius: 5px;
+    text-decoration: none;
+}
+
+.custom-btn:hover {
+    background-color: #2B2D42;
+    color: #fff;
+}
+
+.remove-btn {
+    background-color: #fff;
+    color: #D10024;
+    border-color: #D10024;
+    border-radius: 5px;
+    text-decoration: none;
+}
+
+.remove-btn:hover {
+    background-color: #D10024;
+    color: #fff;
+}
