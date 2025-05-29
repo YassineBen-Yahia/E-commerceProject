@@ -24,7 +24,7 @@ class MailerController extends AbstractController
     #[Route('/verify/email', name: 'verify_email')]
     public function verifyUserEmail(Request $request, EmailVerifier $emailVerifier, EntityManagerInterface $entityManager): Response
     {
-        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_REMEMBERED');
 
         try {
             $emailVerifier->handleEmailConfirmation($request, $this->getUser());
@@ -34,8 +34,13 @@ class MailerController extends AbstractController
             $entityManager->persist($user);
             $entityManager->flush();
         } catch (VerifyEmailExceptionInterface $exception) {
-            $this->addFlash('verify_email_error', $exception->getReason());
+            $reason = $exception->getReason();
 
+            if (str_contains($reason, 'expired')) {
+                return $this->render('registration/expired_confirmation.html.twig');
+            }
+
+            $this->addFlash('verify_email_error', $reason);
             return $this->redirectToRoute('app_login');
         }
 
