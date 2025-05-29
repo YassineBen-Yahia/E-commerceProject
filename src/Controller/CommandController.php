@@ -57,7 +57,7 @@ final class CommandController extends AbstractController
             return $this->redirectToRoute('app_index');
         }
         $this->commandService->manageCommand($cart);
-
+        $this->commandService->sendOrderEmail($this->getUser(), $cart);
 
         $this->addFlash('success', 'Your order has been placed successfully!');
         return $this->redirectToRoute('app_cart');
@@ -66,8 +66,7 @@ final class CommandController extends AbstractController
 
     public function getHistory(): Response
     {
-
-
+        $this->denyAccessUnlessGranted('ROLE_USER');
         $commandes=$this->commandService->getCommandByUser($this->getUser());
 
         return $this->render('command/history.html.twig', [

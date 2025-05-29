@@ -14,7 +14,7 @@ class PaymentController extends AbstractController
     #[Route('/create-payment-link/{id}/{total}', name: 'create_payment_link')]
     public function createPaymentLink($id,$total): Response
     {
-
+        $this->denyAccessUnlessGranted('ROLE_USER');
         Stripe::setApiKey($_ENV['STRIPE_SECRET_KEY']);
 
         try {
@@ -52,7 +52,7 @@ class PaymentController extends AbstractController
     #[Route('/payment/success/{id}', name: 'payment_success')]
     public function paymentSuccess($id): Response
     {
-
+        $this->denyAccessUnlessGranted('ROLE_USER');
         $this->addFlash("success","Payment successful! Your transaction was completed.");
         return $this->redirectToRoute('app_place_order',['id' => $id]);
 
