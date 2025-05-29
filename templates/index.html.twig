@@ -73,7 +73,7 @@
                             <i class="fa fa-star"></i>
                         </div>
                         <div class="product-btns">
-                            <button class="add-to-wishlist" data-url="{{ path('app_Wishlist_add_item', {'id': produit.id}) }}" data-id="{{ produit.id }}">
+                            <button class="add-to-wishlist" data-url="{{ path('app_Wishlist_add_item', {'id': produit.id}) }}" data-id="{{ produit.id }}" data-aunthenticated="{{ app.user ? 'yes' : 'no' }}">
                                 <i class="fa fa-heart-o"></i><span class="tooltipp">add to wishlist</span>
                             </button>
                             <button class="quick-view">
@@ -173,7 +173,6 @@
         window.location.href = currentUrl.toString();
     });
 </script>
-<script src="{{ asset('js/addToWishList.js') }}"></script>
 {% endblock %}
 
 {% block footer %}

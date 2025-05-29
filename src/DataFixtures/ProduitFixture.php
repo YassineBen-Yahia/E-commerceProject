@@ -35,7 +35,7 @@ class ProduitFixture extends Fixture implements DependentFixtureInterface
                 'description' => "Alliez portabilité et puissance avec cet ordinateur portable conçu pour vous accompagner partout avec efficacité."
             ],
             'Headphones' => [
-                'names' => ['Chargeur USB-C', 'Casque Bluetooth', 'Clavier mécanique', 'Souris ergonomique', 'Webcam HD', 'Disque SSD externe', 'Station d’accueil', 'Support PC', 'Tapis RGB'],
+                'names' => ['Echo Bass', 'WavePods', 'SoundMax Pro', 'ZenBeats', 'AudioCore', 'Pulse 2', 'NovaPods', 'BeatFlex', 'TuneLite'],
                 'description' => "Un accessoire essentiel pour améliorer votre expérience technologique au quotidien, alliant confort et performance."
             ]
         ];
