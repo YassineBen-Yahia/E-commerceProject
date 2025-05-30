@@ -1,0 +1,91 @@
+
+    <style>
+        * { box-sizing: border-box; }
+        body { font-family: sans-serif; }
+
+        .slider {
+           margin-top: 15px;
+            position: relative;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+
+            overflow: hidden;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+        }
+
+        .slides {
+            display: flex;
+            transition: transform 0.5s ease-in-out;
+            width: 100%;
+        }
+
+        .slide {
+            min-width: 100%;
+            user-select: none;
+        }
+
+        .slide img {
+            width: 100%;
+            display: block;
+        }
+
+        .navigation {
+            position: absolute;
+            top: 50%;
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            transform: translateY(-50%);
+            padding: 0 10px;
+        }
+
+        .nav-button {
+            background-color: rgba(0,0,0,0.5);
+            border: none;
+            color: white;
+            padding: 10px;
+            cursor: pointer;
+            font-size: 18px;
+            border-radius: 50%;
+        }
+    </style>
+
+<div class="slider">
+    <div class="slides" id="slides">
+        <div class="slide"><img src="{{ asset('styles/img/slider1.png')}}" alt="Image 1"></div>
+        <div class="slide"><img src="{{ asset('styles/img/slider2.png')}}" alt="Image 2"></div>
+        <div class="slide"><img src="{{ asset('styles/img/slider3.png')}}" alt="Image 3"></div>
+    </div>
+    <div class="navigation">
+        <button class="nav-button" onclick="prevSlide()">❮</button>
+        <button class="nav-button" onclick="nextSlide()">❯</button>
+    </div>
+</div>
+
+<script>
+    let currentIndex = 0;
+    const slides = document.getElementById('slides');
+    const totalSlides = slides.children.length;
+
+    function showSlide(index) {
+        if (index >= totalSlides) currentIndex = 0;
+        else if (index < 0) currentIndex = totalSlides - 1;
+        else currentIndex = index;
+
+        slides.style.transform = `translateX(-${currentIndex * 100}%)`;
+    }
+
+    function nextSlide() {
+        showSlide(currentIndex + 1);
+    }
+
+    function prevSlide() {
+        showSlide(currentIndex - 1);
+    }
+
+    // Optionnel : diaporama automatique toutes les 5 secondes
+    setInterval(nextSlide, 5000);
+</script>
+
