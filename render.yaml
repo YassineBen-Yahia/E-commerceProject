@@ -1,0 +1,43 @@
+# render.yaml
+services:
+  - type: web
+    name: echripc
+    env: docker
+    dockerfilePath: ./Dockerfile
+    region: frankfurt
+    plan: starter
+    healthCheckPath: /
+    envVars:
+      - key: APP_ENV
+        value: prod
+      - key: APP_DEBUG
+        value: 0
+      - key: APP_SECRET
+        generateValue: true
+      - key: DATABASE_URL
+        fromDatabase:
+          name: echripc-db
+          property: connectionString
+      - key: MAILER_DSN
+        sync: false
+      - key: STRIPE_SECRET_KEY
+        sync: false
+      - key: STRIPE_PUBLISHABLE_KEY
+        sync: false
+      - key: MESSENGER_TRANSPORT_DSN
+        value: doctrine://default?auto_setup=0
+
+  - type: pserv
+    name: echripc-db
+    env: docker
+    dockerImage: mysql:8.0
+    plan: starter
+    disk:
+      name: data
+      mountPath: /var/lib/mysql
+      sizeGB: 10
+    envVars:
+      - key: MYSQL_DATABASE
+        value: ecommerce
+      - key: MYSQL_ROOT_PASSWORD
+        generateValue: true
