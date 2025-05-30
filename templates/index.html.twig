@@ -1,5 +1,6 @@
 {% extends 'base.html.twig' %}
 {% block emplacement %} {% if category is not null %}{{ category }} {% endif %}{% endblock %}
+{% block slider %}{% include 'fragments/picSlider.html.twig' %}{% endblock %}
 {% block store %}
 {% include 'fragments/add_to_wishlist_modal.html.twig' %}
 <div id="store" class="col-md-9">
