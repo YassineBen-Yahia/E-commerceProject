@@ -6,7 +6,7 @@ services:
     dockerfilePath: ./Dockerfile
     region: frankfurt
     plan: starter
-    healthCheckPath: /
+    healthCheckPath: /index
     buildCommand: |
       composer install --no-dev --optimize-autoloader
       php bin/console doctrine:migrations:migrate --no-interaction
