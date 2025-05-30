@@ -34,6 +34,15 @@ COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
 # Copy composer files first for better caching
 COPY composer.json composer.lock ./
 
+# Install dependencies
+RUN composer install --no-dev --optimize-autoloader
+
+# Copy the rest of the application files
+COPY . .
+
+# Ensure the `public` directory exists
+RUN mkdir -p /var/www/html/public
+
 # Set permissions
 RUN chown -R www-data:www-data /var/www/html
 
@@ -41,6 +50,9 @@ RUN chown -R www-data:www-data /var/www/html
 ENV APACHE_DOCUMENT_ROOT=/var/www/html/public
 RUN sed -ri -e 's!/var/www/html!${APACHE_DOCUMENT_ROOT}!g' /etc/apache2/sites-available/*.conf
 RUN sed -ri -e 's!/var/www/!${APACHE_DOCUMENT_ROOT}!g' /etc/apache2/apache2.conf /etc/apache2/conf-available/*.conf
+
+# Set Apache ServerName
+RUN echo "ServerName localhost" >> /etc/apache2/apache2.conf
 
 # Expose port
 EXPOSE 80
