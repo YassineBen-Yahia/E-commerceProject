@@ -31,8 +31,8 @@ WORKDIR /var/www/html
 # Install Composer
 COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
 
-# Copy project files
-COPY . .
+# Copy composer files first for better caching
+COPY composer.json composer.lock ./
 
 # Set permissions
 RUN chown -R www-data:www-data /var/www/html

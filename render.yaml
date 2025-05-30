@@ -8,11 +8,15 @@ services:
     plan: starter
     healthCheckPath: /index
     buildCommand: |
+      # Copy all project files
+      cp -R . /var/www/html/
+      cd /var/www/html
+      # Install dependencies
       composer install --no-dev --optimize-autoloader
       php bin/console cache:clear --env=prod
       php bin/console cache:warmup --env=prod
       php bin/console doctrine:migrations:migrate --no-interaction
-      php bin/console doctrine:fixtures:load --no-interaction
+      php bin/console doctrine:fixtures:load --no-interaction --append
     envVars:
       - key: APP_ENV
         value: prod
