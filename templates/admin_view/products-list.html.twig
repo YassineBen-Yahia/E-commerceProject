@@ -1,8 +1,10 @@
 {% extends 'base.html.twig' %}
 
+
 {% block header %}
     {% include 'admin_fragments/header.html.twig' %}
     {% include 'admin_fragments/navigation.html.twig' with {'role': 'products'} %}
+
 {% endblock %}
 
 {% block body %}
@@ -35,7 +37,8 @@
                 <th>ID</th>
                 <th>Name</th>
                 <th>Category</th>
-                <th>Description</th>
+                <th>Price</th>
+                <th>Stock</th>
                 <th>Actions</th>
             </tr>
             </thead>
@@ -45,17 +48,22 @@
                     <td>{{ produit.id }}</td>
                     <td>{{ produit.name }}</td>
                     <td class="product-category">{{ produit.categorie.name }}</td>
-                    <td>{{ produit.description }}</td>
+                    <td>{{ produit.price }} €</td>
+                    <td>{{ produit.stock }}</td>
                     <td class="text-center">
-                        <a href="{{ url('app_create_produit', {id: produit.id}) }}" ><i class="fa fa-pencil-square-o"></i></a>
+                        <a href="{{ url('app_create_produit', {id: produit.id}) }}"><i class="fa fa-pencil-square-o"></i></a>
                         &nbsp;
-                        <a href="{{ url('produit.delete', {id: produit.id}) }}" ><i class="fa fa-trash"></i></a>
+                        <a href="#" data-toggle="modal" data-target="#deleteModal-{{ produit.id }}"><i class="fa fa-trash"></i></a>
                         &nbsp;
-                        <a href="{{ path('produit_details', {'id': produit.id}) }}" ><i class="fa fa-eye"></i></a>
+                        <a href="{{ path('produit_details', {'id': produit.id}) }}"><i class="fa fa-eye"></i></a>
                     </td>
                 </tr>
+
+                {% include 'admin_fragments/delete_modal.html.twig' with {'p_id': produit.id , 'p_name': produit.name } %}
             {% endfor %}
             </tbody>
+
+
         </table>
     </div>
 {% endblock %}

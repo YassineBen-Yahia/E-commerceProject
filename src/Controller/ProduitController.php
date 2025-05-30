@@ -161,6 +161,7 @@ final class ProduitController extends AbstractController
                 $categoryCounts[$categorieName] = ($categoryCounts[$categorieName] ?? 0) + $item->getQuantité();
             }
         }
+        arsort($categoryCounts);
 
         return $this->render('admin_view/statistics/categories.html.twig', [
             'labels' => json_encode(array_keys($categoryCounts)),
@@ -174,71 +175,85 @@ final class ProduitController extends AbstractController
         $commandes = $em->getRepository(Commande::class)->findAll();
 
         $salesByMonth = [];
+        $monthLabels = [];
 
         foreach ($commandes as $commande) {
-            $month = $commande->getCreatedAt()->format('F Y'); // Format as '2025-05'
+            $monthKey = $commande->getCreatedAt()->format('Y-m');
+            $monthLabel = $commande->getCreatedAt()->format('F Y');
+
             $total = 0;
             foreach ($commande->getCartItems() as $item) {
                 $total += $item->getProduit()->getPrice() * $item->getQuantité();
             }
-            $salesByMonth[$month] = ($salesByMonth[$month] ?? 0) + $total;
+
+            $salesByMonth[$monthKey] = ($salesByMonth[$monthKey] ?? 0) + $total;
+            $monthLabels[$monthKey] = $monthLabel;
         }
 
-        ksort($salesByMonth); // Sort by date ascending
+        ksort($salesByMonth);
+        $salesByMonthLabels = [];
+        $salesByMonthData = [];
+
+        foreach (array_keys($salesByMonth) as $monthKey) {
+            $salesByMonthLabels[] = $monthLabels[$monthKey];
+            $salesByMonthData[] = $salesByMonth[$monthKey];
+        }
 
         return $this->render('admin_view/statistics/sales.html.twig', [
-            'salesByMonthLabels' => array_keys($salesByMonth),
-            'salesByMonthData' => array_values($salesByMonth),
+            'salesByMonthLabels' => $salesByMonthLabels,
+            'salesByMonthData' => $salesByMonthData,
         ]);
     }
+
 
     #[Route('/admin/statistics/sales-by-category', name: 'admin_statistics_sales_by_category')]
     public function salesByCategoryStatistics(EntityManagerInterface $em): Response
     {
         $commandes = $em->getRepository(Commande::class)->findAll();
 
-        $salesData = []; // [month][category] => total
+        $salesData = [];
         $categories = [];
+        $monthLabels = [];
 
         foreach ($commandes as $commande) {
-            $month = $commande->getCreatedAt()->format('F Y');
+
+            $monthKey = $commande->getCreatedAt()->format('Y-m');
+
+            $monthLabel = $commande->getCreatedAt()->format('F Y');
+            $monthLabels[$monthKey] = $monthLabel;
 
             foreach ($commande->getCartItems() as $item) {
                 $produit = $item->getProduit();
-                $category = $produit->getCategorie()->getName(); // Adjust according to your entity
+                $category = $produit->getCategorie()->getName();
                 $amount = $produit->getPrice() * $item->getQuantité();
 
                 $categories[$category] = true;
-                $salesData[$month][$category] = ($salesData[$month][$category] ?? 0) + $amount;
+                $salesData[$monthKey][$category] = ($salesData[$monthKey][$category] ?? 0) + $amount;
             }
         }
 
+
         ksort($salesData);
+
         ksort($categories);
 
-        $months = array_keys($salesData);
+        $months = [];
+        foreach (array_keys($salesData) as $monthKey) {
+            $months[] = $monthLabels[$monthKey];
+        }
+
         $categoryNames = array_keys($categories);
 
-        // Define a color palette (darker colors)
         $colorPalette = [
-            '#1f77b4', // blue
-            '#ff7f0e', // orange
-            '#2ca02c', // green
-            '#d62728', // red
-            '#9467bd', // purple
-            '#8c564b', // brown
-            '#e377c2', // pink
-            '#7f7f7f', // gray
-            '#bcbd22', // olive
-            '#17becf'  // cyan
+            '#1f77b4', '#ff7f0e', '#2ca02c', '#d62728', '#9467bd',
+            '#8c564b', '#e377c2', '#7f7f7f', '#bcbd22', '#17becf'
         ];
 
-        // Build datasets
         $datasets = [];
         foreach ($categoryNames as $index => $category) {
             $data = [];
-            foreach ($months as $month) {
-                $data[] = $salesData[$month][$category] ?? 0;
+            foreach (array_keys($salesData) as $monthKey) {
+                $data[] = $salesData[$monthKey][$category] ?? 0;
             }
             $datasets[] = [
                 'label' => $category,
@@ -247,6 +262,7 @@ final class ProduitController extends AbstractController
                 'borderColor' => '#111',
                 'borderWidth' => 1
             ];
+
         }
 
         return $this->render('admin_view/statistics/sales-by-category.html.twig', [
@@ -255,12 +271,13 @@ final class ProduitController extends AbstractController
         ]);
     }
 
+
     #[Route('/admin/statistics/top-products', name: 'admin_statistics_top_products')]
     public function topProductsStatistics(CommandeRepository $commandeRepo): Response
     {
         $commandes = $commandeRepo->findAll();
 
-        $productSales = []; // [product name] => quantity sold
+        $productSales = [];
 
         foreach ($commandes as $commande) {
             foreach ($commande->getCartItems() as $item) {
