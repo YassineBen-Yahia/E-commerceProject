@@ -41,7 +41,7 @@ final class ProduitController extends AbstractController
             if ($brochureFile) {
                 $originalFilename = pathinfo($brochureFile->getClientOriginalName(), PATHINFO_FILENAME);
                 $safeFilename = $slugger->slug($originalFilename);
-                $newFilename = $safeFilename . '-' . uniqid() . '.' . $brochureFile->guessExtension();
+                $newFilename = 'img/' .$safeFilename . '-' . uniqid() . '.' . $brochureFile->guessExtension();
 
                 try {
                     $brochureFile->move(
